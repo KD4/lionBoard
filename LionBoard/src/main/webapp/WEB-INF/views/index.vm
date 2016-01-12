@@ -1,0 +1,17 @@
+<h1>Index</h1>
+
+<h2>Board list</h2>
+<table border="1">
+        <tr>
+            <th>No.</th>
+            <th>제목</th>
+            <th>작성자</th>
+        </tr>
+    #foreach($temp in $tempModels)
+        <tr>
+            <td>$temp.id</td>
+            <td>$temp.title</td>
+            <td>$temp.name</td>
+        </tr>
+    #end
+</table>

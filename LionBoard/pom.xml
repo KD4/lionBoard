@@ -1,15 +1,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.springapp</groupId>
-    <artifactId>LionBoard</artifactId>
+    <groupId>com.github.lionboard</groupId>
+    <artifactId>lionboard</artifactId>
     <packaging>war</packaging>
-    <version>1.0-SNAPSHOT</version>
-    <name>LionBoard</name>
+    <version>0.1</version>
+    <name>lionboard</name>
 
     <properties>
 
-        <spring.version>4.1.1.RELEASE</spring.version>
+        <spring.version>4.2.4.RELEASE</spring.version>
         <!-- Spring -->
         <spring-framework.version>4.2.4.RELEASE</spring-framework.version>
 
@@ -167,13 +167,13 @@
     </dependencies>
 
     <build>
-        <finalName>LionBoard</finalName>
+        <finalName>${artifactId}-${version}</finalName>
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <source>3.3</source>
+                    <target>3.3</target>
                 </configuration>
             </plugin>
             <plugin>

@@ -1,11 +1,10 @@
-package com.kakaocorp.lionboard.controller;
+package com.github.lionboard.controller;
 
-import com.kakaocorp.lionboard.model.TempModel;
-import com.kakaocorp.lionboard.service.IndexService;
+import com.github.lionboard.service.IndexService;
+import com.github.lionboard.model.TempModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 

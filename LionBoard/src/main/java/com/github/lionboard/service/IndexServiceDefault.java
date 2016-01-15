@@ -1,6 +1,6 @@
-package com.kakaocorp.lionboard.service;
+package com.github.lionboard.service;
 
-import com.kakaocorp.lionboard.model.TempModel;
+import com.github.lionboard.model.TempModel;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -9,7 +9,7 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * Created by daum on 16. 1. 12..
+ * Created by lion.k on 16. 1. 12..
  */
 
 @Service

@@ -1,4 +1,4 @@
-package com.kakaocorp.lionboard.controller;
+package com.github.lionboard.controller;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration("file:src/main/webapp/WEB-INF/mvc-dispatcher-servlet.xml")
+@ContextConfiguration("classpath:/config/test/mvc-dispatcher-servlet-test.xml")
 public class IndexControllerTest {
     private MockMvc mockMvc;
 

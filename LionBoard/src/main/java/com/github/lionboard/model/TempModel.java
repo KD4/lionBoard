@@ -1,9 +1,9 @@
-package com.kakaocorp.lionboard.model;
+package com.github.lionboard.model;
 
 import java.util.Date;
 
 /**
- * Created by daum on 16. 1. 12..
+ * Created by lion.k on 16. 1. 12..
  */
 
 

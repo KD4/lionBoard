@@ -8,9 +8,14 @@
     <name>lionboard</name>
 
     <properties>
+        <!-- maven -->
+        <maven.compiler.version>3.3</maven.compiler.version>
+        <maven.surefire.version>2.19.1</maven.surefire.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
 
-        <spring.version>4.2.4.RELEASE</spring.version>
         <!-- Spring -->
+        <spring.version>4.2.4.RELEASE</spring.version>
         <spring-framework.version>4.2.4.RELEASE</spring-framework.version>
 
         <!-- Generic properties -->
@@ -166,18 +171,18 @@
 
     </dependencies>
 
+
     <build>
-        <finalName>${artifactId}-${version}</finalName>
+        <finalName>${project.artifactId}-${project.version}</finalName>
+
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>3.3</source>
-                    <target>3.3</target>
-                </configuration>
+                <version>${maven.compiler.version}</version>
             </plugin>
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven.surefire.version}</version>
                 <configuration>
                     <includes>
                         <include>**/*Tests.java</include>

@@ -41,6 +41,9 @@
         <!--db-->
         <mysql.version>5.1.30</mysql.version>
         <mybatis.version>3.2.8</mybatis.version>
+
+
+        <org.aspectj.version>1.8.7</org.aspectj.version>
     </properties>
 
     <dependencies>
@@ -169,6 +172,21 @@
             <version>2.0</version>
         </dependency>
 
+
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>${org.aspectj.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib</artifactId>
+            <version>3.1</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+
     </dependencies>
 
 
@@ -179,6 +197,10 @@
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven.compiler.version}</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
             </plugin>
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>

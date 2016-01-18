@@ -14,6 +14,7 @@ import java.util.List;
 
 @Service
 public class IndexServiceDefault implements IndexService {
+
     @Override
     public List<TempModel> getPosts() {
         List<TempModel> list = new ArrayList<TempModel>();

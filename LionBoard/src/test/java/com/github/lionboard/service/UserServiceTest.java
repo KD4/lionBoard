@@ -11,6 +11,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.web.context.WebApplicationContext;
 
 import javax.sql.DataSource;
@@ -37,7 +38,7 @@ public class UserServiceTest {
     protected WebApplicationContext wac;
 
     @Autowired
-    private UserService userService;
+    UserService userService;
 
     @Autowired
     UserRepository userRepository;
@@ -46,7 +47,8 @@ public class UserServiceTest {
     DataSource dataSource;
 
 
-
+    @Autowired
+    PlatformTransactionManager transactionManager;
 
     private User user1;
     private User user2;
@@ -99,6 +101,7 @@ public class UserServiceTest {
         TestUserService testUserService = new TestUserService();
         testUserService.setDataSource(dataSource);
         testUserService.setUserRepository(userRepository);
+        testUserService.setTransactionManager(transactionManager);
         testUserService.deleteAllUser();
         Assert.assertThat(testUserService.getActiveUsersCount(), is(0));
         try {

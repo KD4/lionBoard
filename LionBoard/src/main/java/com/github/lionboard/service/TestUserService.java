@@ -24,6 +24,7 @@ public class TestUserService implements UserService {
 
     DataSource dataSource;
 
+    PlatformTransactionManager transactionManager;
     @Override
     public void deleteAllUser() {
         userRepository.deleteUserFromUsersTB();
@@ -36,7 +37,6 @@ public class TestUserService implements UserService {
 
     @Override
     public int addNormalUser(User user) throws RuntimeException {
-        PlatformTransactionManager transactionManager = new DataSourceTransactionManager(dataSource);
         TransactionStatus status = transactionManager.getTransaction(new DefaultTransactionDefinition());
         try {
             int insertedUserId = userRepository.insertUser(user);
@@ -63,6 +63,10 @@ public class TestUserService implements UserService {
 
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
+    }
+
+    public void setTransactionManager(PlatformTransactionManager transactionManager){
+        this.transactionManager = transactionManager;
     }
 
     static class TestUserServiceException extends RuntimeException{

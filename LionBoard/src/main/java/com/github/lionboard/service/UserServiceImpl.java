@@ -28,6 +28,8 @@ public class UserServiceImpl implements UserService{
     @Autowired
     DataSource dataSource;
 
+    @Autowired
+    PlatformTransactionManager transactionManager;
 
     @Override
     public void deleteAllUser() {
@@ -41,7 +43,6 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public int addNormalUser(User user) throws RuntimeException {
-        PlatformTransactionManager transactionManager = new DataSourceTransactionManager(dataSource);
         TransactionStatus status = transactionManager.getTransaction(new DefaultTransactionDefinition());
         try {
             int insertedUserId = userRepository.insertUser(user);

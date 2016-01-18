@@ -12,7 +12,7 @@ public interface UserService {
 
     int getActiveUsersCount();
 
-    int addNormalUser(User user) throws SQLException;
+    int addNormalUser(User user) throws RuntimeException;
 
     User getUserById(int id);
 }

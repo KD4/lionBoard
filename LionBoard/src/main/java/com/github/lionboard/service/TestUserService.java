@@ -4,30 +4,25 @@ import com.github.lionboard.model.User;
 import com.github.lionboard.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
-import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.SQLException;
 
 /**
- * Created by daum on 16. 1. 17..
+ * Created by Lion on 16. 1. 18..
+ *
+ * this class used as Mock Object.
  */
 
-@Service
-public class UserServiceImpl implements UserService{
 
-    @Autowired
+public class TestUserService implements UserService {
+
     UserRepository userRepository;
 
-    @Autowired
     DataSource dataSource;
-
 
     @Override
     public void deleteAllUser() {
@@ -47,10 +42,10 @@ public class UserServiceImpl implements UserService{
             int insertedUserId = userRepository.insertUser(user);
             userRepository.insertUserInfo(user, insertedUserId);
             userRepository.insertUserPower(user, insertedUserId);
-            userRepository.insertUserPw(user, insertedUserId);
-            userRepository.insertUserState(user, insertedUserId);
-            transactionManager.commit(status);
-            return insertedUserId;
+
+            //generate transaction exception.
+            throw new TestUserServiceException();
+
         } catch (RuntimeException e) {
             transactionManager.rollback(status);
             throw e;
@@ -60,5 +55,17 @@ public class UserServiceImpl implements UserService{
     @Override
     public User getUserById(int id) {
         return userRepository.getUserById(id);
+    }
+
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
+    static class TestUserServiceException extends RuntimeException{
+
     }
 }

@@ -1,6 +1,7 @@
 package com.github.lionboard.service;
 
 import com.github.lionboard.model.User;
+import com.github.lionboard.repository.UserRepository;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,8 +13,10 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
+import javax.sql.DataSource;
 import java.sql.SQLException;
 
+import static junit.framework.TestCase.fail;
 import static org.hamcrest.CoreMatchers.is;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
@@ -36,6 +39,15 @@ public class UserServiceTest {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    DataSource dataSource;
+
+
+
+
     private User user1;
     private User user2;
 
@@ -55,7 +67,7 @@ public class UserServiceTest {
 
 
     @Test
-    public void addAndGet() throws ClassNotFoundException, SQLException {
+    public void addAndGet() throws ClassNotFoundException, RuntimeException {
         userService.deleteAllUser();
         Assert.assertThat(userService.getActiveUsersCount(), is(0));
 
@@ -66,7 +78,7 @@ public class UserServiceTest {
         User insertedUser1 = userService.getUserById(insertedUser1Id);
         User insertedUser2 = userService.getUserById(insertedUser2Id);
 
-        Assert.assertThat(insertedUser1.getName(),is(user1.getName()));
+        Assert.assertThat(insertedUser1.getName(), is(user1.getName()));
         Assert.assertThat(insertedUser2.getName(),is(user2.getName()));
     }
 
@@ -78,6 +90,23 @@ public class UserServiceTest {
         Assert.assertThat(userService.getActiveUsersCount(), is(1));
         userService.addNormalUser(user2);
         Assert.assertThat(userService.getActiveUsersCount(), is(2));
+    }
+
+
+    //transaction testcase
+    @Test
+    public void insertToAlltablesOrNothing() throws ClassNotFoundException, RuntimeException {
+        TestUserService testUserService = new TestUserService();
+        testUserService.setDataSource(dataSource);
+        testUserService.setUserRepository(userRepository);
+        testUserService.deleteAllUser();
+        Assert.assertThat(testUserService.getActiveUsersCount(), is(0));
+        try {
+            testUserService.addNormalUser(user1);
+            fail("TestUserServiceException expected");
+        }catch (TestUserService.TestUserServiceException e){
+
+        }
     }
 
 

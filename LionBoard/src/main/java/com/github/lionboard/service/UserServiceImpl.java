@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public int getActiveUsersCount() {
+    public int countUsers() {
         return userRepository.countUsers();
     }
 
@@ -61,5 +61,30 @@ public class UserServiceImpl implements UserService{
     @Override
     public User getUserById(int id) {
         return userRepository.getUserById(id);
+    }
+
+    @Override
+    public int countUsersWithState(int i) {
+        return userRepository.countUsersWithState(i);
+    }
+
+    @Override
+    public void changeStateOfAllUsers(int i) {
+        userRepository.changeStateOfAllUsers(i);
+    }
+
+    @Override
+    public void updateUserInfo(User user) {
+        TransactionStatus status = transactionManager.getTransaction(new DefaultTransactionDefinition());
+        try {
+            userRepository.updateUser(user);
+            userRepository.updateUserInfo(user);
+            userRepository.updateUserPw(user);
+            transactionManager.commit(status);
+        } catch (RuntimeException e) {
+            transactionManager.rollback(status);
+            throw e;
+        }
+
     }
 }

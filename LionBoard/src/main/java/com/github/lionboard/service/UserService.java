@@ -10,9 +10,15 @@ import java.sql.SQLException;
 public interface UserService {
     void deleteAllUser();
 
-    int getActiveUsersCount();
+    int countUsers();
 
     int addNormalUser(User user) throws RuntimeException;
 
     User getUserById(int id);
+
+    int countUsersWithState(int i);
+
+    void changeStateOfAllUsers(int i);
+
+    void updateUserInfo(User user);
 }

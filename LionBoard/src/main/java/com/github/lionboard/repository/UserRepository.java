@@ -30,4 +30,14 @@ public interface UserRepository {
 
     void deleteUserFromUsersTB();
 
+    int countUsersWithState(int i);
+
+    void changeStateOfAllUsers(int i);
+
+    void updateUser(User user);
+
+    void updateUserInfo(User user);
+
+    void updateUserPw(User user);
+
 }

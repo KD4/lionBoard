@@ -6,6 +6,7 @@ package com.github.lionboard.model;
 public class User {
     private int id;
     private String identity;
+    private int isOAuth;
     private String email;
     private String name;
     private String password;
@@ -87,5 +88,13 @@ public class User {
 
     public void setPowerCode(int powerCode) {
         this.powerCode = powerCode;
+    }
+
+    public int getIsOAuth() {
+        return isOAuth;
+    }
+
+    public void setIsOAuth(int isOAuth) {
+        this.isOAuth = isOAuth;
     }
 }

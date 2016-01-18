@@ -31,7 +31,7 @@ public class TestUserService implements UserService {
     }
 
     @Override
-    public int getActiveUsersCount() {
+    public int countUsers() {
         return userRepository.countUsers();
     }
 
@@ -56,6 +56,22 @@ public class TestUserService implements UserService {
     public User getUserById(int id) {
         return userRepository.getUserById(id);
     }
+
+    @Override
+    public int countUsersWithState(int i) {
+        return 0;
+    }
+
+    @Override
+    public void changeStateOfAllUsers(int i) {
+
+    }
+
+    @Override
+    public void updateUserInfo(User user) {
+
+    }
+
 
     public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;

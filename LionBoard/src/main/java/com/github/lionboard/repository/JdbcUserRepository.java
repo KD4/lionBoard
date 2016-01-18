@@ -22,10 +22,12 @@ public class JdbcUserRepository implements UserRepository {
                     User user = new User();
                     user.setId(resultSet.getInt("id"));
                     user.setEmail(resultSet.getString("email"));
+                    user.setIsOAuth(resultSet.getInt("isOAuth"));
                     user.setName(resultSet.getString("name"));
                     user.setPassword(resultSet.getString("password"));
                     user.setIdentity(resultSet.getString("identity"));
                     user.setPowerCode(resultSet.getInt("powerCode"));
+                    user.setUserStateCode(resultSet.getShort("userStateCode"));
                     user.setProfileUrl(resultSet.getString("profileUrl"));
                     return user;
                 }
@@ -78,6 +80,9 @@ public class JdbcUserRepository implements UserRepository {
                 "LEFT JOIN " +
                 "ACT_USER_PW_TB as PW " +
                 "ON USERS.id = PW.id " +
+                "LEFT JOIN " +
+                "ACT_USER_STATE_TB as STATE " +
+                "ON USERS.id = STATE.id " +
                 "where USERS.id = ? ", new Object[]{id}, userMapper);
     }
 
@@ -87,4 +92,32 @@ public class JdbcUserRepository implements UserRepository {
                 "delete from ACT_USERS_TB"
        );
     }
+
+
+    @Override
+    public int countUsersWithState(int i) {
+        return this.jdbcTemplate.queryForObject("SELECT count(*) FROM ACT_USERS_TB as users INNER JOIN ACT_USER_STATE_TB as state ON users.id=state.id WHERE state.userStateCode="+i, Integer.class);
+    }
+
+    @Override
+    public void changeStateOfAllUsers(int i) {
+        this.jdbcTemplate.update("UPDATE ACT_USER_STATE_TB SET userStateCode=?", i);
+    }
+
+    @Override
+    public void updateUser(User user) {
+        this.jdbcTemplate.update("UPDATE ACT_USERS_TB SET identity=?,isOAuth=? WHERE id=?", user.getIdentity(),user.getIsOAuth(),user.getId());
+    }
+
+    @Override
+    public void updateUserInfo(User user) {
+        this.jdbcTemplate.update("UPDATE ACT_USERINFO_TB SET name=?,email=?,profileUrl=? WHERE id=?", user.getName(),user.getEmail(),user.getProfileUrl(),user.getId());
+    }
+
+    @Override
+    public void updateUserPw(User user) {
+        this.jdbcTemplate.update("UPDATE ACT_USER_PW_TB SET password=? WHERE id=?", user.getPassword(),user.getId());
+    }
+
+
 }

@@ -9,7 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * Created by daum on 16. 1. 18..
+ * Created by lion.k on 16. 1. 18..
  */
 public class JdbcUserRepository implements UserRepository {
 

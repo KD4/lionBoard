@@ -23,4 +23,8 @@
         <property name="dataSource" ref="dataSource" />
     </bean>
 
+    <bean id="userServiceImpl" class="com.github.lionboard.service.UserServiceImpl">
+        <property name="userRepository" ref="userRepository" />
+        <property name="dataSource" ref="dataSource" />
+    </bean>
 </beans>

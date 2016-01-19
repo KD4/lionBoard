@@ -1,7 +1,7 @@
 package com.github.lionboard.model;
 
 /**
- * Created by daum on 16. 1. 17..
+ * Created by lion.k on 16. 1. 17..
  */
 public class User {
     private int id;

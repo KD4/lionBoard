@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 
 /**
- * Created by daum on 16. 1. 17..
+ * Created by lion.k on 16. 1. 17..
  */
 
 

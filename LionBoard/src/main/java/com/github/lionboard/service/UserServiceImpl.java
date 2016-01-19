@@ -20,7 +20,6 @@ import java.sql.SQLException;
  * Created by lion.k on 16. 1. 17..
  */
 
-@Service
 public class UserServiceImpl implements UserService{
 
     @Autowired

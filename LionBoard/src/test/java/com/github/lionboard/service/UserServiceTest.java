@@ -40,16 +40,13 @@ public class UserServiceTest {
     @Autowired
     UserService userService;
 
-    @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    DataSource dataSource;
-
-    @Autowired
-    PlatformTransactionManager transactionManager;
-
-    UserServiceTx userServiceTx;
+//    @Autowired
+//    UserRepository userRepository;
+//
+//    @Autowired
+//    DataSource dataSource;
+//    @Autowired
+//    PlatformTransactionManager transactionManager;
 
     private User user1;
     private User user2;
@@ -59,30 +56,27 @@ public class UserServiceTest {
         this.mockMvc = webAppContextSetup(this.wac).build();
         user1 = new User("kangddanddan@gmail.com","kangddanddan@gmail.com","강딴딴","1234","no",3,3);
         user2 = new User("rkdrhksdn2@gmail.com","rkdrhksdn2@gmail.com","강관우","4321","no",3,3);
-        userServiceTx = new UserServiceTx();
-        userServiceTx.setTransactionManager(transactionManager);
-        userServiceTx.setuserServiceImpl(userService);
     }
 
 
     @Test
     public void deleteAllUserTest() throws Exception {
-        userServiceTx.deleteAllUser();
-        Assert.assertThat(userServiceTx.countUsers(),is(0));
+        userService.deleteAllUser();
+        Assert.assertThat(userService.countUsers(),is(0));
     }
 
 
     @Test
     public void addAndGet() throws ClassNotFoundException, RuntimeException {
-        userServiceTx.deleteAllUser();
-        Assert.assertThat(userServiceTx.countUsers(), is(0));
+        userService.deleteAllUser();
+        Assert.assertThat(userService.countUsers(), is(0));
 
-        int insertedUser1Id = userServiceTx.addNormalUser(user1);
-        int insertedUser2Id = userServiceTx.addNormalUser(user2);
-        Assert.assertThat(userServiceTx.countUsers(), is(2));
+        int insertedUser1Id = userService.addNormalUser(user1);
+        int insertedUser2Id = userService.addNormalUser(user2);
+        Assert.assertThat(userService.countUsers(), is(2));
 
-        User insertedUser1 = userServiceTx.getUserById(insertedUser1Id);
-        User insertedUser2 = userServiceTx.getUserById(insertedUser2Id);
+        User insertedUser1 = userService.getUserById(insertedUser1Id);
+        User insertedUser2 = userService.getUserById(insertedUser2Id);
 
         Assert.assertThat(insertedUser1.getName(), is(user1.getName()));
         Assert.assertThat(insertedUser2.getName(),is(user2.getName()));
@@ -90,44 +84,44 @@ public class UserServiceTest {
 
     @Test
     public void count() throws ClassNotFoundException, SQLException {
-        userServiceTx.deleteAllUser();
-        Assert.assertThat(userServiceTx.countUsers(), is(0));
-        userServiceTx.addNormalUser(user1);
-        Assert.assertThat(userServiceTx.countUsers(), is(1));
-        userServiceTx.addNormalUser(user2);
-        Assert.assertThat(userServiceTx.countUsers(), is(2));
+        userService.deleteAllUser();
+        Assert.assertThat(userService.countUsers(), is(0));
+        userService.addNormalUser(user1);
+        Assert.assertThat(userService.countUsers(), is(1));
+        userService.addNormalUser(user2);
+        Assert.assertThat(userService.countUsers(), is(2));
     }
 
 
     @Test
     public void countUsersWithState() throws ClassNotFoundException, SQLException {
-        userServiceTx.deleteAllUser();
-        Assert.assertThat(userServiceTx.countUsers(), is(0));
-        userServiceTx.addNormalUser(user1);
-        Assert.assertThat(userServiceTx.countUsersWithState(3), is(1));
-        userServiceTx.addNormalUser(user2);
-        Assert.assertThat(userServiceTx.countUsersWithState(1), is(0));
-        Assert.assertThat(userServiceTx.countUsersWithState(3), is(2));
+        userService.deleteAllUser();
+        Assert.assertThat(userService.countUsers(), is(0));
+        userService.addNormalUser(user1);
+        Assert.assertThat(userService.countUsersWithState(3), is(1));
+        userService.addNormalUser(user2);
+        Assert.assertThat(userService.countUsersWithState(1), is(0));
+        Assert.assertThat(userService.countUsersWithState(3), is(2));
     }
 
     @Test
     public void changeStateOfAllUsers() throws ClassNotFoundException, SQLException {
-        userServiceTx.deleteAllUser();
-        Assert.assertThat(userServiceTx.countUsers(), is(0));
+        userService.deleteAllUser();
+        Assert.assertThat(userService.countUsers(), is(0));
 
-        int insertedUser1Id = userServiceTx.addNormalUser(user1);
-        int insertedUser2Id = userServiceTx.addNormalUser(user2);
-        Assert.assertThat(userServiceTx.countUsers(), is(2));
-        Assert.assertThat(userServiceTx.countUsersWithState(3), is(2));
+        int insertedUser1Id = userService.addNormalUser(user1);
+        int insertedUser2Id = userService.addNormalUser(user2);
+        Assert.assertThat(userService.countUsers(), is(2));
+        Assert.assertThat(userService.countUsersWithState(3), is(2));
 
-        userServiceTx.changeStateOfAllUsers(2);
-        Assert.assertThat(userServiceTx.countUsersWithState(2), is(2));
+        userService.changeStateOfAllUsers(2);
+        Assert.assertThat(userService.countUsersWithState(2), is(2));
 
-        userServiceTx.changeStateOfAllUsers(1);
-        Assert.assertThat(userServiceTx.countUsersWithState(1), is(2));
+        userService.changeStateOfAllUsers(1);
+        Assert.assertThat(userService.countUsersWithState(1), is(2));
 
-        User insertedUser1 = userServiceTx.getUserById(insertedUser1Id);
-        User insertedUser2 = userServiceTx.getUserById(insertedUser2Id);
+        User insertedUser1 = userService.getUserById(insertedUser1Id);
+        User insertedUser2 = userService.getUserById(insertedUser2Id);
 
         Assert.assertThat(insertedUser1.getUserStateCode(), is(1));
         Assert.assertThat(insertedUser2.getUserStateCode(), is(1));
@@ -135,17 +129,17 @@ public class UserServiceTest {
 
     @Test
     public void updateUser() throws ClassNotFoundException, SQLException {
-        userServiceTx.deleteAllUser();
-        Assert.assertThat(userServiceTx.countUsers(), is(0));
+        userService.deleteAllUser();
+        Assert.assertThat(userService.countUsers(), is(0));
 
-        int insertedUserId = userServiceTx.addNormalUser(user1);
+        int insertedUserId = userService.addNormalUser(user1);
         user1.setEmail("goodmorning0726@gmail.com");
         user1.setPassword("newPw");
         user1.setId(insertedUserId);
 
-        userServiceTx.updateUserInfo(user1);
+        userService.updateUserInfo(user1);
 
-        User updatedUser = userServiceTx.getUserById(insertedUserId);
+        User updatedUser = userService.getUserById(insertedUserId);
 
         Assert.assertThat(updatedUser.getName(), is(user1.getName()));
         Assert.assertThat(updatedUser.getEmail(), is(user1.getEmail()));

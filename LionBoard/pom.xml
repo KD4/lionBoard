@@ -158,6 +158,11 @@
             <artifactId>mybatis-spring</artifactId>
             <version>1.2.2</version>
         </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.4.190</version>
+        </dependency>
 
         <!-- Velocity -->
         <dependency>
@@ -185,6 +190,14 @@
             <version>3.1</version>
             <type>jar</type>
             <scope>compile</scope>
+        </dependency>
+
+
+        <!--time-->
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>2.9.1</version>
         </dependency>
 
     </dependencies>

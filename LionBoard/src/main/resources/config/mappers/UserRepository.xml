@@ -1,57 +1,57 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--<?xml version="1.0" encoding="UTF-8"?>-->
+<!--<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"-->
+        <!--"http://mybatis.org/dtd/mybatis-3-mapper.dtd">-->
 
 
-<mapper namespace="com.github.lionboard.repository.UserRepository">
+<!--<mapper namespace="com.github.lionboard.repository.UserRepository">-->
 
-    <select id="setStateOfAllUsersToDelete" parameterType="com.github.lionboard.model.User">
-        SELECT count(*)
-        FROM ACT_USERS_TB INNER JOIN ACT_USER_STATE_TB ON ACT_USERS_TB.id = ACT_USER_STATE_TB.id
-        WHERE ACT_USER_STATE_TB.userStateCode > 1
-    </select>
+    <!--<select id="setStateOfAllUsersToDelete" parameterType="com.github.lionboard.model.User">-->
+        <!--SELECT count(*)-->
+        <!--FROM ACT_USERS_TB INNER JOIN ACT_USER_STATE_TB ON ACT_USERS_TB.id = ACT_USER_STATE_TB.id-->
+        <!--WHERE ACT_USER_STATE_TB.userStateCode > 1-->
+    <!--</select>-->
 
 
-    <select id="getUserById" resultType="com.github.lionboard.model.User" parameterType="com.github.lionboard.model.User">
-        SELECT *
-        FROM ACT_USERS_TB
-        WHERE id = #{id}
-    </select>
+    <!--<select id="getUserById" resultType="com.github.lionboard.model.User" parameterType="com.github.lionboard.model.User">-->
+        <!--SELECT *-->
+        <!--FROM ACT_USERS_TB-->
+        <!--WHERE id = #{id}-->
+    <!--</select>-->
 
-    <update id="setStateOfAllUsersToDelete" >
-        UPDATE
-        ACT_USER_STATE_TB
-        SET
-        userStateCode=1
-    </update>
+    <!--<update id="setStateOfAllUsersToDelete" >-->
+        <!--UPDATE-->
+        <!--ACT_USER_STATE_TB-->
+        <!--SET-->
+        <!--userStateCode=1-->
+    <!--</update>-->
 
-    <insert id="insertUser" parameterType="com.github.lionboard.model.User">
-        INSERT INTO ACT_USERS_TB("identity")
-        VALUES(#{IDENTITY})
-        <selectKey resultType="int" keyProperty="id" order="AFTER">
-            SELECT LAST_INSERT_ID()
-        </selectKey>
-    </insert>
+    <!--<insert id="insertUser" parameterType="com.github.lionboard.model.User">-->
+        <!--INSERT INTO ACT_USERS_TB("identity")-->
+        <!--VALUES(#{IDENTITY})-->
+        <!--<selectKey resultType="int" keyProperty="id" order="AFTER">-->
+            <!--SELECT LAST_INSERT_ID()-->
+        <!--</selectKey>-->
+    <!--</insert>-->
 
-    <insert id="insertUserInfo" parameterType="com.github.lionboard.model.User">
-        INSERT INTO ACT_USERINFO_TB("id","email","name","profileUrl")
-        VALUES(#{id},#{email},#{name},#{profileUrl})
-    </insert>
+    <!--<insert id="insertUserInfo" parameterType="com.github.lionboard.model.User">-->
+        <!--INSERT INTO ACT_USERINFO_TB("id","email","name","profileUrl")-->
+        <!--VALUES(#{id},#{email},#{name},#{profileUrl})-->
+    <!--</insert>-->
 
-    <insert id="insertUserPower" parameterType="com.github.lionboard.model.User">
-        INSERT INTO ACT_POWER_TB("id","powerCode")
-        VALUES(#{id},#{power})
-    </insert>
+    <!--<insert id="insertUserPower" parameterType="com.github.lionboard.model.User">-->
+        <!--INSERT INTO ACT_POWER_TB("id","powerCode")-->
+        <!--VALUES(#{id},#{power})-->
+    <!--</insert>-->
 
-    <insert id="insertUserPw" parameterType="com.github.lionboard.model.User">
-        INSERT INTO ACT_USER_PW_TB("id","password")
-        VALUES(#{id},#{password})
-    </insert>
+    <!--<insert id="insertUserPw" parameterType="com.github.lionboard.model.User">-->
+        <!--INSERT INTO ACT_USER_PW_TB("id","password")-->
+        <!--VALUES(#{id},#{password})-->
+    <!--</insert>-->
 
-    <insert id="insertUserState" parameterType="com.github.lionboard.model.User">
-        INSERT INTO ACT_USER_STATE_TB("id","userStateCode")
-        VALUES(#{id},#{userStateCode})
-    </insert>
+    <!--<insert id="insertUserState" parameterType="com.github.lionboard.model.User">-->
+        <!--INSERT INTO ACT_USER_STATE_TB("id","userStateCode")-->
+        <!--VALUES(#{id},#{userStateCode})-->
+    <!--</insert>-->
 
-</mapper>
+<!--</mapper>-->
 

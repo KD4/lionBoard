@@ -6,25 +6,23 @@
        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
 	    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
-    <context:property-placeholder location="classpath:/config/local.properties"/>
+    <context:property-placeholder
+            location="classpath:/config/*.properties"
+            ignore-resource-not-found="true"
+            ignore-unresolvable="true"
+            order ="0" />
+
+    <context:property-placeholder
+            location="classpath:/config/local.properties"
+            ignore-resource-not-found="true"
+            ignore-unresolvable="true"
+            order="-1"/>
 
     <bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource" >
-        <property name="driverClass" value="com.mysql.jdbc.Driver" />
-        <property name="url" value="jdbc:mysql://${datasource.url}/lionboard?characterEncoding=utf-8" />
+        <property name="driverClass" value="${datasource.driverClassName}" />
+        <property name="url" value="${datasource.url}" />
         <property name="username" value="${datasource.username}" />
         <property name="password" value="${datasource.password}" />
     </bean>
 
-    <bean id="userRepository" class="com.github.lionboard.repository.JdbcUserRepository">
-        <property name="dataSource" ref="dataSource"></property>
-    </bean>
-
-    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="dataSource" />
-    </bean>
-
-    <bean id="userServiceImpl" class="com.github.lionboard.service.UserServiceImpl">
-        <property name="userRepository" ref="userRepository" />
-        <property name="dataSource" ref="dataSource" />
-    </bean>
 </beans>

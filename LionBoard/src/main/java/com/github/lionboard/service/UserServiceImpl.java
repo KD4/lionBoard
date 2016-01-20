@@ -20,13 +20,15 @@ import java.sql.SQLException;
  * Created by lion.k on 16. 1. 17..
  */
 
+@Service
 public class UserServiceImpl implements UserService{
 
     @Autowired
     UserRepository userRepository;
 
-    @Autowired
-    DataSource dataSource;
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
 
     @Override

@@ -27,15 +27,8 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@WebAppConfiguration
-@ContextConfiguration("classpath:/config/test/mvc-dispatcher-servlet-test.xml")
+@ContextConfiguration("file:src/test/resources/config/mem-context.xml")
 public class UserServiceTest {
-
-    private MockMvc mockMvc;
-
-    @SuppressWarnings("SpringJavaAutowiringInspection")
-    @Autowired
-    protected WebApplicationContext wac;
 
     @Autowired
     UserService userService;
@@ -53,7 +46,6 @@ public class UserServiceTest {
 
     @Before
     public void setUp(){
-        this.mockMvc = webAppContextSetup(this.wac).build();
         user1 = new User("kangddanddan@gmail.com","kangddanddan@gmail.com","강딴딴","1234","no",3,3);
         user2 = new User("rkdrhksdn2@gmail.com","rkdrhksdn2@gmail.com","강관우","4321","no",3,3);
     }

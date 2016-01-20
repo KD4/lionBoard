@@ -1,7 +1,7 @@
 # ************************************************************
 # Host: 127.0.0.1 (MySQL 5.6.25)
 # Database: lionboard
-# Generation Time: 2016-01-17 11:43:17 +0000
+# Generation Time: 2016-01-17 12:52:36 +0000
 # ************************************************************
 
 
@@ -241,11 +241,11 @@ DROP TABLE IF EXISTS `ACT_USER_STATE_TB`;
 
 CREATE TABLE `ACT_USER_STATE_TB` (
   `id` int(10) unsigned NOT NULL,
-  `stateCode` int(10) unsigned NOT NULL,
+  `userStateCode` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `stateCode` (`stateCode`),
+  KEY `userStateCode` (`userStateCode`),
   CONSTRAINT `act_user_state_tb_ibfk_1` FOREIGN KEY (`id`) REFERENCES `ACT_USERS_TB` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `act_user_state_tb_ibfk_2` FOREIGN KEY (`stateCode`) REFERENCES `MAP_USER_STATE_TB` (`stateCode`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `act_user_state_tb_ibfk_2` FOREIGN KEY (`userStateCode`) REFERENCES `MAP_USER_STATE_TB` (`userStateCode`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -325,9 +325,9 @@ CREATE TABLE `MAP_STATE_TB` (
 DROP TABLE IF EXISTS `MAP_USER_STATE_TB`;
 
 CREATE TABLE `MAP_USER_STATE_TB` (
-  `state` varchar(128) NOT NULL,
-  `stateCode` int(10) unsigned NOT NULL,
-  PRIMARY KEY (`stateCode`)
+  `userState` varchar(128) NOT NULL DEFAULT '',
+  `userStateCode` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`userStateCode`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 

@@ -7,8 +7,8 @@
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
-			/WEB-INF/root-context.xml,
-			/WEB-INF/mvc-dispatcher-servlet.xml
+			classpath:/config/root-context.xml,
+			classpath:/config/mvc-dispatcher-servlet.xml
 		</param-value>
 	</context-param>
 

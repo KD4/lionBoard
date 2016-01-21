@@ -1,12 +1,16 @@
 package com.github.lionboard.service;
 
+import com.github.lionboard.error.InvalidCmtException;
 import com.github.lionboard.error.InvalidPostException;
+import com.github.lionboard.error.InvalidUserException;
 import com.github.lionboard.model.Comment;
 import com.github.lionboard.model.Post;
 import com.github.lionboard.model.PostFile;
+import com.github.lionboard.model.User;
 import com.github.lionboard.repository.CommentRepository;
 import com.github.lionboard.repository.PostFileRepository;
 import com.github.lionboard.repository.PostRepository;
+import com.github.lionboard.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +33,9 @@ public class LionBoardServiceImpl implements LionBoardService {
 
     @Autowired
     CommentRepository commentRepository;
+
+    @Autowired
+    UserRepository userRepository;
 
     @Override
     public List<Post> getPosts(int offset, int limit) {
@@ -129,8 +136,32 @@ public class LionBoardServiceImpl implements LionBoardService {
     public Comment getCommentByCmtId(int cmtId) {
         Comment selectedCmt = commentRepository.findCommentByCmtId(cmtId);
         if(selectedCmt == null){
-            throw new InvalidPostException();
+            throw new InvalidCmtException();
         }
         return selectedCmt;
+    }
+
+    @Override
+    public void deleteAllUsers() {
+        userRepository.deleteAll();
+    }
+
+    @Override
+    public void addUser(User user) {
+        if(user.getIsOAuth().equals("F")){
+            userRepository.insertUser(user);
+        }else{
+            //Todo: OAuth logic
+        }
+    }
+
+    @Override
+    public User getUser(int userId) {
+        User selectedUser = userRepository.findUserByUserId(userId);
+        if(selectedUser == null){
+            throw new InvalidUserException();
+        }
+        return selectedUser;
+
     }
 }

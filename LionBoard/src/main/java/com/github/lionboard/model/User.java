@@ -8,7 +8,7 @@ import org.joda.time.DateTime;
 public class User {
     private int id;
     private String identity;
-    private int isOAuth;
+    private String isOAuth;
     private String email;
     private String name;
     private String password;
@@ -16,19 +16,6 @@ public class User {
     private String userStatus;
     private String roles;
     private DateTime registeredAt;
-
-    public User(){
-    }
-
-    public User(String identity, String email, String name, String password, String profileUrl, String userStatus, String roles){
-        this.identity = identity;
-        this.email = email;
-        this.name = name;
-        this.password = password;
-        this.profileUrl = profileUrl;
-        this.userStatus = userStatus;
-        this.roles = roles;
-    }
 
     public int getId() {
         return id;
@@ -44,14 +31,6 @@ public class User {
 
     public void setIdentity(String identity) {
         this.identity = identity;
-    }
-
-    public int getIsOAuth() {
-        return isOAuth;
-    }
-
-    public void setIsOAuth(int isOAuth) {
-        this.isOAuth = isOAuth;
     }
 
     public String getEmail() {
@@ -108,5 +87,13 @@ public class User {
 
     public void setRegisteredAt(DateTime registeredAt) {
         this.registeredAt = registeredAt;
+    }
+
+    public String getIsOAuth() {
+        return isOAuth;
+    }
+
+    public void setIsOAuth(String isOAuth) {
+        this.isOAuth = isOAuth;
     }
 }

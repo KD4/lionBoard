@@ -3,6 +3,7 @@ package com.github.lionboard.service;
 import com.github.lionboard.model.Comment;
 import com.github.lionboard.model.Post;
 import com.github.lionboard.model.PostFile;
+import com.github.lionboard.model.User;
 
 import java.util.List;
 
@@ -35,4 +36,10 @@ public interface LionBoardService {
     void changeCmtStatusByCmtId(int cmtId, String cmtStatus);
 
     Comment getCommentByCmtId(int cmtId);
+
+    void deleteAllUsers();
+
+    void addUser(User user);
+
+    User getUser(int userId);
 }

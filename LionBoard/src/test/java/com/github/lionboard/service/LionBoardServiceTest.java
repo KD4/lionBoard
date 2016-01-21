@@ -1,9 +1,11 @@
 package com.github.lionboard.service;
 
+import com.github.lionboard.error.InvalidCmtException;
 import com.github.lionboard.error.InvalidPostException;
 import com.github.lionboard.model.Comment;
 import com.github.lionboard.model.Post;
 import com.github.lionboard.model.PostFile;
+import com.github.lionboard.model.User;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,6 +38,10 @@ public class LionBoardServiceTest {
     Comment firstCmt;
     Comment secondCmt;
 
+
+    User firstUser;
+    User secondUser;
+
     @Before
     public void setup(){
         firstPost = new Post();
@@ -52,14 +58,32 @@ public class LionBoardServiceTest {
         secondPost.setContents("world ?");
         secondPost.setDepth(0);
         secondPost.setExistFiles("F");
+
         firstCmt = new Comment();
+        secondCmt = new Comment();
         firstCmt.setUserId(101);
         firstCmt.setContents("first Comment");
         firstCmt.setDepth(0);
-        secondCmt = new Comment();
         secondCmt.setUserId(102);
         secondCmt.setContents("second Comment");
         secondCmt.setDepth(0);
+
+        firstUser = new User();
+        secondUser = new User();
+        firstUser.setIdentity("token");
+        firstUser.setEmail("kangddanddan@gmail.com");
+        firstUser.setName("강관우");
+        firstUser.setProfileUrl("prororororofile");
+        firstUser.setPassword("pwpw");
+        firstUser.setIsOAuth("F");
+        firstUser.setRoles("U");
+        secondUser.setIdentity("token2");
+        secondUser.setEmail("kangddanddan2@gmail.com");
+        secondUser.setName("강관우2");
+        secondUser.setProfileUrl("prororororofile2");
+        secondUser.setPassword("pwpw2");
+        secondUser.setIsOAuth("F");
+        secondUser.setRoles("U");
         lionBoardService.deleteAllPosts();
         lionBoardService.deleteAllComments();
     }
@@ -171,7 +195,7 @@ public class LionBoardServiceTest {
         Assert.assertEquals(afterComments.size(), 0);
     }
 
-    @Test(expected = InvalidPostException.class)
+    @Test(expected = InvalidCmtException.class)
     public void changeCmtStatus(){
 //      Before change
         lionBoardService.addPost(firstPost);
@@ -189,6 +213,14 @@ public class LionBoardServiceTest {
     }
 
     //ToDo: User service Test
+
+    @Test
+    public void addUserWithoutOAuth(){
+        lionBoardService.deleteAllUsers();
+        lionBoardService.addUser(firstUser);
+        User insertedUser = lionBoardService.getUser(firstUser.getId());
+        Assert.assertThat(insertedUser.getPassword(),is(firstUser.getPassword()));
+    }
 
 
 

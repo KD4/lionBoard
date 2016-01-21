@@ -23,8 +23,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@WebAppConfiguration
-@ContextConfiguration("classpath:/config/test/mvc-dispatcher-servlet-test.xml")
+@ContextConfiguration("file:src/test/resources/config/mem-context.xml")
 public class IndexControllerTest {
     private MockMvc mockMvc;
 

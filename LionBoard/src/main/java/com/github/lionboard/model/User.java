@@ -1,5 +1,7 @@
 package com.github.lionboard.model;
 
+import org.joda.time.DateTime;
+
 /**
  * Created by lion.k on 16. 1. 17..
  */
@@ -11,21 +13,23 @@ public class User {
     private String name;
     private String password;
     private String profileUrl;
-    private int userStateCode;
-    private int powerCode;
+    private String userStatus;
+    private String roles;
+    private DateTime registeredAt;
 
     public User(){
-
     }
-    public User(String identity, String email,String name, String password, String profileUrl, int userStateCode, int powerCode){
+
+    public User(String identity, String email, String name, String password, String profileUrl, String userStatus, String roles){
         this.identity = identity;
         this.email = email;
         this.name = name;
         this.password = password;
         this.profileUrl = profileUrl;
-        this.userStateCode = userStateCode;
-        this.powerCode = powerCode;
+        this.userStatus = userStatus;
+        this.roles = roles;
     }
+
     public int getId() {
         return id;
     }
@@ -40,6 +44,14 @@ public class User {
 
     public void setIdentity(String identity) {
         this.identity = identity;
+    }
+
+    public int getIsOAuth() {
+        return isOAuth;
+    }
+
+    public void setIsOAuth(int isOAuth) {
+        this.isOAuth = isOAuth;
     }
 
     public String getEmail() {
@@ -74,27 +86,27 @@ public class User {
         this.profileUrl = profileUrl;
     }
 
-    public int getUserStateCode() {
-        return userStateCode;
+    public String getUserStatus() {
+        return userStatus;
     }
 
-    public void setUserStateCode(int userStateCode) {
-        this.userStateCode = userStateCode;
+    public void setUserStatus(String userStatus) {
+        this.userStatus = userStatus;
     }
 
-    public int getPowerCode() {
-        return powerCode;
+    public String getRoles() {
+        return roles;
     }
 
-    public void setPowerCode(int powerCode) {
-        this.powerCode = powerCode;
+    public void setRoles(String roles) {
+        this.roles = roles;
     }
 
-    public int getIsOAuth() {
-        return isOAuth;
+    public DateTime getRegisteredAt() {
+        return registeredAt;
     }
 
-    public void setIsOAuth(int isOAuth) {
-        this.isOAuth = isOAuth;
+    public void setRegisteredAt(DateTime registeredAt) {
+        this.registeredAt = registeredAt;
     }
 }

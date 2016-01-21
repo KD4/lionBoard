@@ -33,12 +33,12 @@
 
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource" />
-        <property name="mapperLocations" value="classpath:config/mybatis/**/*.xml" />
+        <property name="mapperLocations" value="classpath:config/mappers/**/*.xml" />
         <property name="typeAliasesPackage" value="com.github.lionboard.model"/>
     </bean>
 
     <bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.github.lionboard.repository.mybatis" />
+        <property name="basePackage" value="com.github.lionboard.repository" />
         <property name="annotationClass" value="org.springframework.stereotype.Repository" />
     </bean>
 

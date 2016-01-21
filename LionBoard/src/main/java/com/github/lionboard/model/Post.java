@@ -3,12 +3,12 @@ package com.github.lionboard.model;
 import org.joda.time.DateTime;
 
 /**
- * Created by daum on 16. 1. 20..
+ * Created by lion.k on 16. 1. 20..
  */
 public class Post {
-    private int id;
+    private int postId;
     private int userId;
-    private int userName;
+    private String userName;
     private String title;
     private String contents;
     private int depth;
@@ -17,17 +17,10 @@ public class Post {
     private int likeCount;
     private int hateCount;
     private int cmtCount;
-    private boolean existFiles;
+    private String existFiles;
     private DateTime createAt;
-    private int postStatus;
+    private String postStatus;
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public int getUserId() {
         return userId;
@@ -35,14 +28,6 @@ public class Post {
 
     public void setUserId(int userId) {
         this.userId = userId;
-    }
-
-    public int getUserName() {
-        return userName;
-    }
-
-    public void setUserName(int userName) {
-        this.userName = userName;
     }
 
     public String getTitle() {
@@ -101,13 +86,6 @@ public class Post {
         this.cmtCount = cmtCount;
     }
 
-    public boolean isExistFiles() {
-        return existFiles;
-    }
-
-    public void setExistFiles(boolean existFiles) {
-        this.existFiles = existFiles;
-    }
 
     public DateTime getCreateAt() {
         return createAt;
@@ -125,11 +103,37 @@ public class Post {
         this.depth = depth;
     }
 
-    public int getPostStatus() {
+
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getPostStatus() {
         return postStatus;
     }
 
-    public void setPostStatus(int postStatus) {
+    public void setPostStatus(String postStatus) {
         this.postStatus = postStatus;
+    }
+
+    public int getPostId() {
+        return postId;
+    }
+
+    public void setPostId(int postId) {
+        this.postId = postId;
+    }
+
+    public String getExistFiles() {
+        return existFiles;
+    }
+
+    public void setExistFiles(String existFiles) {
+        this.existFiles = existFiles;
     }
 }

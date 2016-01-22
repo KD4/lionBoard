@@ -33,9 +33,14 @@ public class LionBoardServiceTest {
 
     Post firstPost;
     Post secondPost;
+    Post replyOfFirstPost;
+    Post replyOfSecondPost;
+    Post replyOfSecondReply;
 
     Comment firstCmt;
     Comment secondCmt;
+    Comment replyOfFirstCmt;
+    Comment replyOfSecondCmt;
 
 
     User firstUser;
@@ -43,50 +48,11 @@ public class LionBoardServiceTest {
 
     @Before
     public void setup(){
-        firstPost = new Post();
-        secondPost = new Post();
-        firstPost.setUserId(101);
-        firstPost.setUserName("KD4");
-        firstPost.setTitle("first post");
-        firstPost.setContents("hello ?");
-        firstPost.setDepth(0);
-        firstPost.setExistFiles("F");
-        secondPost.setUserId(102);
-        secondPost.setUserName("KD5");
-        secondPost.setTitle("second post");
-        secondPost.setContents("world ?");
-        secondPost.setDepth(0);
-        secondPost.setExistFiles("F");
-
-        firstCmt = new Comment();
-
-        secondCmt = new Comment();
-        firstCmt.setUserId(101);
-        firstCmt.setContents("first Comment");
-        firstCmt.setDepth(0);
-        secondCmt.setUserId(102);
-        secondCmt.setContents("second Comment");
-        secondCmt.setDepth(0);
-
-        firstUser = new User();
-        secondUser = new User();
-        firstUser.setIdentity("token");
-        firstUser.setEmail("kangddanddan@gmail.com");
-        firstUser.setName("강관우");
-        firstUser.setProfileUrl("prororororofile");
-        firstUser.setPassword("pwpw");
-        firstUser.setIsOAuth("F");
-        firstUser.setRoles("U");
-        secondUser.setIdentity("token2");
-        secondUser.setEmail("kangddanddan2@gmail.com");
-        secondUser.setName("강관우2");
-        secondUser.setProfileUrl("prororororofile2");
-        secondUser.setPassword("pwpw2");
-        secondUser.setIsOAuth("F");
-        secondUser.setRoles("U");
-        lionBoardService.deleteAllPosts();
-        lionBoardService.deleteAllComments();
+        setFixturePosts();
+        setFixtureComments();
+        setFixtureUsers();
     }
+
 
     //ToDo: Post service Test
 
@@ -112,6 +78,7 @@ public class LionBoardServiceTest {
         Assert.assertEquals(beforePosts.size(), 0);
         lionBoardService.addPost(firstPost);
         lionBoardService.addPost(secondPost);
+
         List<Post> afterPosts = lionBoardService.getPosts(0, 20);
         Assert.assertEquals(afterPosts.size(), 2);
 
@@ -119,6 +86,38 @@ public class LionBoardServiceTest {
         Assert.assertEquals(afterPosts.get(0).getPostNum(), 2000);
         Assert.assertEquals(afterPosts.get(1).getPostNum(), 1000);
     }
+
+    @Test
+    public void addReplyPost() {
+        List<Post> beforePosts = lionBoardService.getPosts(0, 20);
+        Assert.assertEquals(beforePosts.size(), 0);
+        lionBoardService.addPost(firstPost);
+        lionBoardService.addPost(secondPost);
+        lionBoardService.addPost(replyOfFirstPost);
+        lionBoardService.addPost(replyOfSecondPost);
+        lionBoardService.addPost(replyOfSecondReply);
+
+        List<Post> afterPosts = lionBoardService.getPosts(0, 20);
+        Assert.assertEquals(afterPosts.size(), 5);
+
+        
+//      post 2
+//       -reply2
+//         reply2-1
+//       -reply1
+//      post1
+        Assert.assertEquals(afterPosts.get(0).getPostNum(), 2000);
+        Assert.assertThat(afterPosts.get(0).getTitle(), is("second post"));
+        Assert.assertEquals(afterPosts.get(1).getPostNum(), 1999);
+        Assert.assertThat(afterPosts.get(1).getTitle(), is("reply2 of second post"));
+        Assert.assertEquals(afterPosts.get(2).getPostNum(), 1998);
+        Assert.assertThat(afterPosts.get(2).getTitle(), is("reply1 of reply2"));
+        Assert.assertEquals(afterPosts.get(3).getPostNum(), 1997);
+        Assert.assertThat(afterPosts.get(3).getTitle(), is("reply1 of second post"));
+        Assert.assertEquals(afterPosts.get(4).getPostNum(), 1000);
+        Assert.assertThat(afterPosts.get(4).getTitle(),is("first post"));
+    }
+
 
 
     @Test
@@ -179,13 +178,49 @@ public class LionBoardServiceTest {
     public void addComment(){
         lionBoardService.addPost(firstPost);
         firstCmt.setPostId(firstPost.getPostId());
+        secondCmt.setPostId(firstPost.getPostId());
+
         lionBoardService.addComment(firstCmt);
+        lionBoardService.addComment(secondCmt);
+
+
         List<Comment> comments = lionBoardService.getCommentsByPostId(firstPost.getPostId());
-        Assert.assertThat(comments.get(0).getContents(), is(firstCmt.getContents()));
+        //      get list order by DESC.
+        Assert.assertEquals(comments.get(0).getCmtNum(), 2000);
+        Assert.assertThat(comments.get(0).getContents(), is("second comment"));
+
         Post insertedPost = lionBoardService.getPostByPostId(firstPost.getPostId());
-        Assert.assertThat(insertedPost.getCmtCount(), is(1));
+        Assert.assertThat(insertedPost.getCmtCount(), is(2));
     }
 
+
+    @Test
+    public void addReplyComment(){
+        lionBoardService.addPost(firstPost);
+        firstCmt.setPostId(firstPost.getPostId());
+        secondCmt.setPostId(firstPost.getPostId());
+        replyOfFirstCmt.setPostId(firstPost.getPostId());
+        replyOfSecondCmt.setPostId(firstPost.getPostId());
+
+        lionBoardService.addComment(firstCmt);
+        lionBoardService.addComment(secondCmt);
+        lionBoardService.addComment(replyOfFirstCmt);
+        lionBoardService.addComment(replyOfSecondCmt);
+
+        List<Comment> comments = lionBoardService.getCommentsByPostId(firstPost.getPostId());
+        //      get list order by DESC.
+        Assert.assertEquals(comments.get(0).getCmtNum(), 2000);
+        Assert.assertThat(comments.get(0).getContents(), is("second comment"));
+        Assert.assertEquals(comments.get(1).getCmtNum(), 1999);
+        Assert.assertThat(comments.get(1).getContents(), is("reply of second cmt"));
+        Assert.assertEquals(comments.get(2).getCmtNum(), 1000);
+        Assert.assertThat(comments.get(2).getContents(), is("first comment"));
+        Assert.assertEquals(comments.get(3).getCmtNum(), 999);
+        Assert.assertThat(comments.get(3).getContents(), is("reply of first cmt"));
+
+        Post insertedPost = lionBoardService.getPostByPostId(firstPost.getPostId());
+        Assert.assertThat(insertedPost.getCmtCount(), is(4));
+    }
     @Test
     public void deleteAllComments(){
         lionBoardService.deleteAllComments();
@@ -226,6 +261,97 @@ public class LionBoardServiceTest {
         Assert.assertThat(insertedUser.getPassword(),is(firstUser.getPassword()));
     }
 
+
+
+
+//=========================Setup Fixture================================
+
+    private void setFixtureUsers() {
+        firstUser = new User();
+        secondUser = new User();
+        firstUser.setIdentity("token");
+        firstUser.setEmail("kangddanddan@gmail.com");
+        firstUser.setName("강관우");
+        firstUser.setProfileUrl("prororororofile");
+        firstUser.setPassword("pwpw");
+        firstUser.setIsOAuth("F");
+        firstUser.setRoles("U");
+        secondUser.setIdentity("token2");
+        secondUser.setEmail("kangddanddan2@gmail.com");
+        secondUser.setName("강관우2");
+        secondUser.setProfileUrl("prororororofile2");
+        secondUser.setPassword("pwpw2");
+        secondUser.setIsOAuth("F");
+        secondUser.setRoles("U");
+        lionBoardService.deleteAllPosts();
+        lionBoardService.deleteAllComments();
+    }
+
+    private void setFixtureComments() {
+        firstCmt = new Comment();
+        secondCmt = new Comment();
+        replyOfFirstCmt = new Comment();
+        replyOfSecondCmt = new Comment();
+        firstCmt.setUserId(101);
+        firstCmt.setContents("first comment");
+        firstCmt.setDepth(0);
+        firstCmt.setCmtNum(0);
+        secondCmt.setUserId(102);
+        secondCmt.setContents("second comment");
+        secondCmt.setDepth(0);
+        secondCmt.setCmtNum(0);
+        replyOfFirstCmt.setUserId(101);
+        replyOfFirstCmt.setContents("reply of first cmt");
+        replyOfFirstCmt.setDepth(1);
+        replyOfFirstCmt.setCmtNum(1000);
+        replyOfSecondCmt.setUserId(101);
+        replyOfSecondCmt.setContents("reply of second cmt");
+        replyOfSecondCmt.setDepth(1);
+        replyOfSecondCmt.setCmtNum(2000);
+    }
+
+    private void setFixturePosts() {
+        firstPost = new Post();
+        secondPost = new Post();
+        replyOfFirstPost = new Post();
+        replyOfSecondPost = new Post();
+        replyOfSecondReply = new Post();
+        firstPost.setUserId(101);
+        firstPost.setUserName("KD4");
+        firstPost.setTitle("first post");
+        firstPost.setContents("hello ?");
+        firstPost.setDepth(0);
+        firstPost.setExistFiles("F");
+        firstPost.setPostNum(0);
+        secondPost.setUserId(102);
+        secondPost.setUserName("KD5");
+        secondPost.setTitle("second post");
+        secondPost.setContents("world ?");
+        secondPost.setDepth(0);
+        secondPost.setExistFiles("F");
+        secondPost.setPostNum(0);
+        replyOfFirstPost.setUserId(103);
+        replyOfFirstPost.setUserName("new?");
+        replyOfFirstPost.setTitle("reply1 of second post");
+        replyOfFirstPost.setContents("reply ?");
+        replyOfFirstPost.setDepth(1);
+        replyOfFirstPost.setExistFiles("F");
+        replyOfFirstPost.setPostNum(2000);
+        replyOfSecondPost.setUserId(104);
+        replyOfSecondPost.setUserName("new!");
+        replyOfSecondPost.setTitle("reply2 of second post");
+        replyOfSecondPost.setContents("reply ?");
+        replyOfSecondPost.setDepth(1);
+        replyOfSecondPost.setExistFiles("F");
+        replyOfSecondPost.setPostNum(2000);
+        replyOfSecondReply.setUserId(104);
+        replyOfSecondReply.setUserName("new!");
+        replyOfSecondReply.setTitle("reply1 of reply2");
+        replyOfSecondReply.setContents("reply ?");
+        replyOfSecondReply.setDepth(2);
+        replyOfSecondReply.setExistFiles("F");
+        replyOfSecondReply.setPostNum(1999);
+    }
 
 
 

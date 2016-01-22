@@ -10,7 +10,7 @@ import java.sql.SQLException;
 /**
  * Created by daum on 16. 1. 22..
  */
-public class PostTriggers extends TriggerAdapter {
+public class CmtTriggers extends TriggerAdapter {
 
 
     @Override
@@ -20,20 +20,21 @@ public class PostTriggers extends TriggerAdapter {
         ResultSet rs = null;
         newRow.next();
         try {
-            int postNum = 1000;
-            int parentPostNum = newRow.getInt("postNum");
+            int cmtNum = 1000;
+            int parentCmtNum = newRow.getInt("cmtNum");
             // if parentCmtNum is 0, this Row is parent Row.
-            if (parentPostNum < 1) {
-                ps = connection.prepareStatement("SELECT * FROM POST_TB WHERE depth = 0 ORDER BY postNum DESC LIMIT 1");
+            if (parentCmtNum < 1) {
+                ps = connection.prepareStatement("SELECT * FROM CMT_TB WHERE depth = 0 AND postId = ? ORDER BY cmtNum DESC LIMIT 1");
+                ps.setInt(1,newRow.getInt("postId"));
                 rs = ps.executeQuery();
                 if (rs.next()) {
-                    postNum = rs.getInt("postNum") + 1000;
-                    newRow.updateInt("postNum", postNum);
+                    cmtNum = rs.getInt("cmtNum") + 1000;
+                    newRow.updateInt("cmtNum",cmtNum);
                 } else {
-                    newRow.updateInt("postNum",postNum);
+                    newRow.updateInt("cmtNum",cmtNum);
                 }
             } else {
-                newRow.updateInt("postNum",parentPostNum-1);
+                newRow.updateInt("cmtNum",parentCmtNum-1);
             }
             connection.commit();
         }catch (Exception e) {

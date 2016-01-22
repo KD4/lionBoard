@@ -88,6 +88,9 @@ CREATE TABLE CMT_STATUS_TB (
 CREATE TRIGGER set_postNum BEFORE INSERT ON POST_TB
   FOR EACH ROW CALL "com.github.lionboard.triggers.PostTriggers";
 
+CREATE TRIGGER set_cmtNum BEFORE INSERT ON CMT_TB
+FOR EACH ROW CALL "com.github.lionboard.triggers.CmtTriggers";
+
 --
 --
 --

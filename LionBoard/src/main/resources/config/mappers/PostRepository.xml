@@ -24,7 +24,7 @@
     </select>
 
     <insert id="insertPost" parameterType="com.github.lionboard.model.Post">
-        INSERT INTO POST_TB(userId,title,contents,existFiles,depth) VALUES (#{userId},#{title},#{contents},#{existFiles},#{depth});
+        INSERT INTO POST_TB(userId,title,contents,existFiles,depth,postNum) VALUES (#{userId},#{title},#{contents},#{existFiles},#{depth},#{postNum});
         <selectKey keyProperty="postId" resultType="Integer" order="AFTER">
             SELECT LAST_INSERT_ID()
         </selectKey>
@@ -44,6 +44,10 @@
 
     <update id="addCmtCount">
         UPDATE POST_TB SET cmtCount = cmtCount+1 WHERE postId=#{postId}
+    </update>
+
+    <update id="updatePostNumForInsertRow" parameterType="java.util.Map">
+        UPDATE POST_TB set postNum = postNum - 1 WHERE postNum BETWEEN #{lowerNum} AND #{upperNum}
     </update>
 </mapper>
 

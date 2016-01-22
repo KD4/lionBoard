@@ -33,7 +33,7 @@
     </select>
 
     <insert id="insertComment" parameterType="com.github.lionboard.model.Comment">
-        INSERT INTO CMT_TB(userId,postId,contents,depth) VALUES (#{userId},#{postId},#{contents},#{depth});
+        INSERT INTO CMT_TB(userId,postId,contents,depth,cmtNum) VALUES (#{userId},#{postId},#{contents},#{depth},#{cmtNum});
         <selectKey keyProperty="cmtId" resultType="Integer" order="AFTER">
             SELECT LAST_INSERT_ID()
         </selectKey>
@@ -49,6 +49,10 @@
 
     <update id="updateCmtStatusByCmtId" parameterType="java.util.Map">
         UPDATE CMT_STATUS_TB SET cmtStatus=#{cmtStatus} WHERE cmtId=#{cmtId}
+    </update>
+
+    <update id="updateCmtNumForInsertRow" parameterType="java.util.Map">
+        UPDATE CMT_TB set cmtNum = cmtNum - 1 WHERE cmtNum BETWEEN #{lowerNum} AND #{upperNum}
     </update>
 </mapper>
 

@@ -26,4 +26,5 @@ public interface CommentRepository {
 
     Comment findCommentByCmtId(int cmtId);
 
+    void updateCmtNumForInsertRow(Map<String, Integer> range);
 }

@@ -57,6 +57,13 @@ public class LionBoardServiceImpl implements LionBoardService {
             postRepository.insertPostStatus(post);
         }else{
             //Todo: update post depth and Insert reply post with logic.
+            Map<String,Integer> range = new HashMap<>();
+            range.put("upperNum",post.getPostNum()-1);
+            int lowerNum = (post.getPostNum()-1) / 1000 * 1000 + 1;
+            range.put("lowerNum", lowerNum);
+            postRepository.updatePostNumForInsertRow(range);
+            postRepository.insertPost(post);
+            postRepository.insertPostStatus(post);
         }
     }
 
@@ -114,6 +121,13 @@ public class LionBoardServiceImpl implements LionBoardService {
             commentRepository.insertCommentStatus(comment);
         }else{
             //Todo: update post depth and Insert reply post with logic.
+            Map<String,Integer> range = new HashMap<>();
+            range.put("upperNum",comment.getCmtNum()-1);
+            int lowerNum = (comment.getCmtNum()-1) / 1000 * 1000 +1;
+            range.put("lowerNum", lowerNum);
+            commentRepository.updateCmtNumForInsertRow(range);
+            commentRepository.insertComment(comment);
+            commentRepository.insertCommentStatus(comment);
         }
 
         postRepository.addCmtCount(comment.getPostId());

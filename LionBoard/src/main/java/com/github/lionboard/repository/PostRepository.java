@@ -24,4 +24,6 @@ public interface PostRepository {
     void insertPostStatus(Post post);
 
     void addCmtCount(int postId);
+
+    void updatePostNumForInsertRow(Map<String, Integer> range);
 }

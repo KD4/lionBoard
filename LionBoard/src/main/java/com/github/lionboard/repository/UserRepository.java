@@ -14,4 +14,6 @@ public interface UserRepository {
     void insertUser(User user);
 
     User findUserByUserId(int userId);
+
+    User findUserByIdentity(String identity);
 }

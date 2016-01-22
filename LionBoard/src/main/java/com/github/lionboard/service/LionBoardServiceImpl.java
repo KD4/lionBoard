@@ -170,12 +170,21 @@ public class LionBoardServiceImpl implements LionBoardService {
     }
 
     @Override
-    public User getUser(int userId) {
+    public User getUserByUserId(int userId) {
         User selectedUser = userRepository.findUserByUserId(userId);
         if(selectedUser == null){
             throw new InvalidUserException();
         }
         return selectedUser;
 
+    }
+
+    @Override
+    public User getUserByIdentity(String identity) {
+        User selectedUser = userRepository.findUserByIdentity(identity);
+        if(selectedUser == null){
+            throw new InvalidUserException();
+        }
+        return selectedUser;
     }
 }

@@ -21,6 +21,12 @@
         WHERE id = #{userId} AND userStatus = 'S'
     </select>
 
+    <select id="findUserByIdentity" parameterType="String" resultType="com.github.lionboard.model.User">
+        SELECT *
+        FROM USER_TB
+        WHERE identity = #{identity} AND userStatus = 'S'
+    </select>
+
     <insert id="insertUser" parameterType="com.github.lionboard.model.User">
         INSERT INTO USER_TB(identity,isOAuth,roles,name,email,profileUrl,password) VALUES (#{identity},#{isOAuth},#{roles},#{name},#{email},#{profileUrl},#{password});
         <selectKey keyProperty="id" resultType="Integer" order="AFTER">

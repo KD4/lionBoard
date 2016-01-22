@@ -41,5 +41,7 @@ public interface LionBoardService {
 
     void addUser(User user);
 
-    User getUser(int userId);
+    User getUserByUserId(int userId);
+
+    User getUserByIdentity(String identity);
 }

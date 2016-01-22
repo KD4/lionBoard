@@ -2,6 +2,7 @@ package com.github.lionboard.service;
 
 import com.github.lionboard.error.InvalidCmtException;
 import com.github.lionboard.error.InvalidPostException;
+import com.github.lionboard.error.InvalidUserException;
 import com.github.lionboard.model.Comment;
 import com.github.lionboard.model.Post;
 import com.github.lionboard.model.PostFile;
@@ -58,7 +59,7 @@ public class LionBoardServiceTest {
 
     @Test
     public void getPosts(){
-        List<Post> posts = lionBoardService.getPosts(0,20);
+        List<Post> posts = lionBoardService.getPosts(0, 20);
         Assert.assertNotNull(posts);
     }
 
@@ -66,7 +67,7 @@ public class LionBoardServiceTest {
     public void getPostById() {
         lionBoardService.addPost(firstPost);
         Post insertedPost = lionBoardService.getPostByPostId(firstPost.getPostId());
-        Assert.assertThat(insertedPost.getTitle(),is(firstPost.getTitle()));
+        Assert.assertThat(insertedPost.getTitle(), is(firstPost.getTitle()));
         Assert.assertNotEquals(insertedPost.getTitle(), secondPost.getTitle());
         Post invalidPost = lionBoardService.getPostByPostId(-10);
         Assert.assertNull(invalidPost);
@@ -100,7 +101,7 @@ public class LionBoardServiceTest {
         List<Post> afterPosts = lionBoardService.getPosts(0, 20);
         Assert.assertEquals(afterPosts.size(), 5);
 
-        
+
 //      post 2
 //       -reply2
 //         reply2-1
@@ -257,8 +258,26 @@ public class LionBoardServiceTest {
     public void addUserWithoutOAuth(){
         lionBoardService.deleteAllUsers();
         lionBoardService.addUser(firstUser);
-        User insertedUser = lionBoardService.getUser(firstUser.getId());
+        User insertedUser = lionBoardService.getUserByUserId(firstUser.getId());
         Assert.assertThat(insertedUser.getPassword(),is(firstUser.getPassword()));
+    }
+
+    @Test(expected = InvalidUserException.class)
+    public void getUserByUserId(){
+        lionBoardService.deleteAllUsers();
+        lionBoardService.addUser(firstUser);
+        User insertedUser = lionBoardService.getUserByUserId(firstUser.getId());
+        Assert.assertThat(insertedUser.getPassword(), is(firstUser.getPassword()));
+        User invalidUser = lionBoardService.getUserByUserId(0);
+    }
+
+    @Test(expected = InvalidUserException.class)
+    public void getUserByIdentity(){
+        lionBoardService.deleteAllUsers();
+        lionBoardService.addUser(firstUser);
+        User insertedUser = lionBoardService.getUserByIdentity(firstUser.getIdentity());
+        Assert.assertThat(insertedUser.getPassword(), is(firstUser.getPassword()));
+        User invalidUser = lionBoardService.getUserByIdentity("none");
     }
 
 

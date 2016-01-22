@@ -56,7 +56,6 @@ public class LionBoardServiceImpl implements LionBoardService {
             //ToDo: Thinking - Status table 작업은 트리거로 넣는게 좋을까 ?
             postRepository.insertPostStatus(post);
         }else{
-            //Todo: update post depth and Insert reply post with logic.
             Map<String,Integer> range = new HashMap<>();
             range.put("upperNum",post.getPostNum()-1);
             int lowerNum = (post.getPostNum()-1) / 1000 * 1000 + 1;
@@ -120,7 +119,6 @@ public class LionBoardServiceImpl implements LionBoardService {
             //ToDo: Thinking - Status table 작업은 트리거로 넣는게 좋을까 ?
             commentRepository.insertCommentStatus(comment);
         }else{
-            //Todo: update post depth and Insert reply post with logic.
             Map<String,Integer> range = new HashMap<>();
             range.put("upperNum",comment.getCmtNum()-1);
             int lowerNum = (comment.getCmtNum()-1) / 1000 * 1000 +1;
@@ -186,5 +184,130 @@ public class LionBoardServiceImpl implements LionBoardService {
             throw new InvalidUserException();
         }
         return selectedUser;
+    }
+
+    @Override
+    public int getPostLike(int postId) {
+        Integer likeCount = postRepository.getLikeCount(postId);
+        if(likeCount == null){
+            throw new InvalidPostException();
+        }
+        return likeCount;
+    }
+
+    @Override
+    public void addPostLike(int postId) {
+        int rows = postRepository.addLikeCount(postId);
+        if(rows == 0){
+            throw new InvalidPostException();
+        }
+    }
+
+    @Override
+    public void subtractPostLike(int postId) {
+        int rows = postRepository.subtractLikeCount(postId);
+        if(rows == 0){
+            throw new InvalidPostException();
+        }
+    }
+
+    @Override
+    public int getPostHate(int postId) {
+        Integer hateCount = postRepository.getHateCount(postId);
+        if(hateCount == null){
+            throw new InvalidPostException();
+        }
+        return hateCount;
+    }
+
+    @Override
+    public void addPostHate(int postId) {
+        int rows = postRepository.addHateCount(postId);
+        if(rows == 0){
+            throw new InvalidPostException();
+        }
+    }
+
+    @Override
+    public void subtractPostHate(int postId) {
+        int rows = postRepository.subtractHateCount(postId);
+        if(rows == 0){
+            throw new InvalidPostException();
+        }
+    }
+
+    @Override
+    public int getPostView(int postId) {
+        Integer hateCount = postRepository.getViewCount(postId);
+        if(hateCount == null){
+            throw new InvalidPostException();
+        }
+        return hateCount;
+    }
+
+    @Override
+    public void addPostView(int postId) {
+        int rows = postRepository.addViewCount(postId);
+        if(rows == 0){
+            throw new InvalidPostException();
+        }
+    }
+
+    @Override
+    public void subtractPostView(int postId) {
+        int rows = postRepository.subtractViewCount(postId);
+        if(rows == 0){
+            throw new InvalidPostException();
+        }
+    }
+
+    @Override
+    public int getCmtLike(int cmtId) {
+        Integer likeCount = commentRepository.getLikeCount(cmtId);
+        if(likeCount == null){
+            throw new InvalidCmtException();
+        }
+        return likeCount;
+    }
+
+    @Override
+    public void addCmtLike(int cmtId) {
+        int rows = commentRepository.addLikeCount(cmtId);
+        if(rows == 0){
+            throw new InvalidCmtException();
+        }
+    }
+
+    @Override
+    public void subtractCmtLike(int cmtId) {
+        int rows = commentRepository.subtractLikeCount(cmtId);
+        if(rows == 0){
+            throw new InvalidCmtException();
+        }
+    }
+
+    @Override
+    public int getCmtHate(int cmtId) {
+        Integer likeCount = commentRepository.getHateCount(cmtId);
+        if(likeCount == null){
+            throw new InvalidCmtException();
+        }
+        return likeCount;
+    }
+
+    @Override
+    public void addCmtHate(int cmtId) {
+        int rows = commentRepository.addHateCount(cmtId);
+        if(rows == 0){
+            throw new InvalidCmtException();
+        }
+    }
+
+    @Override
+    public void subtractCmtHate(int cmtId) {
+        int rows = commentRepository.subtractHateCount(cmtId);
+        if(rows == 0){
+            throw new InvalidCmtException();
+        }
     }
 }

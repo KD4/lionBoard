@@ -49,5 +49,43 @@
     <update id="updatePostNumForInsertRow" parameterType="java.util.Map">
         UPDATE POST_TB set postNum = postNum - 1 WHERE postNum BETWEEN #{lowerNum} AND #{upperNum}
     </update>
+
+    <select id="getLikeCount" resultType="java.lang.Integer">
+        SELECT likeCount FROM POST_TB WHERE postId = #{postId}
+    </select>
+
+    <update id="addLikeCount">
+        UPDATE POST_TB SET likeCount = likeCount + 1 WHERE postId = #{postId}
+    </update>
+
+    <update id="subtractLikeCount">
+        UPDATE POST_TB SET likeCount = likeCount - 1 WHERE postId = #{postId}
+    </update>
+
+    <select id="getHateCount" resultType="java.lang.Integer">
+        SELECT hateCount FROM POST_TB WHERE postId = #{postId}
+    </select>
+
+    <update id="addHateCount">
+        UPDATE POST_TB SET hateCount = hateCount + 1 WHERE postId = #{postId}
+    </update>
+
+    <update id="subtractHateCount">
+        UPDATE POST_TB SET hateCount = hateCount - 1 WHERE postId = #{postId}
+    </update>
+
+    <select id="getViewCount" resultType="java.lang.Integer">
+        SELECT viewCount FROM POST_TB WHERE postId = #{postId}
+    </select>
+
+    <update id="addViewCount">
+        UPDATE POST_TB SET viewCount = viewCount + 1 WHERE postId = #{postId}
+    </update>
+
+    <update id="subtractViewCount">
+        UPDATE POST_TB SET viewCount = viewCount - 1 WHERE postId = #{postId}
+    </update>
+
+
 </mapper>
 

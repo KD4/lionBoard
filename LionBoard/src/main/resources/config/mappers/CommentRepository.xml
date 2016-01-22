@@ -54,5 +54,30 @@
     <update id="updateCmtNumForInsertRow" parameterType="java.util.Map">
         UPDATE CMT_TB set cmtNum = cmtNum - 1 WHERE cmtNum BETWEEN #{lowerNum} AND #{upperNum}
     </update>
+
+    <select id="getLikeCount" resultType="java.lang.Integer">
+        SELECT likeCount FROM CMT_TB WHERE cmtId=#{cmtId}
+    </select>
+
+    <update id="addLikeCount">
+        UPDATE CMT_TB SET likeCount = likeCount + 1 WHERE cmtId = #{cmtId}
+    </update>
+
+    <update id="subtractLikeCount">
+        UPDATE CMT_TB SET likeCount = likeCount - 1 WHERE cmtId = #{cmtId}
+    </update>
+
+    <select id="getHateCount" resultType="java.lang.Integer">
+        SELECT hateCount FROM CMT_TB WHERE cmtId=#{cmtId}
+    </select>
+
+    <update id="addHateCount">
+        UPDATE CMT_TB SET hateCount = hateCount + 1 WHERE cmtId = #{cmtId}
+    </update>
+
+    <update id="subtractHateCount">
+        UPDATE CMT_TB SET hateCount = hateCount - 1 WHERE cmtId = #{cmtId}
+    </update>
+
 </mapper>
 

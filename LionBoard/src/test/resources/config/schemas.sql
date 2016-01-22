@@ -14,6 +14,7 @@ CREATE TABLE POST_TB (
   cmtCount int(10) unsigned NOT NULL DEFAULT '0',
   likeCount int(10) unsigned NOT NULL DEFAULT '0',
   hateCount int(10) unsigned NOT NULL DEFAULT '0',
+  viewCount int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (postId)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

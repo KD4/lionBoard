@@ -26,4 +26,25 @@ public interface PostRepository {
     void addCmtCount(int postId);
 
     void updatePostNumForInsertRow(Map<String, Integer> range);
+
+    Integer getLikeCount(int postId);
+
+    int addLikeCount(int postId);
+
+    int subtractLikeCount(int postId);
+
+
+    Integer getHateCount(int postId);
+
+    int addHateCount(int postId);
+
+    int subtractHateCount(int postId);
+
+
+    Integer getViewCount(int postId);
+
+    int addViewCount(int postId);
+
+    int subtractViewCount(int postId);
+
 }

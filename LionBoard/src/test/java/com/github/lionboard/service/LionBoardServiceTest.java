@@ -7,6 +7,7 @@ import com.github.lionboard.model.Comment;
 import com.github.lionboard.model.Post;
 import com.github.lionboard.model.PostFile;
 import com.github.lionboard.model.User;
+import com.sun.source.tree.AssertTree;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -163,7 +164,66 @@ public class LionBoardServiceTest {
 //      after change
         Post afterPost1 = lionBoardService.getPostByPostId(insertedPost1.getPostId());
         Post afterPost2 = lionBoardService.getPostByPostId(insertedPost2.getPostId());
+    }
 
+    @Test(expected = InvalidPostException.class)
+    public void upAndDownLikeOnPost(){
+        lionBoardService.addPost(firstPost);
+        lionBoardService.addPost(secondPost);
+        Assert.assertThat(lionBoardService.getPostLike(firstPost.getPostId()), is(0));
+        Assert.assertThat(lionBoardService.getPostLike(secondPost.getPostId()), is(0));
+        lionBoardService.addPostLike(firstPost.getPostId());
+        lionBoardService.addPostLike(secondPost.getPostId());
+        Assert.assertThat(lionBoardService.getPostLike(firstPost.getPostId()), is(1));
+        Assert.assertThat(lionBoardService.getPostLike(secondPost.getPostId()), is(1));
+        lionBoardService.addPostLike(secondPost.getPostId());
+        lionBoardService.addPostLike(secondPost.getPostId());
+        Assert.assertThat(lionBoardService.getPostLike(firstPost.getPostId()), is(1));
+        Assert.assertThat(lionBoardService.getPostLike(secondPost.getPostId()), is(3));
+        lionBoardService.subtractPostLike(secondPost.getPostId());
+        Assert.assertThat(lionBoardService.getPostLike(firstPost.getPostId()), is(1));
+        Assert.assertThat(lionBoardService.getPostLike(secondPost.getPostId()), is(2));
+        lionBoardService.subtractPostLike(10000);
+    }
+
+    @Test(expected = InvalidPostException.class)
+    public void upAndDownHateOnPost(){
+        lionBoardService.addPost(firstPost);
+        lionBoardService.addPost(secondPost);
+        Assert.assertThat(lionBoardService.getPostHate(firstPost.getPostId()), is(0));
+        Assert.assertThat(lionBoardService.getPostHate(secondPost.getPostId()), is(0));
+        lionBoardService.addPostHate(firstPost.getPostId());
+        lionBoardService.addPostHate(secondPost.getPostId());
+        Assert.assertThat(lionBoardService.getPostHate(firstPost.getPostId()), is(1));
+        Assert.assertThat(lionBoardService.getPostHate(secondPost.getPostId()), is(1));
+        lionBoardService.addPostHate(secondPost.getPostId());
+        lionBoardService.addPostHate(secondPost.getPostId());
+        Assert.assertThat(lionBoardService.getPostHate(firstPost.getPostId()), is(1));
+        Assert.assertThat(lionBoardService.getPostHate(secondPost.getPostId()), is(3));
+        lionBoardService.subtractPostHate(secondPost.getPostId());
+        Assert.assertThat(lionBoardService.getPostHate(firstPost.getPostId()), is(1));
+        Assert.assertThat(lionBoardService.getPostHate(secondPost.getPostId()), is(2));
+        lionBoardService.subtractPostHate(10000);
+    }
+
+    @Test(expected = InvalidPostException.class)
+    public void upAndDownViewOnPost(){
+        lionBoardService.addPost(firstPost);
+        lionBoardService.addPost(secondPost);
+        Assert.assertThat(lionBoardService.getPostView(firstPost.getPostId()), is(0));
+        Assert.assertThat(lionBoardService.getPostView(secondPost.getPostId()), is(0));
+        lionBoardService.addPostView(firstPost.getPostId());
+        lionBoardService.addPostView(secondPost.getPostId());
+        Assert.assertThat(lionBoardService.getPostView(firstPost.getPostId()), is(1));
+        Assert.assertThat(lionBoardService.getPostView(secondPost.getPostId()), is(1));
+        lionBoardService.addPostView(secondPost.getPostId());
+        lionBoardService.addPostView(secondPost.getPostId());
+        Assert.assertThat(lionBoardService.getPostView(firstPost.getPostId()), is(1));
+        Assert.assertThat(lionBoardService.getPostView(secondPost.getPostId()), is(3));
+        lionBoardService.subtractPostView(secondPost.getPostId());
+        Assert.assertThat(lionBoardService.getPostView(firstPost.getPostId()), is(1));
+        Assert.assertThat(lionBoardService.getPostView(secondPost.getPostId()), is(2));
+        lionBoardService.subtractPostView(10000);
     }
 
     //ToDo: comment service Test
@@ -252,6 +312,39 @@ public class LionBoardServiceTest {
 
     }
 
+
+    @Test(expected = InvalidCmtException.class)
+    public void upAndDownLikeOnCmt(){
+        lionBoardService.addPost(firstPost);
+        firstCmt.setPostId(firstPost.getPostId());
+        lionBoardService.addComment(firstCmt);
+        Assert.assertThat(lionBoardService.getCmtLike(firstCmt.getCmtId()), is(0));
+        lionBoardService.addCmtLike(firstCmt.getCmtId());
+        Assert.assertThat(lionBoardService.getCmtLike(firstCmt.getCmtId()), is(1));
+        lionBoardService.addCmtLike(firstCmt.getCmtId());
+        lionBoardService.addCmtLike(firstCmt.getCmtId());
+        Assert.assertThat(lionBoardService.getCmtLike(firstCmt.getCmtId()), is(3));
+        lionBoardService.subtractCmtLike(firstCmt.getCmtId());
+        Assert.assertThat(lionBoardService.getCmtLike(firstCmt.getCmtId()), is(2));
+        lionBoardService.subtractCmtLike(10000);
+    }
+
+    @Test(expected = InvalidCmtException.class)
+    public void upAndDownHateOnCmt(){
+        lionBoardService.addPost(firstPost);
+        firstCmt.setPostId(firstPost.getPostId());
+        lionBoardService.addComment(firstCmt);
+        Assert.assertThat(lionBoardService.getCmtHate(firstCmt.getCmtId()), is(0));
+        lionBoardService.addCmtHate(firstCmt.getCmtId());
+        Assert.assertThat(lionBoardService.getCmtHate(firstCmt.getCmtId()), is(1));
+        lionBoardService.addCmtHate(firstCmt.getCmtId());
+        lionBoardService.addCmtHate(firstCmt.getCmtId());
+        Assert.assertThat(lionBoardService.getCmtHate(firstCmt.getCmtId()), is(3));
+        lionBoardService.subtractCmtHate(firstCmt.getCmtId());
+        Assert.assertThat(lionBoardService.getCmtHate(firstCmt.getCmtId()), is(2));
+        lionBoardService.subtractCmtHate(10000);
+    }
+
     //ToDo: User service Test
 
     @Test
@@ -283,7 +376,7 @@ public class LionBoardServiceTest {
 
 
 
-//=========================Setup Fixture================================
+//========================= Setup Fixtures ================================
 
     private void setFixtureUsers() {
         firstUser = new User();

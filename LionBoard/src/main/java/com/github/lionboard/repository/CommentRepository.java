@@ -27,4 +27,16 @@ public interface CommentRepository {
     Comment findCommentByCmtId(int cmtId);
 
     void updateCmtNumForInsertRow(Map<String, Integer> range);
+
+    Integer getLikeCount(int cmtId);
+
+    int addLikeCount(int cmtId);
+
+    int subtractLikeCount(int cmtId);
+
+    Integer getHateCount(int cmtId);
+
+    int addHateCount(int cmtId);
+
+    int subtractHateCount(int cmtId);
 }

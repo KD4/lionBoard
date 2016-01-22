@@ -44,4 +44,34 @@ public interface LionBoardService {
     User getUserByUserId(int userId);
 
     User getUserByIdentity(String identity);
+
+    int getPostLike(int postId);
+
+    void addPostLike(int postId);
+
+    void subtractPostLike(int postId);
+
+    int getPostHate(int postId);
+
+    void addPostHate(int postId);
+
+    void subtractPostHate(int postId);
+
+    int getPostView(int postId);
+
+    void addPostView(int postId);
+
+    void subtractPostView(int postId);
+
+    int getCmtLike(int cmtId);
+
+    void addCmtLike(int cmtId);
+
+    void subtractCmtLike(int cmtId);
+
+    int getCmtHate(int cmtId);
+
+    void addCmtHate(int cmtId);
+
+    void subtractCmtHate(int cmtId);
 }

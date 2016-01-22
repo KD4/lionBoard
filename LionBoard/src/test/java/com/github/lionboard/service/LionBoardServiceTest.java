@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -26,7 +25,7 @@ import static org.hamcrest.CoreMatchers.is;
 
 //ToDo: change configuration path with classpath.
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("file:src/test/resources/config/mem-context.xml")
+@ContextConfiguration("file:src/test/resources/config/testApplicationContext.xml")
 public class LionBoardServiceTest {
 
     @Autowired
@@ -60,6 +59,7 @@ public class LionBoardServiceTest {
         secondPost.setExistFiles("F");
 
         firstCmt = new Comment();
+
         secondCmt = new Comment();
         firstCmt.setUserId(101);
         firstCmt.setContents("first Comment");
@@ -109,11 +109,15 @@ public class LionBoardServiceTest {
     @Test
     public void addPost() {
         List<Post> beforePosts = lionBoardService.getPosts(0, 20);
-        Assert.assertEquals(beforePosts.size(),0);
+        Assert.assertEquals(beforePosts.size(), 0);
         lionBoardService.addPost(firstPost);
         lionBoardService.addPost(secondPost);
         List<Post> afterPosts = lionBoardService.getPosts(0, 20);
         Assert.assertEquals(afterPosts.size(), 2);
+
+//      get list order by DESC.
+        Assert.assertEquals(afterPosts.get(0).getPostNum(), 2000);
+        Assert.assertEquals(afterPosts.get(1).getPostNum(), 1000);
     }
 
 

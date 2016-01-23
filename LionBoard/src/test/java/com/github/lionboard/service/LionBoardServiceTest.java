@@ -7,18 +7,30 @@ import com.github.lionboard.model.Comment;
 import com.github.lionboard.model.Post;
 import com.github.lionboard.model.PostFile;
 import com.github.lionboard.model.User;
+import com.github.lionboard.repository.PostRepository;
 import com.sun.source.tree.AssertTree;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.*;
+import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.stubbing.OngoingStubbing;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.sql.SQLException;
 import java.util.List;
 
+import static junit.framework.TestCase.fail;
 import static org.hamcrest.CoreMatchers.is;
+import static org.mockito.Mockito.*;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.stubbing.Answer;
 
 /**
  * Created by lion.k on 16. 1. 20..
@@ -27,11 +39,16 @@ import static org.hamcrest.CoreMatchers.is;
 
 //ToDo: change configuration path with classpath.
 @RunWith(SpringJUnit4ClassRunner.class)
+//@RunWith(MockitoJUnitRunner.class)
 @ContextConfiguration("file:src/test/resources/config/testApplicationContext.xml")
 public class LionBoardServiceTest {
 
     @Autowired
     LionBoardService lionBoardService;
+
+
+    @Autowired
+    LionBoardServiceMock lionBoardServiceMock;
 
     Post firstPost;
     Post secondPost;
@@ -76,6 +93,7 @@ public class LionBoardServiceTest {
 
     @Test
     public void addPost() {
+//        lionBoardService = mock(LionBoardService.class);
         List<Post> beforePosts = lionBoardService.getPosts(0, 20);
         Assert.assertEquals(beforePosts.size(), 0);
         lionBoardService.addPost(firstPost);
@@ -88,6 +106,26 @@ public class LionBoardServiceTest {
         Assert.assertEquals(afterPosts.get(0).getPostNum(), 2000);
         Assert.assertEquals(afterPosts.get(1).getPostNum(), 1000);
     }
+
+    @Test
+    public void addWithTransaction(){
+        List<Post> beforePosts = lionBoardServiceMock.getPosts(0, 20);
+        Assert.assertEquals(beforePosts.size(), 0);
+        try{
+            lionBoardServiceMock.addPost(firstPost);
+        }catch (InvalidPostException e){
+        }
+        Post insertedPost = null;
+        //so, below method's returned value is null.
+        try{
+            insertedPost = lionBoardServiceMock.getPostByPostId(firstPost.getPostId());
+        }catch (InvalidPostException e){
+        }
+        Assert.assertNull(insertedPost);
+    }
+
+
+
 
     @Test
     public void addReplyPost() {

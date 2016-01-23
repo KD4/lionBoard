@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
-       xsi:schemaLocation="
-            http://www.springframework.org/schema/beans
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
             http://www.springframework.org/schema/beans/spring-beans.xsd
             http://www.springframework.org/schema/jdbc
-            http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
-            ">
+            http://www.springframework.org/schema/jdbc/spring-jdbc.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
 
     <jdbc:embedded-database id="dataSource" type="H2">
@@ -30,6 +29,25 @@
         <property name="annotationClass" value="org.springframework.stereotype.Repository" />
     </bean>
 
+    <!-- sqlSessionTemplate -->
+    <bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg ref="sqlSessionFactory" />
+    </bean>
+
+    <aop:config proxy-target-class="true">
+        <aop:pointcut id="txAdvisePointCut" expression="execution(public * com.github..service.*Service.*(..))"/>
+        <aop:advisor id="transactionAdvisor" pointcut-ref="txAdvisePointCut" advice-ref="txAdvice"/>
+    </aop:config>
+
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="get*" read-only="true" />
+            <tx:method name="find*" read-only="true" />
+            <tx:method name="add*" propagation="REQUIRED" rollback-for="Exception"/>
+            <tx:method name="update*" propagation="REQUIRED" rollback-for="Exception"/>
+            <tx:method name="delete*" propagation="REQUIRED" rollback-for="Exception"/>
+        </tx:attributes>
+    </tx:advice>
 
 
 </beans>

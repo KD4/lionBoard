@@ -24,8 +24,10 @@ import java.util.Map;
  * Created by lion.k on 16. 1. 20..
  */
 
+
 @Service
-public class LionBoardServiceImpl implements LionBoardService {
+public class LionBoardServiceMock implements LionBoardService {
+
 
     @Autowired
     PostRepository postRepository;
@@ -51,12 +53,15 @@ public class LionBoardServiceImpl implements LionBoardService {
         return posts;
     }
 
+    //    Todo : apply the transaction below method.
     @Override
     public void addPost(Post post) {
         try{
             if(post.getDepth() < 1){
                 postRepository.insertPost(post);
                 postRepository.insertPostStatus(post);
+                //To rollback, throw the exception.
+                throw new InvalidPostException("because the number of reply exceed limit, you can't write reply. Sorry ~ ");
             }else{
                 Map<String,Integer> range = new HashMap<>();
                 range.put("upperNum",post.getPostNum()-1);
@@ -68,6 +73,8 @@ public class LionBoardServiceImpl implements LionBoardService {
                 postRepository.updatePostNumForInsertRow(range);
                 postRepository.insertPost(post);
                 postRepository.insertPostStatus(post);
+                //To rollback, throw the exception.
+                throw new InvalidPostException("because the number of reply exceed limit, you can't write reply. Sorry ~ ");
             }
         }catch (RuntimeException re){
             throw new InvalidPostException(re.getMessage());
@@ -121,6 +128,7 @@ public class LionBoardServiceImpl implements LionBoardService {
     }
 
 
+    //    Todo : apply the transaction below method.
     @Override
     public void addComment(Comment comment) {
         if(postRepository.findPostByPostId(comment.getPostId()) == null){
@@ -128,6 +136,7 @@ public class LionBoardServiceImpl implements LionBoardService {
         }
         if(comment.getDepth() < 1){
             commentRepository.insertComment(comment);
+            //ToDo: Thinking - Status table 작업은 트리거로 넣는게 좋을까 ?
             commentRepository.insertCommentStatus(comment);
         }else{
             Map<String,Integer> range = new HashMap<>();
@@ -138,6 +147,7 @@ public class LionBoardServiceImpl implements LionBoardService {
             commentRepository.insertComment(comment);
             commentRepository.insertCommentStatus(comment);
         }
+
         postRepository.addCmtCount(comment.getPostId());
     }
 

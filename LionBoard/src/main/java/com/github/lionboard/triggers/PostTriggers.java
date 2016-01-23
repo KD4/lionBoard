@@ -37,6 +37,8 @@ public class PostTriggers extends TriggerAdapter {
             }
             connection.commit();
         }catch (Exception e) {
+            System.out.println(e);
+        }finally {
             if(rs != null){
                 try{
                     rs.close();

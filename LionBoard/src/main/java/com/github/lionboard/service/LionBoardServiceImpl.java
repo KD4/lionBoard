@@ -51,6 +51,7 @@ public class LionBoardServiceImpl implements LionBoardService {
         return posts;
     }
 
+    //    Todo : apply the transaction below method.
     @Override
     public void addPost(Post post) {
         if(post.getDepth() < 1){
@@ -117,6 +118,8 @@ public class LionBoardServiceImpl implements LionBoardService {
         return commentRepository.findCommentsByPostId(postId);
     }
 
+
+//    Todo : apply the transaction below method.
     @Override
     public void addComment(Comment comment) {
         if(postRepository.findPostByPostId(comment.getPostId()) == null){

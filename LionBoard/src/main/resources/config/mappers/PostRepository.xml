@@ -86,6 +86,14 @@
         UPDATE POST_TB SET viewCount = viewCount - 1 WHERE postId = #{postId}
     </update>
 
+    <select id="findPostByPostNum" resultType="com.github.lionboard.model.Post">
+        SELECT posts.*, users.name username, status.postStatus
+        FROM POST_TB AS posts
+        LEFT JOIN USER_TB AS users ON posts.userId = users.id
+        LEFT JOIN POST_STATUS_TB AS status ON posts.postId = status.postId
+        WHERE posts.postNum = #{postNum}
+    </select>
+
 
 </mapper>
 

@@ -12,8 +12,10 @@ import com.github.lionboard.repository.PostFileRepository;
 import com.github.lionboard.repository.PostRepository;
 import com.github.lionboard.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,6 +62,9 @@ public class LionBoardServiceImpl implements LionBoardService {
             range.put("upperNum",post.getPostNum()-1);
             int lowerNum = (post.getPostNum()-1) / 1000 * 1000 + 1;
             range.put("lowerNum", lowerNum);
+            if(postRepository.findPostByPostNum(lowerNum) != null){
+                throw new InvalidPostException("because the number of reply exceed limit, you can't write reply. Sorry ~ ");
+            }
             postRepository.updatePostNumForInsertRow(range);
             postRepository.insertPost(post);
             postRepository.insertPostStatus(post);
@@ -114,6 +119,9 @@ public class LionBoardServiceImpl implements LionBoardService {
 
     @Override
     public void addComment(Comment comment) {
+        if(postRepository.findPostByPostId(comment.getPostId()) == null){
+            throw new InvalidPostException("post is nonexistent. check post infomation.");
+        }
         if(comment.getDepth() < 1){
             commentRepository.insertComment(comment);
             //ToDo: Thinking - Status table 작업은 트리거로 넣는게 좋을까 ?
@@ -159,11 +167,15 @@ public class LionBoardServiceImpl implements LionBoardService {
     }
 
     @Override
-    public void addUser(User user) {
-        if(user.getIsOAuth().equals("F")){
-            userRepository.insertUser(user);
-        }else{
-            //Todo: OAuth logic
+    public void addUser(User user){
+        try {
+            if (user.getIsOAuth().equals("F")) {
+                userRepository.insertUser(user);
+            } else {
+                //Todo: OAuth logic
+            }
+        }catch(DuplicateKeyException sq){
+            throw new InvalidUserException("User email or Identity is already existed. (detail : "+sq.getMessage()+")");
         }
     }
 

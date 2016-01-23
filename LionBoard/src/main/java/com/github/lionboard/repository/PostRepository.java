@@ -47,4 +47,5 @@ public interface PostRepository {
 
     int subtractViewCount(int postId);
 
+    Post findPostByPostNum(int lowerNum);
 }

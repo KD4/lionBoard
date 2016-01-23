@@ -150,7 +150,9 @@ CREATE TABLE USER_TB (
   userStatus varchar(2) NOT NULL DEFAULT 'S',
   registeredAt timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   password varchar(100) NOT NULL DEFAULT ' ',
-  PRIMARY KEY (id)
+  PRIMARY KEY (id),
+  UNIQUE KEY user_identity(identity),
+  UNIQUE KEY user_email(email)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 

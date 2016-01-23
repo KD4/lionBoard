@@ -121,12 +121,37 @@ public class LionBoardServiceTest {
     }
 
 
+    @Test(expected = InvalidPostException.class)
+    public void exceedReplyLimit(){
+        firstPost = new Post();
+        secondPost = new Post();
+        firstPost.setUserId(101);
+        firstPost.setUserName("KD4");
+        firstPost.setTitle("first reply");
+        firstPost.setContents("hello ?");
+        firstPost.setDepth(1);
+        firstPost.setExistFiles("F");
+        firstPost.setPostNum(1002);
+        secondPost.setUserId(102);
+        secondPost.setUserName("KD5");
+        secondPost.setTitle("second reply");
+        secondPost.setContents("world ?");
+        secondPost.setDepth(1);
+        secondPost.setExistFiles("F");
+        secondPost.setPostNum(1002);
+
+        lionBoardService.addPost(firstPost);
+        lionBoardService.addPost(secondPost);
+    }
+
 
     @Test
     public void addPostWithFile() {
         PostFile postFile = new PostFile();
         firstPost.setExistFiles("T");
         lionBoardService.addPost(firstPost);
+
+        //getting response, return inserted post Id to client
         postFile.setPostId(firstPost.getPostId());
         postFile.setFileName("Temp file");
         postFile.setFileUrl("tenth2.url.com");
@@ -235,7 +260,7 @@ public class LionBoardServiceTest {
         Assert.assertNotNull(comments);
     }
 
-    @Test
+    @Test(expected = InvalidPostException.class)
     public void addComment(){
         lionBoardService.addPost(firstPost);
         firstCmt.setPostId(firstPost.getPostId());
@@ -252,6 +277,9 @@ public class LionBoardServiceTest {
 
         Post insertedPost = lionBoardService.getPostByPostId(firstPost.getPostId());
         Assert.assertThat(insertedPost.getCmtCount(), is(2));
+
+        replyOfFirstCmt.setPostId(1000);
+        lionBoardService.addComment(replyOfFirstCmt);
     }
 
 
@@ -347,9 +375,10 @@ public class LionBoardServiceTest {
 
     //ToDo: User service Test
 
-    @Test
+    @Test(expected = InvalidUserException.class)
     public void addUserWithoutOAuth(){
         lionBoardService.deleteAllUsers();
+        lionBoardService.addUser(firstUser);
         lionBoardService.addUser(firstUser);
         User insertedUser = lionBoardService.getUserByUserId(firstUser.getId());
         Assert.assertThat(insertedUser.getPassword(),is(firstUser.getPassword()));

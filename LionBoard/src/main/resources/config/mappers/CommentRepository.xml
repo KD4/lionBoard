@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.github.lionboard.repository.CommentRepository">
+
+    <select id="findCommentsByPostId" resultType="com.github.lionboard.model.Comment">
+        SELECT *, users.name username, status.cmtStatus
+        FROM CMT_TB cmts
+        LEFT JOIN USER_TB users ON cmts.userId = users.id
+        LEFT JOIN CMT_STATUS_TB status ON cmts.cmtId = status.cmtId
+        WHERE cmts.postId = #{postId} AND status.cmtStatus = 'S'
+        ORDER BY cmts.cmtNum DESC
+    </select>
+
+    <select id="findComments" resultType="com.github.lionboard.model.Comment">
+        SELECT *, users.name username, status.cmtStatus
+        FROM CMT_TB cmts
+        LEFT JOIN USER_TB users ON cmts.userId = users.id
+        LEFT JOIN CMT_STATUS_TB status ON cmts.cmtId = status.cmtId
+        WHERE status.cmtStatus = 'S'
+        ORDER BY cmts.cmtNum DESC
+    </select>
+
+
+    <select id="findCommentByCmtId" parameterType="int" resultType="com.github.lionboard.model.Comment">
+        SELECT *, users.name username, status.cmtStatus
+        FROM CMT_TB cmts
+        LEFT JOIN USER_TB users ON cmts.userId = users.id
+        LEFT JOIN CMT_STATUS_TB status ON cmts.cmtId = status.cmtId
+        WHERE cmts.cmtId = #{cmtId} AND status.cmtStatus = 'S'
+    </select>
+
+    <insert id="insertComment" parameterType="com.github.lionboard.model.Comment">
+        INSERT INTO CMT_TB(userId,postId,contents,depth,cmtNum) VALUES (#{userId},#{postId},#{contents},#{depth},#{cmtNum});
+        <selectKey keyProperty="cmtId" resultType="Integer" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <insert id="insertCommentStatus" parameterType="com.github.lionboard.model.Comment">
+        INSERT INTO CMT_STATUS_TB(cmtId) VALUES (#{cmtId});
+    </insert>
+
+    <delete id="deleteAll" >
+        DELETE FROM CMT_TB;
+    </delete>
+
+    <update id="updateCmtStatusByCmtId" parameterType="java.util.Map">
+        UPDATE CMT_STATUS_TB SET cmtStatus=#{cmtStatus} WHERE cmtId=#{cmtId}
+    </update>
+
+    <update id="updateCmtNumForInsertRow" parameterType="java.util.Map">
+        UPDATE CMT_TB set cmtNum = cmtNum - 1 WHERE cmtNum BETWEEN #{lowerNum} AND #{upperNum}
+    </update>
+
+    <select id="getLikeCount" resultType="java.lang.Integer">
+        SELECT likeCount FROM CMT_TB WHERE cmtId=#{cmtId}
+    </select>
+
+    <update id="addLikeCount">
+        UPDATE CMT_TB SET likeCount = likeCount + 1 WHERE cmtId = #{cmtId}
+    </update>
+
+    <update id="subtractLikeCount">
+        UPDATE CMT_TB SET likeCount = likeCount - 1 WHERE cmtId = #{cmtId}
+    </update>
+
+    <select id="getHateCount" resultType="java.lang.Integer">
+        SELECT hateCount FROM CMT_TB WHERE cmtId=#{cmtId}
+    </select>
+
+    <update id="addHateCount">
+        UPDATE CMT_TB SET hateCount = hateCount + 1 WHERE cmtId = #{cmtId}
+    </update>
+
+    <update id="subtractHateCount">
+        UPDATE CMT_TB SET hateCount = hateCount - 1 WHERE cmtId = #{cmtId}
+    </update>
+
+</mapper>
+

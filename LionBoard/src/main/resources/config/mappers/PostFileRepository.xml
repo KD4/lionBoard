@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.github.lionboard.repository.PostFileRepository">
+
+
+    <select id="findFilesByPostId" parameterType="int" resultType="com.github.lionboard.model.PostFile">
+        SELECT *
+        FROM POST_FILE_TB
+        WHERE postId = #{postId}
+    </select>
+
+    <insert id="insertPostFile" parameterType="com.github.lionboard.model.PostFile">
+        INSERT INTO POST_FILE_TB(postId,fileName,fileUrl) VALUES (#{postId},#{fileName},#{fileUrl})
+        <selectKey keyProperty="fileId" resultType="Integer" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+</mapper>
+

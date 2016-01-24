@@ -5,53 +5,45 @@
 
 <mapper namespace="com.github.lionboard.repository.UserRepository">
 
-    <select id="setStateOfAllUsersToDelete" parameterType="com.github.lionboard.model.User">
-        SELECT count(*)
-        FROM ACT_USERS_TB INNER JOIN ACT_USER_STATE_TB ON ACT_USERS_TB.id = ACT_USER_STATE_TB.id
-        WHERE ACT_USER_STATE_TB.userStateCode > 1
-    </select>
+    <!--<select id="findByPage" parameterType="java.util.Map" resultType="com.github.lionboard.model.User">-->
+        <!--SELECT *, users.name username-->
+        <!--FROM POST_TB posts-->
+        <!--LEFT JOIN USER_TB users ON posts.userId = users.id-->
+        <!--LEFT JOIN POST_STATUS_TB status ON posts.postId = status.postId-->
+        <!--WHERE status.postStatus = 'S'-->
+        <!--ORDER BY posts.postNum DESC-->
+        <!--LIMIT #{limit} OFFSET #{offset}-->
+    <!--</select>-->
 
-
-    <select id="getUserById" resultType="com.github.lionboard.model.User" parameterType="com.github.lionboard.model.User">
+    <select id="findUserByUserId" parameterType="int" resultType="com.github.lionboard.model.User">
         SELECT *
-        FROM ACT_USERS_TB
-        WHERE id = #{id}
+        FROM USER_TB
+        WHERE id = #{userId} AND userStatus = 'S'
     </select>
 
-    <update id="setStateOfAllUsersToDelete" >
-        UPDATE
-        ACT_USER_STATE_TB
-        SET
-        userStateCode=1
-    </update>
+    <select id="findUserByIdentity" parameterType="String" resultType="com.github.lionboard.model.User">
+        SELECT *
+        FROM USER_TB
+        WHERE identity = #{identity} AND userStatus = 'S'
+    </select>
 
     <insert id="insertUser" parameterType="com.github.lionboard.model.User">
-        INSERT INTO ACT_USERS_TB("identity")
-        VALUES(#{IDENTITY})
-        <selectKey resultType="int" keyProperty="id" order="AFTER">
+        INSERT INTO USER_TB(identity,isOAuth,roles,name,email,profileUrl,password) VALUES (#{identity},#{isOAuth},#{roles},#{name},#{email},#{profileUrl},#{password});
+        <selectKey keyProperty="id" resultType="Integer" order="AFTER">
             SELECT LAST_INSERT_ID()
         </selectKey>
     </insert>
 
-    <insert id="insertUserInfo" parameterType="com.github.lionboard.model.User">
-        INSERT INTO ACT_USERINFO_TB("id","email","name","profileUrl")
-        VALUES(#{id},#{email},#{name},#{profileUrl})
-    </insert>
+    <delete id="deleteAll" >
+        DELETE FROM USER_TB;
+    </delete>
 
-    <insert id="insertUserPower" parameterType="com.github.lionboard.model.User">
-        INSERT INTO ACT_POWER_TB("id","powerCode")
-        VALUES(#{id},#{power})
-    </insert>
+    <!--<update id="updatePostStatus" parameterType="java.util.Map">-->
+        <!--UPDATE POST_STATUS_TB SET postStatus=#{postStatus} WHERE postId=#{postId}-->
+    <!--</update>-->
 
-    <insert id="insertUserPw" parameterType="com.github.lionboard.model.User">
-        INSERT INTO ACT_USER_PW_TB("id","password")
-        VALUES(#{id},#{password})
-    </insert>
-
-    <insert id="insertUserState" parameterType="com.github.lionboard.model.User">
-        INSERT INTO ACT_USER_STATE_TB("id","userStateCode")
-        VALUES(#{id},#{userStateCode})
-    </insert>
-
+    <!--<update id="addCmtCount">-->
+        <!--UPDATE POST_TB SET cmtCount = cmtCount+1 WHERE postId=#{postId}-->
+    <!--</update>-->
 </mapper>
 

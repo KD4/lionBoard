@@ -1,43 +1,23 @@
 package com.github.lionboard.repository;
 
 import com.github.lionboard.model.User;
-import org.springframework.context.annotation.Bean;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
+import java.sql.SQLException;
 
 /**
- * Created by lion.k on 16. 1. 17..
+ * Created by daum on 16. 1. 21..
  */
 
-
+@Repository
 public interface UserRepository {
+    void deleteAll();
 
-    int countUsers();
+    void insertUser(User user) throws DuplicateKeyException;
 
-    int insertUser(User user);
+    User findUserByUserId(int userId);
 
-    void insertUserInfo(User user,int insertedUserId);
-
-    void insertUserPower(User user,int insertedUserId);
-
-    void insertUserPw(User user,int insertedUserId);
-
-    void insertUserState(User user,int insertedUserId);
-
-    User getUserById(int id);
-
-    void deleteUserFromUsersTB();
-
-    int countUsersWithState(int i);
-
-    void changeStateOfAllUsers(int i);
-
-    void updateUser(User user);
-
-    void updateUserInfo(User user);
-
-    void updateUserPw(User user);
+    User findUserByIdentity(String identity);
 
 }

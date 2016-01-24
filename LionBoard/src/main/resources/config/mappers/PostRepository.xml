@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.github.lionboard.repository.PostRepository">
+
+    <select id="findByPage" parameterType="java.util.Map" resultType="com.github.lionboard.model.Post">
+        SELECT *, users.name username
+        FROM POST_TB posts
+        LEFT JOIN USER_TB users ON posts.userId = users.id
+        LEFT JOIN POST_STATUS_TB status ON posts.postId = status.postId
+        WHERE status.postStatus = 'S'
+        ORDER BY posts.postNum DESC
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
+
+    <select id="findPostByPostId" parameterType="int" resultType="com.github.lionboard.model.Post">
+        SELECT posts.*, users.name username, status.postStatus
+        FROM POST_TB AS posts
+        LEFT JOIN USER_TB AS users ON posts.userId = users.id
+        LEFT JOIN POST_STATUS_TB AS status ON posts.postId = status.postId
+        WHERE posts.postId = #{postId} AND status.postStatus = 'S'
+    </select>
+
+    <insert id="insertPost" parameterType="com.github.lionboard.model.Post">
+        INSERT INTO POST_TB(userId,title,contents,existFiles,depth,postNum) VALUES (#{userId},#{title},#{contents},#{existFiles},#{depth},#{postNum});
+        <selectKey keyProperty="postId" resultType="Integer" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <insert id="insertPostStatus" parameterType="com.github.lionboard.model.Post">
+        INSERT INTO POST_STATUS_TB(postId) VALUES (#{postId});
+    </insert>
+
+    <delete id="deleteAll" >
+        DELETE FROM POST_TB;
+    </delete>
+
+    <update id="updatePostStatus" parameterType="java.util.Map">
+      UPDATE POST_STATUS_TB SET postStatus=#{postStatus} WHERE postId=#{postId}
+    </update>
+
+    <update id="addCmtCount">
+        UPDATE POST_TB SET cmtCount = cmtCount+1 WHERE postId=#{postId}
+    </update>
+
+    <update id="updatePostNumForInsertRow" parameterType="java.util.Map">
+        UPDATE POST_TB set postNum = postNum - 1 WHERE postNum BETWEEN #{lowerNum} AND #{upperNum}
+    </update>
+
+    <select id="getLikeCount" resultType="java.lang.Integer">
+        SELECT likeCount FROM POST_TB WHERE postId = #{postId}
+    </select>
+
+    <update id="addLikeCount">
+        UPDATE POST_TB SET likeCount = likeCount + 1 WHERE postId = #{postId}
+    </update>
+
+    <update id="subtractLikeCount">
+        UPDATE POST_TB SET likeCount = likeCount - 1 WHERE postId = #{postId}
+    </update>
+
+    <select id="getHateCount" resultType="java.lang.Integer">
+        SELECT hateCount FROM POST_TB WHERE postId = #{postId}
+    </select>
+
+    <update id="addHateCount">
+        UPDATE POST_TB SET hateCount = hateCount + 1 WHERE postId = #{postId}
+    </update>
+
+    <update id="subtractHateCount">
+        UPDATE POST_TB SET hateCount = hateCount - 1 WHERE postId = #{postId}
+    </update>
+
+    <select id="getViewCount" resultType="java.lang.Integer">
+        SELECT viewCount FROM POST_TB WHERE postId = #{postId}
+    </select>
+
+    <update id="addViewCount">
+        UPDATE POST_TB SET viewCount = viewCount + 1 WHERE postId = #{postId}
+    </update>
+
+    <update id="subtractViewCount">
+        UPDATE POST_TB SET viewCount = viewCount - 1 WHERE postId = #{postId}
+    </update>
+
+    <select id="findPostByPostNum" resultType="com.github.lionboard.model.Post">
+        SELECT posts.*, users.name username, status.postStatus
+        FROM POST_TB AS posts
+        LEFT JOIN USER_TB AS users ON posts.userId = users.id
+        LEFT JOIN POST_STATUS_TB AS status ON posts.postId = status.postId
+        WHERE posts.postNum = #{postNum}
+    </select>
+
+
+</mapper>
+

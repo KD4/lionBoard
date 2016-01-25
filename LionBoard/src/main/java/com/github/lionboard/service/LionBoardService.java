@@ -74,4 +74,10 @@ public interface LionBoardService {
     void addCmtHate(int cmtId);
 
     void subtractCmtHate(int cmtId);
+
+    void modifyUser(User user);
+
+    void removeUserById(int userId);
+
+    void changeUserStatusToLeave(int userId);
 }

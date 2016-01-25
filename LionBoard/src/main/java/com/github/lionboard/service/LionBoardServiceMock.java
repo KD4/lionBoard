@@ -25,7 +25,6 @@ import java.util.Map;
  */
 
 
-@Service
 public class LionBoardServiceMock implements LionBoardService {
 
 
@@ -337,5 +336,20 @@ public class LionBoardServiceMock implements LionBoardService {
         if(rows == 0){
             throw new InvalidCmtException();
         }
+    }
+
+    @Override
+    public void modifyUser(User user) {
+
+    }
+
+    @Override
+    public void removeUserById(int userId) {
+
+    }
+
+    @Override
+    public void changeUserStatusToLeave(int userId) {
+
     }
 }

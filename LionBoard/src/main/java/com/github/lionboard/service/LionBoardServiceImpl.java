@@ -205,6 +205,23 @@ public class LionBoardServiceImpl implements LionBoardService {
     }
 
     @Override
+    public void modifyUser(User user) {
+        userRepository.updateUser(user);
+    }
+
+    @Override
+    public void removeUserById(int userId) {
+        userRepository.deleteUserById(userId);
+    }
+
+    @Override
+    public void changeUserStatusToLeave(int userId) {
+        userRepository.updateUserStatusToLeave(userId);
+
+    }
+
+
+    @Override
     public int getPostLike(int postId) {
         Integer likeCount = postRepository.getLikeCount(postId);
         if(likeCount == null){
@@ -328,4 +345,5 @@ public class LionBoardServiceImpl implements LionBoardService {
             throw new InvalidCmtException();
         }
     }
+
 }

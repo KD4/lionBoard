@@ -20,4 +20,9 @@ public interface UserRepository {
 
     User findUserByIdentity(String identity);
 
+    void updateUser(User user);
+
+    void deleteUserById(int userId);
+
+    void updateUserStatusToLeave(int userId);
 }

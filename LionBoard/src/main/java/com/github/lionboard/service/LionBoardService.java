@@ -1,9 +1,6 @@
 package com.github.lionboard.service;
 
-import com.github.lionboard.model.Comment;
-import com.github.lionboard.model.Post;
-import com.github.lionboard.model.PostFile;
-import com.github.lionboard.model.User;
+import com.github.lionboard.model.*;
 
 import java.util.List;
 
@@ -80,4 +77,17 @@ public interface LionBoardService {
     void removeUserById(int userId);
 
     void changeUserStatusToLeave(int userId);
+
+    void modifyPost(Post post);
+
+    void changePostStatusToDelete(int postId);
+
+    int getPostReportCount(int postId);
+
+    void reportPost(PostReport postReport);
+
+
+    List<PostReport> getReportByPost(int postId);
+
+    void changeProcessStatusWithPostId(PostReport postReport);
 }

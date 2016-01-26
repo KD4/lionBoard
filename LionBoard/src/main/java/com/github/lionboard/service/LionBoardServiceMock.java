@@ -3,10 +3,7 @@ package com.github.lionboard.service;
 import com.github.lionboard.error.InvalidCmtException;
 import com.github.lionboard.error.InvalidPostException;
 import com.github.lionboard.error.InvalidUserException;
-import com.github.lionboard.model.Comment;
-import com.github.lionboard.model.Post;
-import com.github.lionboard.model.PostFile;
-import com.github.lionboard.model.User;
+import com.github.lionboard.model.*;
 import com.github.lionboard.repository.CommentRepository;
 import com.github.lionboard.repository.PostFileRepository;
 import com.github.lionboard.repository.PostRepository;
@@ -352,4 +349,38 @@ public class LionBoardServiceMock implements LionBoardService {
     public void changeUserStatusToLeave(int userId) {
 
     }
+
+    @Override
+    public void modifyPost(Post post) {
+
+    }
+
+    @Override
+    public void changePostStatusToDelete(int postId) {
+
+
+    }
+
+    @Override
+    public int getPostReportCount(int postId) {
+        return 0;
+    }
+
+    @Override
+    public void reportPost(PostReport postReport) {
+
+    }
+
+    @Override
+    public List<PostReport> getReportByPost(int postId) {
+        return null;
+    }
+
+    @Override
+    public void changeProcessStatusWithPostId(PostReport postReport) {
+
+
+    }
+
+
 }

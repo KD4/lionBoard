@@ -1,5 +1,6 @@
 package com.github.lionboard.repository;
 import com.github.lionboard.model.Post;
+import com.github.lionboard.model.PostReport;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -48,4 +49,16 @@ public interface PostRepository {
     int subtractViewCount(int postId);
 
     Post findPostByPostNum(int lowerNum);
+
+    void updatePost(Post post);
+
+    void updatePostStatusToDelete(int postId);
+
+    int getReportCount(int postId);
+
+    void addReport(PostReport postReport);
+
+    List<PostReport> getReportByPostId(int postId);
+
+    void updateProcessStatus(PostReport postReport);
 }

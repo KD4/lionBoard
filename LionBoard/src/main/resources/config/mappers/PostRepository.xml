@@ -38,6 +38,10 @@
         DELETE FROM POST_TB;
     </delete>
 
+    <update id="updatePost" parameterType="com.github.lionboard.model.Post">
+        UPDATE POST_TB SET title=#{title}, contents=#{contents} WHERE postId=#{postId}
+    </update>
+
     <update id="updatePostStatus" parameterType="java.util.Map">
       UPDATE POST_STATUS_TB SET postStatus=#{postStatus} WHERE postId=#{postId}
     </update>
@@ -95,5 +99,29 @@
     </select>
 
 
+    <update id="updatePostStatusToDelete">
+        UPDATE POST_STATUS_TB SET postStatus='D' WHERE postId=#{postId}
+    </update>
+
+
+    <update id="updateProcessStatus">
+        UPDATE POST_REPORT_TB SET processStatus=#{processStatus} WHERE id=#{id}
+    </update>
+
+
+    <select id="getReportCount" resultType="int">
+        SELECT count(*) FROM POST_REPORT_TB WHERE postId=#{postId}
+    </select>
+
+    <select id="findReportByPostId" resultType="com.github.lionboard.model.PostReport">
+        SELECT * FROM POST_REPORT_TB WHERE postId=#{postId}
+    </select>
+
+    <insert id="insertReport">
+        INSERT INTO POST_REPORT_TB(postId,reporterId,reason) VALUES (#{postId},#{reporterId},#{reason});
+        <selectKey keyProperty="id" resultType="Integer" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
 </mapper>
 

@@ -72,7 +72,7 @@ CREATE TABLE CMT_REPORT_TB (
   reporterId int(10) unsigned NOT NULL,
   reason varchar(255) NOT NULL DEFAULT '',
   reportedAt datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  processStatus int(10) unsigned NOT NULL DEFAULT '4',
+  processStatus VARCHAR(2) NOT NULL DEFAULT 'N',
   PRIMARY KEY (id),
   FOREIGN KEY (cmtId) REFERENCES CMT_TB(cmtId) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

@@ -1,6 +1,7 @@
 package com.github.lionboard.repository;
 
 import com.github.lionboard.model.Comment;
+import com.github.lionboard.model.CommentReport;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -39,4 +40,14 @@ public interface CommentRepository {
     int addHateCount(int cmtId);
 
     int subtractHateCount(int cmtId);
+
+    void updateComment(Comment comment);
+
+    int getReportCount(int cmtId);
+
+    void insertReport(CommentReport commentReport);
+
+    List<CommentReport> findReportByCmtId(int cmtId);
+
+    void updateProcessStatus(CommentReport commentReport);
 }

@@ -113,12 +113,11 @@
         SELECT count(*) FROM POST_REPORT_TB WHERE postId=#{postId}
     </select>
 
-    <select id="getReportByPostId" resultType="com.github.lionboard.model.PostReport">
+    <select id="findReportByPostId" resultType="com.github.lionboard.model.PostReport">
         SELECT * FROM POST_REPORT_TB WHERE postId=#{postId}
     </select>
 
-
-    <insert id="addReport">
+    <insert id="insertReport">
         INSERT INTO POST_REPORT_TB(postId,reporterId,reason) VALUES (#{postId},#{reporterId},#{reason});
         <selectKey keyProperty="id" resultType="Integer" order="AFTER">
             SELECT LAST_INSERT_ID()

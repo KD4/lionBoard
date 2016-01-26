@@ -127,25 +127,63 @@ public class LionBoardServiceImpl implements LionBoardService {
     @Override
     public void reportPost(PostReport postReport) {
         try {
-            postRepository.addReport(postReport);
+            postRepository.insertReport(postReport);
         }catch (RuntimeException re){
             throw new InvalidPostException("can't report."+re.getMessage());
         }
     }
 
     @Override
-    public List<PostReport> getReportByPost(int postId) {
+    public List<PostReport> getPostReports(int postId) {
         try{
-            return postRepository.getReportByPostId(postId);
+            return postRepository.findReportByPostId(postId);
         }catch (RuntimeException re){
             throw new InvalidPostException();
         }
     }
 
     @Override
-    public void changeProcessStatusWithPostId(PostReport postReport) {
+    public void changeProcessStatusFromPost(PostReport postReport) {
         try{
             postRepository.updateProcessStatus(postReport);
+        }catch (RuntimeException re){
+            throw new InvalidPostException();
+        }
+    }
+
+    @Override
+    public void modifyComment(Comment comment) {
+        commentRepository.updateComment(comment);
+
+    }
+
+    @Override
+    public int getCmtReportCount(int cmtId) {
+        return commentRepository.getReportCount(cmtId);
+    }
+
+    @Override
+    public void reportComment(CommentReport commentReport) {
+        try {
+            commentRepository.insertReport(commentReport);
+        }catch (RuntimeException re){
+            throw new InvalidPostException("can't report."+re.getMessage());
+        }
+    }
+
+    @Override
+    public List<CommentReport> getCommentReports(int cmtId) {
+        try{
+            return commentRepository.findReportByCmtId(cmtId);
+        }catch (RuntimeException re){
+            throw new InvalidPostException();
+        }
+    }
+
+    @Override
+    public void changeProcessStatusFromCmt(CommentReport commentReport) {
+        try{
+            commentRepository.updateProcessStatus(commentReport);
         }catch (RuntimeException re){
             throw new InvalidPostException();
         }

@@ -372,13 +372,38 @@ public class LionBoardServiceMock implements LionBoardService {
     }
 
     @Override
-    public List<PostReport> getReportByPost(int postId) {
+    public List<PostReport> getPostReports(int postId) {
         return null;
     }
 
     @Override
-    public void changeProcessStatusWithPostId(PostReport postReport) {
+    public void changeProcessStatusFromPost(PostReport postReport) {
 
+
+    }
+
+    @Override
+    public void modifyComment(Comment comment) {
+
+    }
+
+    @Override
+    public int getCmtReportCount(int cmtId) {
+        return 0;
+    }
+
+    @Override
+    public void reportComment(CommentReport commentReport) {
+
+    }
+
+    @Override
+    public List<CommentReport> getCommentReports(int cmtId) {
+        return null;
+    }
+
+    @Override
+    public void changeProcessStatusFromCmt(CommentReport commentReport) {
 
     }
 

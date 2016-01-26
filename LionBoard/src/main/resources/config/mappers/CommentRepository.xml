@@ -79,5 +79,28 @@
         UPDATE CMT_TB SET hateCount = hateCount - 1 WHERE cmtId = #{cmtId}
     </update>
 
+    <update id="updateComment">
+        UPDATE CMT_TB SET contents=#{contents} WHERE cmtId=#{cmtId}
+    </update>
+
+    <select id="getReportCount" resultType="int">
+        SELECT count(*) FROM CMT_REPORT_TB WHERE cmtId=#{cmtId}
+
+    </select>
+
+    <insert id="insertReport">
+        INSERT INTO CMT_REPORT_TB(cmtId,reporterId,reason) VALUES (#{cmtId},#{reporterId},#{reason});
+        <selectKey keyProperty="id" resultType="Integer" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <select id="findReportByCmtId" resultType="com.github.lionboard.model.CommentReport">
+        SELECT * FROM CMT_REPORT_TB WHERE cmtId=#{cmtId}
+    </select>
+
+    <update id="updateProcessStatus">
+        UPDATE CMT_REPORT_TB SET processStatus=#{processStatus} WHERE id=#{id}
+    </update>
 </mapper>
 

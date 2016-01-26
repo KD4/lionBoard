@@ -56,9 +56,9 @@ public interface PostRepository {
 
     int getReportCount(int postId);
 
-    void addReport(PostReport postReport);
+    void insertReport(PostReport postReport);
 
-    List<PostReport> getReportByPostId(int postId);
+    List<PostReport> findReportByPostId(int postId);
 
     void updateProcessStatus(PostReport postReport);
 }

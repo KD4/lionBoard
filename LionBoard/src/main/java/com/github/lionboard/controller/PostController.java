@@ -62,15 +62,11 @@ public class PostController {
 
     @RequestMapping(method= RequestMethod.PUT,
             consumes="application/json",
-            produces="application/json;charset=utf8",
             value = "/{postId}")
-    public ModelAndView editPost(@PathVariable("postId") int postId,@RequestBody Post post){
-        ModelAndView mav = new ModelAndView("posts");
+    public String editPost(@PathVariable("postId") int postId,@RequestBody Post post){
         post.setPostId(postId);
         lionBoardService.modifyPost(post);
-        Post editedPost = lionBoardService.getPostByPostId(postId);
-        mav.addObject("post",editedPost);
-        return mav;
+        return "redirect:posts/"+postId;
     }
 
 
@@ -81,7 +77,7 @@ public class PostController {
     }
 
     @ResponseBody
-    @RequestMapping(method= RequestMethod.PUT,value = "/{postId}/view")
+    @RequestMapping(method= RequestMethod.PUT,value = "/{postId}/views")
     public boolean updateViewCount(@PathVariable("postId") int postId,@RequestParam(value = "action",required = true) String action){
 
         if(action.equals("add")){
@@ -97,7 +93,7 @@ public class PostController {
     }
 
     @ResponseBody
-    @RequestMapping(method= RequestMethod.PUT,value = "/{postId}/like")
+    @RequestMapping(method= RequestMethod.PUT,value = "/{postId}/likes")
     public boolean updateLikeCount(@PathVariable("postId") int postId, @RequestParam(value = "action",required = true) String action){
 
         if(action.equals("add")){
@@ -113,7 +109,7 @@ public class PostController {
     }
 
     @ResponseBody
-    @RequestMapping(method= RequestMethod.PUT,value = "/{postId}/hate")
+    @RequestMapping(method= RequestMethod.PUT,value = "/{postId}/hates")
     public boolean updateHateCount(@PathVariable("postId") int postId, @RequestParam(value = "action",required = true) String action){
         if(action.equals("add")){
             lionBoardService.addPostHate(postId);
@@ -167,8 +163,8 @@ public class PostController {
     @RequestMapping(method= RequestMethod.GET,
             produces="application/json;charset=utf8",
             value = "/{postId}/reports")
-    public List<PostReport> getReportByPost(@PathVariable("postId") int postId){
-        return lionBoardService.getReportByPost(postId);
+    public List<PostReport> getPostReports(@PathVariable("postId") int postId){
+        return lionBoardService.getPostReports(postId);
     }
 
     @ResponseBody
@@ -179,7 +175,7 @@ public class PostController {
         PostReport postReport = new PostReport();
         postReport.setId(reportId);
         postReport.setProcessStatus(processStatus);
-        lionBoardService.changeProcessStatusWithPostId(postReport);
+        lionBoardService.changeProcessStatusFromPost(postReport);
         return true;
     }
 

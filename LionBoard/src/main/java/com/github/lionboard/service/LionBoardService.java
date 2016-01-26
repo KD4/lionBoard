@@ -87,7 +87,17 @@ public interface LionBoardService {
     void reportPost(PostReport postReport);
 
 
-    List<PostReport> getReportByPost(int postId);
+    List<PostReport> getPostReports(int postId);
 
-    void changeProcessStatusWithPostId(PostReport postReport);
+    void changeProcessStatusFromPost(PostReport postReport);
+
+    void modifyComment(Comment comment);
+
+    int getCmtReportCount(int cmtId);
+
+    void reportComment(CommentReport commentReport);
+
+    List<CommentReport> getCommentReports(int cmtId);
+
+    void changeProcessStatusFromCmt(CommentReport commentReport);
 }

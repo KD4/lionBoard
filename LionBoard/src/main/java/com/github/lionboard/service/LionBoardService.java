@@ -100,4 +100,10 @@ public interface LionBoardService {
     List<CommentReport> getCommentReports(int cmtId);
 
     void changeProcessStatusFromCmt(CommentReport commentReport);
+
+    List<Pagination> getPagination(int offset);
+
+    List<Post> getPostsByUserId(int userId);
+
+    List<Comment> getCommentsByUserId(int userId);
 }

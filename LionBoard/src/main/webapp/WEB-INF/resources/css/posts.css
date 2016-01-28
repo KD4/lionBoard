@@ -1,0 +1,77 @@
+
+.post-header-left{
+  float: left;
+  width: 60px;
+  height: 50px;
+
+   
+}
+.post-header-left-img{
+  width: 58px;
+  height: 47px;
+  background-image: url("http://photos1.blogger.com/blogger/2921/1916/400/01051213.jpg");
+}
+
+.post-header-right-top h4{
+  margin-top:4px;
+  margin-bottom:4px;
+}
+
+.post-header-right-bottom span{
+  margin-right:10px;
+}
+.post-body-contents{
+  min-height: 300px;
+}
+.post-body-vote{
+  text-align: center;
+}
+.post-footer{
+    margin-top: 20px;
+    height: 37px;
+}
+
+.post-btn-group{
+    float:right;
+}
+.media form{
+  padding:5px;
+}
+.user_name{
+    font-size:14px;
+    font-weight: bold;
+}
+.comments-list .media{
+    border-bottom: 1px dotted #ccc;
+}
+.posts-list .media{
+    border-bottom: 1px dotted #ccc;
+}
+
+.second-comment{
+  margin-left:5%;
+}
+
+.third-comment{
+  margin-left:15%;
+}
+.fourth-comment{
+  margin-left:20%;
+}
+
+ol, ul { list-style: none; }
+ul, li {
+     margin: 0;
+   padding: 0;
+   border: 0;
+   font-size: 100%;
+   font: inherit;
+   vertical-align: baseline;
+}
+
+
+/* 링크에서 밑줄 없애기 */
+a { text-decoration:none }
+
+/* 마우스 지나갈 때만 삭제 + 강제로 없애기 */
+a:hover { text-decoration:none !important }

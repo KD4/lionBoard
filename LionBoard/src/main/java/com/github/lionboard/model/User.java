@@ -2,6 +2,8 @@ package com.github.lionboard.model;
 
 import org.joda.time.DateTime;
 
+import java.util.Date;
+
 /**
  * Created by lion.k on 16. 1. 17..
  */
@@ -15,7 +17,7 @@ public class User {
     private String profileUrl;
     private String userStatus;
     private String roles;
-    private DateTime registeredAt;
+    private Date registeredAt;
 
     public int getId() {
         return id;
@@ -81,13 +83,6 @@ public class User {
         this.roles = roles;
     }
 
-    public DateTime getRegisteredAt() {
-        return registeredAt;
-    }
-
-    public void setRegisteredAt(DateTime registeredAt) {
-        this.registeredAt = registeredAt;
-    }
 
     public String getIsOAuth() {
         return isOAuth;
@@ -95,5 +90,13 @@ public class User {
 
     public void setIsOAuth(String isOAuth) {
         this.isOAuth = isOAuth;
+    }
+
+    public Date getRegisteredAt() {
+        return registeredAt;
+    }
+
+    public void setRegisteredAt(Date registeredAt) {
+        this.registeredAt = registeredAt;
     }
 }

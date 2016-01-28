@@ -1,0 +1,130 @@
+<div class="container">
+    <div class="header">
+        <nav>
+            <ul class="nav nav-pills pull-right">
+                #set($isLogin = '')
+                #foreach($cookie in $request.getCookies())
+                    #if ($cookie.getName() eq "isLogin")
+                        #set($isLogin = $cookie.getValue())
+                    #end
+                #end
+                #if($isLogin eq "true")
+                    <li role="presentation"><a href="/users/$userId">My Page</a></li>
+                    <li role="presentation"><a href="/logout">LogOut</a></li>
+                #else
+                    <li role="presentation"><a href="/signup">Sign Up</a></li>
+                    <li role="presentation"><a href="/login">Sign In</a></li>
+                #end
+            </ul>
+        </nav>
+        <a href="/index"><h3 class="text-muted">LIONBOARD</h3></a>
+    </div>
+    <div class="panel panel-default">
+        <!-- <div class="panel-body"> -->
+        <div class="post-header-left">
+            <div class="post-header-left-img"></div>
+        </div>
+        <div class="post-header-right">
+            <div class="post-header-right-top">
+                <h4>$post.title</h4>
+            </div>
+            <div class="post-header-right-bottom">
+                <span><a href="/users/$post.userId"> $post.userName </a></span>
+                <span> $dateTool.format("short",$post.createdAt)</span>
+                <span> $post.viewCount </span>
+            </div>
+        </div>
+        <!-- </div> -->
+    </div>
+    <div class="panel panel-default post-body-contents">
+        <div class="panel-body">
+            $post.contents
+        </div>
+    </div>
+    <div class="post-body-vote">
+        <div class="btn-group">
+            <a href="posts/{id}/like/script" class="btn btn-default" aria-expanded="false">
+                좋아요 $post.likeCount
+            </a>
+            <a href="posts/{id}/hate/script" class="btn btn-default" aria-expanded="false">
+                싫어요 $post.hateCount
+            </a>
+        </div>
+    </div>
+    <div class="panel panel-default post-footer">
+        <span class="post-attach-file">
+          첨부파일 :<a href="#">$post.existFiles</a>
+        </span>
+        <span class="post-btn-group">
+            <a href="/editPost" class="btn btn-default" aria-expanded="false">
+                수정
+            </a>
+            <a href="posts" class="btn btn-default" aria-expanded="false">
+                삭제
+            </a>
+            <a href="/addPost" class="btn btn-default" aria-expanded="false" data-parent="$post.postId">
+                답글
+            </a>
+        </span>
+    </div>
+    <div class="row">
+        <form>
+            <div class="form-group">
+                <label for="comment">Your Comment</label>
+                <textarea name="comment" class="form-control" rows="3"></textarea>
+            </div>
+            <button type="submit" class="btn btn-default">Send</button>
+        </form>
+        <div class="col-md-12">
+            <div class="page-header">
+                <h4><small class="pull-right">$comments.size() comments</small> Comments </h4>
+            </div>
+            <div class="comments-list">
+                #foreach($comment in $comments)
+                    #if($comment.depth > 0)
+                    <div class="media">
+                        <p class="pull-right"><small>$dateTool.format("short",$comment.createdAt)</small></p>
+                        <a class="media-left" href="#">
+                            <img src="http://lorempixel.com/40/40/people/1/">
+                        </a>
+                        <div class="media-body">
+
+                            <h4 class="media-heading user_name">$comment.userName</h4>
+                            $comment.contents
+
+                            <p><small><a href="">Like</a> - <a href="">Hate</a> - <a href="#" class="comment-reply" data-num="$comment.cmtId">Reply</a></small></p>
+                        </div>
+                        <form class="hide replyNum$comment.cmtId">
+                            <div class="form-group">
+                                <label for="comment">Reply Comment</label>
+                                <textarea name="comment" class="form-control" rows="3"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-default">Reply</button>
+                        </form>
+                    </div>
+                    #else
+                        <div class="media second-comment">
+                            <p class="pull-right"><small>$dateTool.format("short",$comment.createdAt)</small></p>
+                            <a class="media-left" href="#">
+                                <img src="http://lorempixel.com/40/40/people/1/">
+                            </a>
+                            <div class="media-body">
+
+                                <h4 class="media-heading user_name">$comment.userName</h4>
+                                $comment.contents
+
+                                <p><small><a href="">Like</a> - <a href="">Hate</a> - <a href="#" class="comment-reply" data-num="$comment.cmtId">Reply</a></small></p>
+                            </div>
+                            <form class="hide replyNum$comment.cmtId">
+                                <div class="form-group">
+                                    <label for="comment">Reply Comment</label>
+                                    <textarea name="comment" class="form-control" rows="3"></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-default">Reply</button>
+                            </form>
+                        </div>
+                    #end
+                #end
+            </div>
+        </div>
+    </div>

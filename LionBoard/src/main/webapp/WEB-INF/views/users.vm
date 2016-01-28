@@ -1,3 +1,56 @@
-<h1>Index</h1>
+<div class="container">
+    <div class="header">
+        <nav>
+            <ul class="nav nav-pills pull-right">
+                <li role="presentation"><a href="/logout">Logout</a></li>
+            </ul>
+        </nav>
+        <a href="/index"><h3 class="text-muted">LIONBOARD</h3></a>
+    </div>
+    <div class="panel panel-default user-panel">
+        <div class="panel-body">
+            <div class="user-photo">
+                $user.profileUrl
+            </div>
+            <div class="user-info">
+                <div class="user-name"><h3>$user.name</h3></div>
+                <div class="user-email"><h4>$user.email</h4></div>
+                <div class="user-registeredAt"><h5>가입날짜:$dateTool.format("yyyy-M-d",$user.registeredAt)</h5></div>
+            </div>
+        </div>
+    </div>
+    <div class="row marketing">
+        <div class="col-md-12">
+            <div class="page-header">
+                <h4><small class="pull-right">$posts.size() posts</small> Posts </h4>
+            </div>
+            <div class="posts-list">
+            #foreach($post in $posts)
+                <div class="media">
+                    <p class="pull-right"><small>$dateTool.format("short",$post.createdAt)</small></p>
+                    <div class="media-body">
+                        <a href="/posts/$post.postId">$post.title</a>
+                    </div>
+                </div>
+            #end
+            </div>
+        </div>
 
-<h2>Board list</h2>
+        <div class="row marketing">
+            <div class="col-md-12">
+                <div class="page-header">
+                    <h4><small class="pull-right">$comments.size() Comments</small> Comments </h4>
+                </div>
+                <div class="comments-list">
+                    #foreach($comment in $comments)
+                        <div class="media">
+                            <p class="pull-right"><small>$dateTool.format("short",$comment.createdAt)</small></p>
+                            <div class="media-body">
+                                <a href="/posts/$comment.postId">$comment.title</a>
+
+                            </div>
+                        </div>
+                    #end
+                </div>
+            </div>
+        </div> <!-- /container -->

@@ -2,6 +2,8 @@ package com.github.lionboard.model;
 
 import org.joda.time.DateTime;
 
+import java.util.Date;
+
 /**
  * Created by daum on 16. 1. 26..
  */
@@ -10,7 +12,7 @@ public class PostReport {
     private int postId;
     private int reporterId;
     private String reason;
-    private DateTime reportedAt;
+    private Date reportedAt;
     private String processStatus;
 
     public int getId() {
@@ -45,13 +47,6 @@ public class PostReport {
         this.reason = reason;
     }
 
-    public DateTime getReportedAt() {
-        return reportedAt;
-    }
-
-    public void setReportedAt(DateTime reportedAt) {
-        this.reportedAt = reportedAt;
-    }
 
     public String getProcessStatus() {
         return processStatus;
@@ -59,5 +54,13 @@ public class PostReport {
 
     public void setProcessStatus(String processStatus) {
         this.processStatus = processStatus;
+    }
+
+    public Date getReportedAt() {
+        return reportedAt;
+    }
+
+    public void setReportedAt(Date reportedAt) {
+        this.reportedAt = reportedAt;
     }
 }

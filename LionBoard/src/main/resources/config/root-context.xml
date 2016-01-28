@@ -6,7 +6,7 @@
 
     <!-- Empty -->
 
-    <import resource="repository.xml" />
+
 
 
 </beans>

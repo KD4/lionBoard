@@ -6,7 +6,7 @@
 <mapper namespace="com.github.lionboard.repository.PostRepository">
 
     <select id="findByPage" parameterType="java.util.Map" resultType="com.github.lionboard.model.Post">
-        SELECT *, users.name username
+        SELECT *, users.name userName
         FROM POST_TB posts
         LEFT JOIN USER_TB users ON posts.userId = users.id
         LEFT JOIN POST_STATUS_TB status ON posts.postId = status.postId
@@ -22,6 +22,15 @@
         LEFT JOIN POST_STATUS_TB AS status ON posts.postId = status.postId
         WHERE posts.postId = #{postId} AND status.postStatus = 'S'
     </select>
+
+    <select id="countPost" resultType="int">
+        SELECT count(*)
+        FROM POST_TB AS posts
+        LEFT JOIN USER_TB AS users ON posts.userId = users.id
+        LEFT JOIN POST_STATUS_TB AS status ON posts.postId = status.postId
+        WHERE status.postStatus = 'S'
+    </select>
+
 
     <insert id="insertPost" parameterType="com.github.lionboard.model.Post">
         INSERT INTO POST_TB(userId,title,contents,existFiles,depth,postNum) VALUES (#{userId},#{title},#{contents},#{existFiles},#{depth},#{postNum});
@@ -123,5 +132,13 @@
             SELECT LAST_INSERT_ID()
         </selectKey>
     </insert>
+
+    <select id="findPostsByUserId" resultType="com.github.lionboard.model.Post">
+        SELECT posts.*, users.name username, status.postStatus
+        FROM POST_TB AS posts
+        LEFT JOIN USER_TB AS users ON posts.userId = users.id
+        LEFT JOIN POST_STATUS_TB AS status ON posts.postId = status.postId
+        WHERE posts.userId = #{userId} AND status.postStatus = 'S'
+    </select>
 </mapper>
 

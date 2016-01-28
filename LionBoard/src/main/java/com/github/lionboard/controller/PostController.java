@@ -3,10 +3,7 @@ package com.github.lionboard.controller;
 import com.github.lionboard.error.IncorrectAccessException;
 import com.github.lionboard.error.InvalidPostException;
 import com.github.lionboard.error.InvalidUserException;
-import com.github.lionboard.model.Comment;
-import com.github.lionboard.model.Post;
-import com.github.lionboard.model.PostReport;
-import com.github.lionboard.model.User;
+import com.github.lionboard.model.*;
 import com.github.lionboard.service.LionBoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,18 +26,20 @@ public class PostController {
     @Autowired
     LionBoardService lionBoardService;
 
-    @RequestMapping(method= RequestMethod.POST)
-    public ModelAndView writePost(@RequestBody Post post){
-
-        ModelAndView mav = new ModelAndView("posts");
+    @ResponseBody @RequestMapping(
+            headers = "Accept=application/json",
+            method= RequestMethod.POST)
+    public String writePost(Post post){
 
         lionBoardService.addPost(post);
 
         Post insertedPost = lionBoardService.getPostByPostId(post.getPostId());
 
-        mav.addObject("post",insertedPost);
-
-        return mav;
+        if(insertedPost != null){
+            return String.valueOf(insertedPost.getPostId());
+        }else{
+            throw new InvalidPostException();
+        }
     }
 
 
@@ -48,15 +47,19 @@ public class PostController {
     public ModelAndView getPosts(@RequestParam(value = "offset", required = false, defaultValue = "0") int offset, @RequestParam(value = "limit", required = false, defaultValue = "20") int limit){
         ModelAndView mav = new ModelAndView("index");
         List<Post> posts = lionBoardService.getPosts(offset, limit);
+        List<Pagination> paginations = lionBoardService.getPagination(offset);
         mav.addObject("posts",posts);
+        mav.addObject("paginations",paginations);
         return mav;
     }
 
     @RequestMapping(method= RequestMethod.GET,value = "/{postId}")
-    public ModelAndView getPosts(@PathVariable("postId") int postId){
+    public ModelAndView getPost(@PathVariable("postId") int postId){
         ModelAndView mav = new ModelAndView("posts");
         Post post = lionBoardService.getPostByPostId(postId);
+        List<Comment> comments = lionBoardService.getCommentsByPostId(postId);
         mav.addObject("post",post);
+        mav.addObject("comments",comments);
         return mav;
     }
 

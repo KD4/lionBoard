@@ -2,6 +2,8 @@ package com.github.lionboard.model;
 
 import org.joda.time.DateTime;
 
+import java.util.Date;
+
 /**
  * Created by lion.k on 16. 1. 20..
  */
@@ -18,7 +20,7 @@ public class Post {
     private int hateCount;
     private int cmtCount;
     private String existFiles;
-    private DateTime createAt;
+    private Date createdAt;
     private String postStatus;
 
 
@@ -86,15 +88,6 @@ public class Post {
         this.cmtCount = cmtCount;
     }
 
-
-    public DateTime getCreateAt() {
-        return createAt;
-    }
-
-    public void setCreateAt(DateTime createAt) {
-        this.createAt = createAt;
-    }
-
     public int getDepth() {
         return depth;
     }
@@ -135,5 +128,13 @@ public class Post {
 
     public void setExistFiles(String existFiles) {
         this.existFiles = existFiles;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
     }
 }

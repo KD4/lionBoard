@@ -1,23 +1,51 @@
 <html>
 <head>
-    <title>Lion Board</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+    <title>LionBoard</title>
+
+
+    <!-- Bootstrap core CSS -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/css/jumbotron-narrow.css" rel="stylesheet">
+
+
+    <!-- Custom Css for this page -->
+    <link href="/css/posts.css" rel="stylesheet">
+
+
+    <!-- Custom Css for this page -->
+    <link href="/css/users.css" rel="stylesheet">
+
+
 </head>
 <body>
-<div>
-    #parse("/WEB-INF/fragments/_header.vm")
-</div>
-
-
-<div>
 
     <!-- View abc.vm is inserted here -->
     <!-- Noi dung View abc.vm se duoc tren tai day -->
     $screen_content
 
-</div>
+    <!-- Text editor -->
+    <script type="text/javascript" src="/ckeditor/ckeditor.js"></script>
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="http://cdn.jsdelivr.net/jquery.validation/1.14.0/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/posts.js"></script>
+    <script type="text/javascript" src="/js/loginAndRegist.js"></script>
 
-<div>
-    #parse("/WEB-INF/fragments/_footer.vm")
-</div>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $(".comment-reply").click(function(){
+                var num = $(this).data('num');
+                $(".replyNum"+num).toggleClass("hide");
+            });
+        });
+    </script>
 </body>
 </html>

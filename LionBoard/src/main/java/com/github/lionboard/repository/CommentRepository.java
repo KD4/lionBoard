@@ -50,4 +50,6 @@ public interface CommentRepository {
     List<CommentReport> findReportByCmtId(int cmtId);
 
     void updateProcessStatus(CommentReport commentReport);
+
+    List<Comment> findCommentsByUserId(int userId);
 }

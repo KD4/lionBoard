@@ -407,5 +407,20 @@ public class LionBoardServiceMock implements LionBoardService {
 
     }
 
+    @Override
+    public List<Pagination> getPagination(int offset) {
+        return null;
+    }
+
+    @Override
+    public List<Post> getPostsByUserId(int userId) {
+        return null;
+    }
+
+    @Override
+    public List<Comment> getCommentsByUserId(int userId) {
+        return null;
+    }
+
 
 }

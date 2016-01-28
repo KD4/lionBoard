@@ -102,5 +102,14 @@
     <update id="updateProcessStatus">
         UPDATE CMT_REPORT_TB SET processStatus=#{processStatus} WHERE id=#{id}
     </update>
+
+    <select id="findCommentsByUserId" resultType="com.github.lionboard.model.Comment">
+        SELECT *, users.name username, status.cmtStatus
+        FROM CMT_TB cmts
+        LEFT JOIN USER_TB users ON cmts.userId = users.id
+        LEFT JOIN CMT_STATUS_TB status ON cmts.cmtId = status.cmtId
+        WHERE cmts.userId = #{cmtuserIdId} AND status.cmtStatus = 'S'
+        ORDER BY cmts.cmtNum DESC
+    </select>
 </mapper>
 

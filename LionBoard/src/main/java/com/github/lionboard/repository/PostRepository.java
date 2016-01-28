@@ -1,4 +1,5 @@
 package com.github.lionboard.repository;
+import com.github.lionboard.model.Comment;
 import com.github.lionboard.model.Post;
 import com.github.lionboard.model.PostReport;
 import org.springframework.stereotype.Repository;
@@ -61,4 +62,9 @@ public interface PostRepository {
     List<PostReport> findReportByPostId(int postId);
 
     void updateProcessStatus(PostReport postReport);
+
+    int countPost();
+
+    List<Post> findPostsByUserId(int userId);
+
 }

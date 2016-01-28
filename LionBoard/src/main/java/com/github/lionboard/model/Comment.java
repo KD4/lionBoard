@@ -2,6 +2,8 @@ package com.github.lionboard.model;
 
 import org.joda.time.DateTime;
 
+import java.util.Date;
+
 /**
  * Created by daum on 16. 1. 21..
  */
@@ -15,7 +17,7 @@ public class Comment {
     private int cmtNum;
     private int likeCount;
     private int hateCount;
-    private DateTime createAt;
+    private Date createAt;
     private String cmtStatus;
 
     public int getCmtId() {
@@ -90,19 +92,19 @@ public class Comment {
         this.hateCount = hateCount;
     }
 
-    public DateTime getCreateAt() {
-        return createAt;
-    }
-
-    public void setCreateAt(DateTime createAt) {
-        this.createAt = createAt;
-    }
-
     public String getCmtStatus() {
         return cmtStatus;
     }
 
     public void setCmtStatus(String cmtStatus) {
         this.cmtStatus = cmtStatus;
+    }
+
+    public Date getCreateAt() {
+        return createAt;
+    }
+
+    public void setCreateAt(Date createAt) {
+        this.createAt = createAt;
     }
 }

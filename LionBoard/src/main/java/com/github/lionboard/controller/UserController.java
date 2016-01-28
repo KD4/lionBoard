@@ -3,6 +3,8 @@ package com.github.lionboard.controller;
 import com.github.lionboard.error.IncorrectAccessException;
 import com.github.lionboard.error.InvalidPostException;
 import com.github.lionboard.error.InvalidUserException;
+import com.github.lionboard.model.Comment;
+import com.github.lionboard.model.Post;
 import com.github.lionboard.model.User;
 import com.github.lionboard.service.LionBoardService;
 import com.sun.org.apache.xpath.internal.operations.Mod;
@@ -11,6 +13,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 /**
  * Created by daum on 16. 1. 25..
@@ -25,17 +29,16 @@ public class UserController {
     LionBoardService lionBoardService;
 
     @ResponseBody @RequestMapping(
-            consumes="application/json",
-            produces="application/json;charset=utf8",
+            headers = "Accept=application/json",
             method= RequestMethod.POST)
-    public User signUp(@RequestBody User user){
+    public String signUp(User user){
 
         lionBoardService.addUser(user);
 
         User insertedUser = lionBoardService.getUserByUserId(user.getId());
 
         if(insertedUser != null){
-            return insertedUser;
+            return "true";
         }else{
             throw new InvalidUserException();
         }
@@ -45,12 +48,16 @@ public class UserController {
             method= RequestMethod.GET,
             value="/{userId}")
     public ModelAndView findUser(@PathVariable("userId") int userId){
-        ModelAndView mav = new ModelAndView("/users");
+        ModelAndView mav = new ModelAndView("users");
         User selectedUser = lionBoardService.getUserByUserId(userId);
         if(selectedUser == null){
             throw new InvalidUserException();
         }
+        List<Post> posts = lionBoardService.getPostsByUserId(userId);
+        List<Comment> comments = lionBoardService.getCommentsByUserId(userId);
         mav.addObject("user", selectedUser);
+        mav.addObject("posts", posts);
+        mav.addObject("comments", comments);
         return mav;
     }
 

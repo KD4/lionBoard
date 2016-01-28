@@ -13,6 +13,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -187,6 +188,46 @@ public class LionBoardServiceImpl implements LionBoardService {
         }catch (RuntimeException re){
             throw new InvalidPostException();
         }
+    }
+
+    @Override
+    public List<Pagination> getPagination(int offset) {
+        int currentPage = offset/2 + 1;
+        int previousPage;
+        if(currentPage > 5) {
+            previousPage = currentPage / 5 * 5;
+        }else {
+            previousPage = 1;
+        }
+        int olderPage = previousPage + 5;
+        int maxPage = postRepository.countPost() / 5 + 1;
+        if(maxPage<olderPage){
+            olderPage = maxPage;
+        }
+        List<Pagination> paginations = new ArrayList<Pagination>();
+        for(int i = previousPage;i<=olderPage;i++){
+            Pagination pagination = new Pagination();
+            pagination.setPage(i);
+            pagination.setOffset(i*20);
+            if(i==currentPage){
+                pagination.setIsCurrent(true);
+            }else{
+                pagination.setIsCurrent(false);
+            }
+            paginations.add(pagination);
+        }
+        return paginations;
+    }
+
+    @Override
+    public List<Post> getPostsByUserId(int userId) {
+        return postRepository.findPostsByUserId(userId);
+    }
+
+    @Override
+    public List<Comment> getCommentsByUserId(int userId) {
+        return commentRepository.findCommentsByUserId(userId);
+
     }
 
 

@@ -3,7 +3,7 @@ package com.github.lionboard.model;
 import java.util.Date;
 
 /**
- * Created by lion.k on 16. 1. 12..
+ * Created by Lion.k on 16. 1. 12..
  */
 
 

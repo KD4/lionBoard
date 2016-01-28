@@ -10,10 +10,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
- * Created by daum on 16. 1. 25..
+ * Created by Lion.k on 16. 1. 25..
  */
 
 
@@ -44,23 +47,47 @@ public class PostController {
 
 
     @RequestMapping(method= RequestMethod.GET)
-    public ModelAndView getPosts(@RequestParam(value = "offset", required = false, defaultValue = "0") int offset, @RequestParam(value = "limit", required = false, defaultValue = "20") int limit){
+    public ModelAndView getPosts(@RequestParam(value = "offset", required = false, defaultValue = "0") int offset, @RequestParam(value = "limit", required = false, defaultValue = "20") int limit
+            ,HttpSession session,HttpServletResponse response){
+
         ModelAndView mav = new ModelAndView("index");
+
         List<Post> posts = lionBoardService.getPosts(offset, limit);
         List<Pagination> paginations = lionBoardService.getPagination(offset);
         mav.addObject("posts",posts);
         mav.addObject("paginations",paginations);
-        return mav;
+
+
+        User loginUser = (User) session.getAttribute("loginUser");
+        if(loginUser == null){
+            // 로그인 쿠키 삭제.
+            Cookie kc = new Cookie("isLogin", null) ;
+            kc.setMaxAge(0) ;
+            response.addCookie(kc);
+        }
+        if(loginUser == null){
+            return mav;
+        }else{
+            mav.addObject("userId", loginUser.getId());
+            return mav;
+        }
     }
 
     @RequestMapping(method= RequestMethod.GET,value = "/{postId}")
-    public ModelAndView getPost(@PathVariable("postId") int postId){
+    public ModelAndView getPost(@PathVariable("postId") int postId,HttpSession session){
         ModelAndView mav = new ModelAndView("posts");
         Post post = lionBoardService.getPostByPostId(postId);
         List<Comment> comments = lionBoardService.getCommentsByPostId(postId);
         mav.addObject("post",post);
         mav.addObject("comments",comments);
-        return mav;
+
+        User loginUser = (User) session.getAttribute("loginUser");
+        if(loginUser == null){
+            return mav;
+        }else{
+            mav.addObject("userId", loginUser.getId());
+            return mav;
+        }
     }
 
     @RequestMapping(method= RequestMethod.PUT,

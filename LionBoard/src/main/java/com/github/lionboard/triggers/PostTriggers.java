@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * Created by daum on 16. 1. 22..
+ * Created by Lion.k on 16. 1. 22..
  */
 public class PostTriggers extends TriggerAdapter {
 

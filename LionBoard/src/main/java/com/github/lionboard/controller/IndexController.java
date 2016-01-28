@@ -1,6 +1,8 @@
 package com.github.lionboard.controller;
 
+import com.github.lionboard.error.IncorrectAccessException;
 import com.github.lionboard.error.InvalidUserException;
+import com.github.lionboard.model.Post;
 import com.github.lionboard.model.User;
 import com.github.lionboard.service.IndexService;
 import com.github.lionboard.model.TempModel;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -35,14 +38,15 @@ public class IndexController {
 
     @RequestMapping(method = RequestMethod.GET)
     public String root() {
-        return "redirect:/posts";
+        return "redirect:/index";
     }
 
     @RequestMapping(
             value = "index",
             method = RequestMethod.GET)
-    public String index(ModelMap model) {
-        if (model.containsAttribute("posts")) {
+    public String index(ModelMap modelMap) {
+
+        if (modelMap.containsAttribute("posts")) {
             return "index";
         }
         else {
@@ -63,6 +67,28 @@ public class IndexController {
             mav.addObject("userId", loginUser.getId());
             return mav;
         }
+    }
+
+    @RequestMapping(
+            value = "editPost/{postId}",
+            method = RequestMethod.GET)
+    public ModelAndView editPost(@PathVariable("postId") int postId, HttpSession session,HttpServletResponse response) {
+        User loginUser = (User) session.getAttribute("loginUser");
+        Post post = lionBoardService.getPostByPostId(postId);
+
+        if(loginUser == null){
+            ModelAndView mav = new ModelAndView("login");
+            return mav;
+        }
+        if(post.getUserId() == loginUser.getId()) {
+            ModelAndView mav = new ModelAndView("editPost");
+            mav.addObject("post", post);
+            mav.addObject("userId", loginUser.getId());
+            return mav;
+        }else{
+            throw new IncorrectAccessException();
+        }
+
     }
 
     @RequestMapping(

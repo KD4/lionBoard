@@ -5,7 +5,7 @@ import org.joda.time.DateTime;
 import java.util.Date;
 
 /**
- * Created by daum on 16. 1. 21..
+ * Created by Lion.k on 16. 1. 21..
  */
 public class Comment {
     private int cmtId;

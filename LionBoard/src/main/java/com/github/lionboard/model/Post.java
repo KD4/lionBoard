@@ -5,7 +5,7 @@ import org.joda.time.DateTime;
 import java.util.Date;
 
 /**
- * Created by lion.k on 16. 1. 20..
+ * Created by Lion.k on 16. 1. 20..
  */
 public class Post {
     private int postId;

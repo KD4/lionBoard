@@ -1,27 +1,25 @@
-<div class="container">
-    <div class="header">
-        <nav>
-            <ul class="nav nav-pills pull-right">
-                <li role="presentation"><a href="/users/$userId">My page</a></li>
-            </ul>
-        </nav>
-        <a href="/index"><h3 class="text-muted">LIONBOARD</h3></a>
-    </div>
-    <div class="panel panel-default">
-        <form>
-            <div class="form-group">
-                <label for="postTitle">제목</label>
-                <input type="text" class="form-control" id="postTitle" name="title" placeholder="제목을 입력하세요.">
-            </div>
-            <textarea name="contents" class="ckeditor" rows="12" cols="50"></textarea>
-            <ul>
-                <li>첨부파일</li>
-                <li><a href="#">text.txt</a> - <a href="#">삭제</a></li>
-            </ul>
-            <div class="form-group">
-                <label>파일 업로드</label>
-                <input type="file" id="postFile" name="files">
-            </div>
-            <button type="submit" class="btn btn-default">수정</button>
-    </div>
+<div class="header">
+    <nav>
+        <ul class="nav nav-pills pull-right">
+            <li role="presentation"><a href="/users/$userId">My page</a></li>
+        </ul>
+    </nav>
+    <a href="/index"><h3 class="text-muted">LIONBOARD</h3></a>
+</div>
+<div class="panel panel-default">
+    <form>
+        <div class="form-group">
+            <label for="postTitle">제목</label>
+            <input type="text" class="form-control" id="postTitle" name="title" value="$post.title">
+        </div>
+        <textarea name="contents" class="ckeditor" rows="12" cols="50" value="$post.contents"></textarea>
+        <ul>
+            <li>첨부파일</li>
+            <li><a href="#">$postFile.fileName</a> - <a href="$postFile.fileUrl">삭제</a></li>
+        </ul>
+        <div class="form-group">
+            <label>파일 업로드</label>
+            <input type="file" id="postFile" name="files">
+        </div>
+        <button type="submit" class="btn btn-default">수정</button>
 </div>

@@ -1,7 +1,7 @@
 package com.github.lionboard.model;
 
 /**
- * Created by lion.k on 16. 1. 21..
+ * Created by Lion.k on 16. 1. 21..
  */
 public class PostFile {
     private int postId;

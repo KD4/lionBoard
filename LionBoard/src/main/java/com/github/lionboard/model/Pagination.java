@@ -1,7 +1,7 @@
 package com.github.lionboard.model;
 
 /**
- * Created by daum on 16. 1. 27..
+ * Created by Lion.k on 16. 1. 27..
  */
 public class Pagination {
     private int page;

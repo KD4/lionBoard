@@ -3,7 +3,7 @@ package com.github.lionboard.error;
 import java.sql.SQLException;
 
 /**
- * Created by lion.k on 16. 1. 21..
+ * Created by Lion.k on 16. 1. 21..
  */
 public class InvalidPostException extends RuntimeException {
 

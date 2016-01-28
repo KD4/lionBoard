@@ -1,7 +1,7 @@
 package com.github.lionboard.error;
 
 /**
- * Created by daum on 16. 1. 21..
+ * Created by Lion.k on 16. 1. 21..
  */
 public class InvalidUserException extends RuntimeException {
     public InvalidUserException(){

@@ -1,97 +1,90 @@
-<div class="container">
-    <div class="header">
-        <nav>
-            <ul class="nav nav-pills pull-right">
-                #set($isLogin = '')
-                #foreach($cookie in $request.getCookies())
-                    #if ($cookie.getName() eq "isLogin")
-                        #set($isLogin = $cookie.getValue())
-                    #end
+<div class="header">
+    <nav>
+        <ul class="nav nav-pills pull-right">
+            #set($isLogin = '')
+            #foreach($cookie in $request.getCookies())
+                #if ($cookie.getName() eq "isLogin")
+                    #set($isLogin = $cookie.getValue())
                 #end
-                #if($isLogin eq "true")
-                    <li role="presentation"><a href="/users/$userId">My Page</a></li>
-                    <li role="presentation"><a href="/logout">LogOut</a></li>
-                #else
-                <li role="presentation"><a href="/signup">Sign Up</a></li>
-                <li role="presentation"><a href="/login">Sign In</a></li>
-                #end
+            #end
+            #if($isLogin eq "true")
+                <li role="presentation"><a href="/users/$userId">My Page</a></li>
+                <li role="presentation"><a href="/logout">LogOut</a></li>
+            #else
+            <li role="presentation"><a href="/signup">Sign Up</a></li>
+            <li role="presentation"><a href="/login">Sign In</a></li>
+            #end
+        </ul>
+    </nav>
+    <a href="/index"><h3 class="text-muted">LIONBOARD</h3></a>
+</div>
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                정렬 <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="#">최신순</a></li>
+                <li><a href="#">조회순</a></li>
+                <li><a href="#">좋아요순</a></li>
+                <li><a href="#">싫어요순</a></li>
             </ul>
-        </nav>
-        <a href="/index"><h3 class="text-muted">LIONBOARD</h3></a>
+        </div>
+        <a href="/addPost" class="btn btn-default pull-right">
+            글쓰기
+        </a>
     </div>
+</div>
+<div class="row marketing">
+
     <div class="panel panel-default">
-        <div class="panel-body">
-            <div class="btn-group">
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                    정렬 <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu" role="menu">
-                    <li><a href="#">최신순</a></li>
-                    <li><a href="#">조회순</a></li>
-                    <li><a href="#">좋아요순</a></li>
-                    <li><a href="#">싫어요순</a></li>
-                </ul>
-            </div>
-            <a href="/addPost" class="btn btn-default pull-right">
-                글쓰기
-            </a>
-        </div>
-    </div>
-    <div class="row marketing">
+        <!-- Default panel contents -->
+        <div class="panel-heading">Lionboards</div>
 
-        <div class="panel panel-default">
-            <!-- Default panel contents -->
-            <div class="panel-heading">Lionboards</div>
-
-            <!-- Table -->
-            <table class="table table-striped">
+        <!-- Table -->
+        <table class="table table-striped">
+            <tr>
+                <th width="10%">번호</th>
+                <th width="60%">제목</th>
+                <th width="10%">작성자</th>
+                <th width="10%">작성일</th>
+                <th width="10%">조회수</th>
+            </tr>
+            #foreach($post in $posts)
                 <tr>
-                    <th width="10%">번호</th>
-                    <th width="60%">제목</th>
-                    <th width="10%">작성자</th>
-                    <th width="10%">작성일</th>
-                    <th width="10%">조회수</th>
+                    <td>$post.postId</td>
+                    <td><a href="/posts/$post.postId">$post.title </a></td>
+                    <td><a href="/users/$post.userId">$!post.userName </a></td>
+                    <td><small>$dateTool.format("short",$post.createdAt)</small></td>
+                    <td>$post.viewCount</td>
                 </tr>
-                #foreach($post in $posts)
-                    <tr>
-                        <td>$post.postId</td>
-                        <td><a href="/posts/$post.postId">$post.title </a></td>
-                        <td><a href="/users/$post.userId">$!post.userName </a></td>
-                        <td><small>$dateTool.format("short",$post.createdAt)</small></td>
-                        <td>$post.viewCount</td>
-                    </tr>
-                #end
-            </table>
-        </div>
-        <nav>
-            <ul class="pagination">
-                #if($paginations.size() > 4)
-                    #set( $previousPage = $paginations.get(0).offset-20)
-                    <li>
-                        <a href="/posts/offset=$previousPage" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                #end
-
-                #foreach($pagination in $paginations)
-                    <li><a href="/posts?offset=$pagination.offset">$pagination.page</a></li>
-                #end
-
-                #if($paginations.size() > 4)
-                    #set( $nextOffset = $paginations.get(4).offset+20)
-                    <li>
-                        <a href="/posts?offset=$nextOffset" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                #end
-            </ul>
-        </nav>
+            #end
+        </table>
     </div>
+    <nav>
+        <ul class="pagination">
+            #if($paginations.size() > 4)
+                #set( $previousPage = $paginations.get(0).offset-20)
+                <li>
+                    <a href="/posts/offset=$previousPage" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            #end
 
-    <footer class="footer">
-        <p>&copy; Lion KD4 2016</p>
-    </footer>
+            #foreach($pagination in $paginations)
+                <li><a href="/posts?offset=$pagination.offset">$pagination.page</a></li>
+            #end
 
-</div> <!-- /container -->
+            #if($paginations.size() > 4)
+                #set( $nextOffset = $paginations.get(4).offset+20)
+                <li>
+                    <a href="/posts?offset=$nextOffset" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            #end
+        </ul>
+    </nav>
+</div>

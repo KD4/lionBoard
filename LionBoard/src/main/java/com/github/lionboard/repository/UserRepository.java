@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.SQLException;
 
 /**
- * Created by daum on 16. 1. 21..
+ * Created by Lion.k on 16. 1. 21..
  */
 
 @Repository

@@ -6,6 +6,8 @@ import com.github.lionboard.error.InvalidUserException;
 import com.github.lionboard.model.*;
 import com.github.lionboard.service.LionBoardService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -56,21 +58,15 @@ public class PostController {
         List<Pagination> paginations = lionBoardService.getPagination(offset);
         mav.addObject("posts",posts);
         mav.addObject("paginations",paginations);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String identity = auth.getName(); //get logged in username
+        if(!identity.equals("anonymousUser")) {
+            com.github.lionboard.model.User loginUser = lionBoardService.getUserByIdentity(identity);
+            mav.addObject("loginUserId", loginUser.getId());
+        }
+        return mav;
 
 
-        User loginUser = (User) session.getAttribute("loginUser");
-        if(loginUser == null){
-            // 로그인 쿠키 삭제.
-            Cookie kc = new Cookie("isLogin", null) ;
-            kc.setMaxAge(0) ;
-            response.addCookie(kc);
-        }
-        if(loginUser == null){
-            return mav;
-        }else{
-            mav.addObject("userId", loginUser.getId());
-            return mav;
-        }
     }
 
     @RequestMapping(method= RequestMethod.GET,value = "/{postId}")
@@ -80,14 +76,13 @@ public class PostController {
         List<Comment> comments = lionBoardService.getCommentsByPostId(postId);
         mav.addObject("post",post);
         mav.addObject("comments",comments);
-
-        User loginUser = (User) session.getAttribute("loginUser");
-        if(loginUser == null){
-            return mav;
-        }else{
-            mav.addObject("userId", loginUser.getId());
-            return mav;
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String identity = auth.getName(); //get logged in username
+        if(!identity.equals("anonymousUser")) {
+            com.github.lionboard.model.User loginUser = lionBoardService.getUserByIdentity(identity);
+            mav.addObject("loginUserId", loginUser.getId());
         }
+        return mav;
     }
 
     @RequestMapping(method= RequestMethod.PUT,

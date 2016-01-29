@@ -1,14 +1,8 @@
 <div class="header">
     <nav>
         <ul class="nav nav-pills pull-right">
-            #set($isLogin = '')
-            #foreach($cookie in $request.getCookies())
-                #if ($cookie.getName() eq "isLogin")
-                    #set($isLogin = $cookie.getValue())
-                #end
-            #end
-            #if($isLogin eq "true")
-                <li role="presentation"><a href="/users/$userId">My Page</a></li>
+            #if($!loginUserId)
+                <li role="presentation"><a href="/users/$loginUserId">My Page</a></li>
                 <li role="presentation"><a href="/logout">LogOut</a></li>
             #else
                 <li role="presentation"><a href="/signup">Sign Up</a></li>
@@ -55,7 +49,7 @@
       첨부파일 :<a href="#">$post.existFiles</a>
     </span>
     <span class="post-btn-group">
-        #if($post.userId == $userId)
+        #if($post.userId == $loginUserId)
         <a href="#" class="btn btn-default edit-btn" data-postId="$postId" aria-expanded="false">
             수정
         </a>
@@ -63,7 +57,7 @@
             삭제
         </a>
         #end
-        <a href="/addPost" class="btn btn-default" aria-expanded="false" data-parent="$post.postId">
+        <a href="/view/addPost" class="btn btn-default" aria-expanded="false" data-parent="$post.postId">
             답글
         </a>
     </span>

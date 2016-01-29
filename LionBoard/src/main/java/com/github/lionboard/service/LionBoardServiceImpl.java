@@ -231,6 +231,7 @@ public class LionBoardServiceImpl implements LionBoardService {
     }
 
 
+
     @Override
     public List<Comment> getComments() {
         return commentRepository.findComments();
@@ -301,7 +302,7 @@ public class LionBoardServiceImpl implements LionBoardService {
             } else {
                 //Todo: OAuth logic
             }
-        }catch(DuplicateKeyException sq){
+        }catch(Exception sq){
             throw new InvalidUserException("User email or Identity is already existed. (detail : "+sq.getMessage()+")");
         }
     }
@@ -324,6 +325,17 @@ public class LionBoardServiceImpl implements LionBoardService {
         }
         return selectedUser;
     }
+
+    @Override
+    public User getUserByName(String name) {
+        User selectedUser = userRepository.findUserByName(name);
+        if(selectedUser == null){
+            throw new InvalidUserException();
+        }
+        return selectedUser;
+    }
+
+
 
     @Override
     public void modifyUser(User user) {

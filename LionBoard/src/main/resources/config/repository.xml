@@ -15,7 +15,6 @@
 		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
-
     <context:property-placeholder
             location="classpath:/config/*.properties"
             ignore-resource-not-found="true"
@@ -62,7 +61,6 @@
     </aop:config>
 
 
-
     <tx:advice id="txAdvice" transaction-manager="transactionManager">
         <tx:attributes>
             <tx:method name="get*" read-only="true" />
@@ -73,5 +71,8 @@
         </tx:attributes>
     </tx:advice>
 
+    <bean id="securityService" class="com.github.lionboard.security.DefaultJdbcDaoImpl">
+        <property name="sqlSession" ref="sqlSessionTemplate" />
+    </bean>
 
 </beans>

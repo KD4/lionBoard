@@ -106,4 +106,6 @@ public interface LionBoardService {
     List<Post> getPostsByUserId(int userId);
 
     List<Comment> getCommentsByUserId(int userId);
+
+    User getUserByName(String name);
 }

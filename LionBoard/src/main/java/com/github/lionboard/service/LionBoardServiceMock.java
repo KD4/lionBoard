@@ -422,5 +422,10 @@ public class LionBoardServiceMock implements LionBoardService {
         return null;
     }
 
+    @Override
+    public User getUserByName(String name) {
+        return null;
+    }
+
 
 }

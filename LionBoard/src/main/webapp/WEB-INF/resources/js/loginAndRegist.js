@@ -24,46 +24,45 @@
   //});
   
 	// Form Submission
-  $("#login-form").submit(function() {
-	  remove_loading($(this));
-
-	  var account = {
-		  email:$("input[name=email]").val(),
-		  password:$("input[name=password]").val()
-	  };
-
-
-	  $.ajax({
-		  url: '/login',
-		  type: 'post',
-		  data: account,
-		  dataType: 'text',
-		  success: function (data) {
-			  console.log(data);
-
-			  if(data == "ok") {
-				  window.location.replace("/index");
-			  }else{
-				  alert(data);
-				  return false;
-			  }
-		  },
-		  error: function(data) {
-			  console.log(data);
-		  }
-	  });
-
-	  return false;
-
-  });
+  //$("#login-form").submit(function() {
+	//  remove_loading($(this));
+  //
+	//  var account = {
+	//	  email:$("input[name=email]").val(),
+	//	  password:$("input[name=password]").val()
+	//  };
+  //
+  //
+	//  $.ajax({
+	//	  url: '/login',
+	//	  type: 'post',
+	//	  data: account,
+	//	  dataType: 'text',
+	//	  success: function (data) {
+	//		  console.log(data);
+  //
+	//		  if(data == "ok") {
+	//			  window.location.replace("/index");
+	//		  }else{
+	//			  alert(data);
+	//			  return false;
+	//		  }
+	//	  },
+	//	  error: function(data) {
+	//		  console.log(data);
+	//	  }
+	//  });
+  //
+	//  return false;
+  //
+  //});
 	
 	// Register Form
 	//----------------------------------------------
 	// Validation
   $("#register-form").validate({
   	rules: {
-      username: "required",
-  	  password: {
+  	  	password: {
   			required: true,
   			minlength: 5
   		},
@@ -72,29 +71,33 @@
   			minlength: 5,
   			equalTo: "#register-form [name=password]"
   		},
-  		email: {
-  	    required: true,
-  			email: true
-  		},
+		email: {
+			required: true,
+			email: true
+		}
     },
-	  errorClass: "form-invalid",
-	  errorPlacement: function( label, element ) {
-	    if( element.attr( "type" ) === "checkbox" || element.attr( "type" ) === "radio" ) {
-    		element.parent().append( label ); // this would append the label after all your checkboxes/labels (so the error-label will be the last element in <div class="controls"> )
-	    }
-			else {
-  	  	label.insertAfter( element ); // standard behaviour
-  	  }
-    }
+	errorClass: "form-invalid"
   });
 
   // Form Submission
   $("#register-form").submit(function() {
 	  remove_loading($(this));
+	  //email 유효성 검사
+	  var regex=/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/;
+	  if( regex.test($("input[name=email]").val()) === false){
+		  alert("email 형식으로 입력해주세요.");
+		  return false;
+	  }
+
+	  if($("input[name=password]").val() != $("input[name=password_confirm]").val()){
+		  alert("패스워드가 일치하지 않습니다.");
+		  return false;
+	  }
+
 
 	  var user = {
 		  identity:$("input[name=email]").val(),
-		  roles:"U",
+		  roles:"ROLE_USER",
 		  email:$("input[name=email]").val(),
 		  password:$("input[name=password]").val(),
 		  name:$("input[name=name]").val(),
@@ -107,9 +110,13 @@
 		  url: '/users',
 		  type: 'post',
 		  data: user,
-		  dataType: 'json',
+		  dataType: 'text',
 		  success: function (data) {
-			  window.location.replace("/login");
+			  if(data==="success"){
+			  	window.location.replace("/login");
+			  }else{
+				alert(data);
+			  }
 		  },
 		  error: function(data) {
 

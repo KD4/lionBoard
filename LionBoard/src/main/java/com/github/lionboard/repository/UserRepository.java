@@ -25,4 +25,6 @@ public interface UserRepository {
     void deleteUserById(int userId);
 
     void updateUserStatusToLeave(int userId);
+
+    User findUserByName(String name);
 }

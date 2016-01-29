@@ -7,7 +7,7 @@
 
     $(".edit-btn").click(function(){
         var postId = $(this).data('postid');
-        var urlToEdit = "/editPost/"+postId;
+        var urlToEdit = "/view/editPost/"+postId;
         window.location.replace(urlToEdit);
     });
 

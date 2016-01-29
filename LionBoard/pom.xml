@@ -45,8 +45,9 @@
 
         <org.aspectj.version>1.8.7</org.aspectj.version>
     </properties>
-
     <dependencies>
+
+
         <!-- Spring MVC -->
         <dependency>
             <groupId>org.springframework</groupId>
@@ -63,8 +64,46 @@
             <artifactId>spring-context-support</artifactId>
             <version>${spring-framework.version}</version>
         </dependency>
-        <!-- Other Web dependencies -->
 
+
+
+        <!--spring security-->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+            <version>4.0.3.RELEASE</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-asm</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+            <version>4.0.3.RELEASE</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-asm</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>4.0.3.RELEASE</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-asm</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+
+        <!-- Other Web dependencies -->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>jstl</artifactId>
@@ -204,8 +243,8 @@
             <version>1.10.19</version>
         </dependency>
 
-    </dependencies>
 
+    </dependencies>
 
     <build>
         <finalName>${project.artifactId}-${project.version}</finalName>
@@ -230,4 +269,5 @@
             </plugin>
         </plugins>
     </build>
+
 </project>

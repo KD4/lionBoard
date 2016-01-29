@@ -9,6 +9,8 @@ import com.github.lionboard.model.User;
 import com.github.lionboard.service.LionBoardService;
 import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -30,17 +32,32 @@ public class UserController {
 
     @ResponseBody @RequestMapping(
             headers = "Accept=application/json",
+            produces="application/json;charset=utf8",
             method= RequestMethod.POST)
     public String signUp(User user){
+
+        //검색된 결과가 없어서 예외가 발생하는 것이 정상.
+        try {
+            if (lionBoardService.getUserByIdentity(user.getIdentity()) != null) {
+                return "이미 등록된 이메일입니다. 다른 이메일을 사용해주세요.";
+            }
+        }catch (InvalidUserException e){}
+
+        try{
+            if(lionBoardService.getUserByName(user.getName()) != null){
+                return "이미 등록된 이름입니다. 다른 이름을 사용해주세요.";
+            }
+        }catch (InvalidUserException e){}
+
 
         lionBoardService.addUser(user);
 
         User insertedUser = lionBoardService.getUserByUserId(user.getId());
 
-        if(insertedUser != null){
-            return "true";
-        }else{
-            throw new InvalidUserException();
+        if (insertedUser != null) {
+            return "success";
+        } else {
+            return "알 수 없는 이유로 로그인의 실패하였습니다.";
         }
     }
 
@@ -58,6 +75,13 @@ public class UserController {
         mav.addObject("user", selectedUser);
         mav.addObject("posts", posts);
         mav.addObject("comments", comments);
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String identity = auth.getName(); //get logged in username
+        if(!identity.equals("anonymousUser")) {
+            com.github.lionboard.model.User loginUser = lionBoardService.getUserByIdentity(identity);
+            mav.addObject("loginUserId", loginUser.getId());
+        }
         return mav;
     }
 

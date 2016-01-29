@@ -3,18 +3,40 @@
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xmlns:beans="http://www.springframework.org/schema/beans"
              xsi:schemaLocation="http://www.springframework.org/schema/beans
-             http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+             http://www.springframework.org/schema/beans/spring-beans.xsd
              http://www.springframework.org/schema/security
-             http://www.springframework.org/schema/security/spring-security-3.1.xsd">
-    <http auto-config="true">
-        <intercept-url pattern="/-" access="ROLE_USER" />
+             http://www.springframework.org/schema/security/spring-security-4.0.xsd">
+
+    <http auto-config="true" use-expressions="true">
+        <intercept-url pattern="/view/*" access="hasRole('ROLE_USER')"/>
+        <csrf disabled="true"/>
+        <form-login login-page="/login" username-parameter="email"
+                    password-parameter="password" login-processing-url="/loginProcess"
+                    default-target-url="/index"
+                    authentication-failure-url="/login"
+        />
+
+        <logout
+                logout-success-url="/login"
+                invalidate-session="true"  />
+
     </http>
 
+
+
+    <beans:import resource="repository.xml"></beans:import>
+
     <authentication-manager>
-        <authentication-provider>
-            <user-service>
-                <user name="guest" password="guest" authorities="ROLE_USER"/>
-            </user-service>
-        </authentication-provider>
+        <authentication-provider user-service-ref="securityService"/>
+        <!--<authentication-provider>-->
+            <!-- -->
+            <!--<jdbc-user-service-->
+                    <!--data-source-ref="dataSource"-->
+                    <!--users-by-username-query="select email as username, password as password,1 as enabled-->
+					<!--from USER_TB where email = ?"-->
+                    <!--authorities-by-username-query="select email as username, roles as authority-->
+					<!--from USER_TB where email = ?" />-->
+        <!--</authentication-provider>-->
     </authentication-manager>
+
 </beans:beans>

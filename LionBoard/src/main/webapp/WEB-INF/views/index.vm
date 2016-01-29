@@ -1,14 +1,8 @@
 <div class="header">
     <nav>
         <ul class="nav nav-pills pull-right">
-            #set($isLogin = '')
-            #foreach($cookie in $request.getCookies())
-                #if ($cookie.getName() eq "isLogin")
-                    #set($isLogin = $cookie.getValue())
-                #end
-            #end
-            #if($isLogin eq "true")
-                <li role="presentation"><a href="/users/$userId">My Page</a></li>
+            #if($!loginUserId)
+                <li role="presentation"><a href="/users/$loginUserId">My Page</a></li>
                 <li role="presentation"><a href="/logout">LogOut</a></li>
             #else
             <li role="presentation"><a href="/signup">Sign Up</a></li>
@@ -31,7 +25,7 @@
                 <li><a href="#">싫어요순</a></li>
             </ul>
         </div>
-        <a href="/addPost" class="btn btn-default pull-right">
+        <a href="/view/addPost" class="btn btn-default pull-right">
             글쓰기
         </a>
     </div>

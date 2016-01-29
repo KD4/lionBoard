@@ -78,12 +78,16 @@ public class CommentController {
 
     @ResponseBody
     @RequestMapping(method= RequestMethod.PUT,value = "/{cmtId}/status")
-    public boolean updateStatus(@PathVariable("cmtId") int cmtId, @RequestParam(value = "statusCode",required = true) String statusCode){
+    public String updateStatus(@PathVariable("cmtId") int cmtId, @RequestParam(value = "statusCode",required = true) String statusCode){
 
-        lionBoardService.changeCmtStatusByCmtId(cmtId, statusCode);
+        try {
+            lionBoardService.changeCmtStatusByCmtId(cmtId, statusCode);
+            return "success";
 
 //      if update logic fail, throw the exception.
-        return true;
+        }catch (Exception e){
+            return e.getMessage();
+        }
     }
 
     @ResponseBody

@@ -52,7 +52,7 @@
                 <div class="media">
                     <p class="pull-right"><small>$dateTool.format("short",$comment.createdAt)</small></p>
                     <div class="media-body">
-                        <a href="/posts/$comment.postId">$comment.title</a>
+                        <a href="/posts/$comment.postId">$comment.contents</a>
 
                     </div>
                 </div>

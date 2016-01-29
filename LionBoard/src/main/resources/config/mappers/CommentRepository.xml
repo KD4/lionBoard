@@ -10,7 +10,7 @@
         FROM CMT_TB cmts
         LEFT JOIN USER_TB users ON cmts.userId = users.id
         LEFT JOIN CMT_STATUS_TB status ON cmts.cmtId = status.cmtId
-        WHERE cmts.postId = #{postId} AND status.cmtStatus = 'S'
+        WHERE cmts.postId = #{postId}
         ORDER BY cmts.cmtNum DESC
     </select>
 
@@ -19,7 +19,6 @@
         FROM CMT_TB cmts
         LEFT JOIN USER_TB users ON cmts.userId = users.id
         LEFT JOIN CMT_STATUS_TB status ON cmts.cmtId = status.cmtId
-        WHERE status.cmtStatus = 'S'
         ORDER BY cmts.cmtNum DESC
     </select>
 
@@ -29,7 +28,7 @@
         FROM CMT_TB cmts
         LEFT JOIN USER_TB users ON cmts.userId = users.id
         LEFT JOIN CMT_STATUS_TB status ON cmts.cmtId = status.cmtId
-        WHERE cmts.cmtId = #{cmtId} AND status.cmtStatus = 'S'
+        WHERE cmts.cmtId = #{cmtId}
     </select>
 
     <insert id="insertComment" parameterType="com.github.lionboard.model.Comment">

@@ -158,12 +158,13 @@ public class PostController {
         return true;
     }
 
+    @ResponseBody
     @RequestMapping(method= RequestMethod.POST,value = "/{postId}/comments")
-    public String insertComment(@PathVariable("postId") int postId, @RequestBody Comment comment){
+    public String insertComment(@PathVariable("postId") int postId, Comment comment){
 
         lionBoardService.addComment(comment);
 
-        return "redirect:/posts/"+postId;
+        return "success";
     }
 
     @ResponseBody

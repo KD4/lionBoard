@@ -47,7 +47,10 @@
 .posts-list .media{
     border-bottom: 1px dotted #ccc;
 }
-
+.deleted-media{
+    background-color: #EEE;
+    color: #999;
+}
 .second-comment{
   margin-left:5%;
 }

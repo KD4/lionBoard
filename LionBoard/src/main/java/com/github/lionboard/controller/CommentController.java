@@ -47,8 +47,8 @@ public class CommentController {
 
     @ResponseBody
     @RequestMapping(method= RequestMethod.PUT,value = "/{cmtId}/likes")
-    public boolean updateLikeCount(@PathVariable("cmtId") int cmtId, @RequestParam(value = "action",required = true) String action){
-
+    public String updateLikeCount(@PathVariable("cmtId") int cmtId, @RequestParam(value = "action",required = true) String action){
+        try{
         if(action.equals("add")){
             lionBoardService.addCmtLike(cmtId);
         }else if(action.equals("sub")){
@@ -56,14 +56,17 @@ public class CommentController {
         }else{
             throw new InvalidCmtException("Invalid action code, please check action.");
         }
-
+        return "success";
 //      if update logic fail, throw the exception.
-        return true;
+        }catch (RuntimeException e){
+            return e.getMessage();
+        }
     }
 
     @ResponseBody
     @RequestMapping(method= RequestMethod.PUT,value = "/{cmtId}/hates")
-    public boolean updateHateCount(@PathVariable("cmtId") int cmtId, @RequestParam(value = "action",required = true) String action){
+    public String updateHateCount(@PathVariable("cmtId") int cmtId, @RequestParam(value = "action",required = true) String action){
+        try{
         if(action.equals("add")){
             lionBoardService.addCmtHate(cmtId);
         }else if(action.equals("sub")){
@@ -73,7 +76,11 @@ public class CommentController {
         }
 
 //      if update logic fail, throw the exception.
-        return true;
+            return "success";
+//      if update logic fail, throw the exception.
+        }catch (RuntimeException e){
+            return e.getMessage();
+        }
     }
 
     @ResponseBody

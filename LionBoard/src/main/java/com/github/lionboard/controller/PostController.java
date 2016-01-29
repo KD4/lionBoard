@@ -85,13 +85,14 @@ public class PostController {
         return mav;
     }
 
+    @ResponseBody
     @RequestMapping(method= RequestMethod.PUT,
             consumes="application/json",
             value = "/{postId}")
     public String editPost(@PathVariable("postId") int postId,@RequestBody Post post){
         post.setPostId(postId);
         lionBoardService.modifyPost(post);
-        return "redirect:posts/"+postId;
+        return String.valueOf(postId);
     }
 
 

@@ -100,7 +100,11 @@
 
                         <h4 class="media-heading user_name">$comment.userName</h4>
                         $comment.contents
-                        <p><small><a href="">Like</a> - <a href="">Hate</a> - <a href="#" class="comment-reply" data-cmtId="$comment.cmtId">Reply</a>
+                        <p>
+                            <small>
+                                <a href="#" class="comment-like" data-cmtId="$comment.cmtId" onclick="return false;">Like $comment.likeCount</a> -
+                                <a href="#" class="comment-hate" data-cmtId="$comment.cmtId" onclick="return false;">Hate $comment.hateCount</a> -
+                                <a href="#" class="comment-reply" data-cmtId="$comment.cmtId">Reply</a>
                             #if($comment.userId == $loginUserId)
                                 - <a href="#" class="comment-delete" data-cmtId="$comment.cmtId">Delete</a>
                             #end
@@ -116,6 +120,7 @@
                     </form>
                 </div>
                 #else
+                ##삭제된 댓글들
                     #if($comment.depth == 0)
                     ##루트 코멘트
                     <div class="media deleted-media">
@@ -127,15 +132,14 @@
                     #else
                     <div class="media deleted-media fourth-comment">
                     #end
-                        <p class="pull-right"><small>$dateTool.format("short",$comment.createdAt)</small></p>
-                        <div class="media-body">
-
-                            <h4 class="media-heading user_name">Comment not found</h4>
-                            삭제된 댓글입니다.
-                        </div>
+                    <p class="pull-right"><small>$dateTool.format("short",$comment.createdAt)</small></p>
+                    <div class="media-body">
+                        <h4 class="media-heading user_name">Comment not found</h4>
+                        삭제된 댓글입니다.
                     </div>
+                </div>
                 #end
             #end
         </div>
-    </div>
-</div>
+        </div>
+        </div>

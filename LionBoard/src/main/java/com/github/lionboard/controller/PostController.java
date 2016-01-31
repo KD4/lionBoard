@@ -71,11 +71,12 @@ public class PostController {
 
     @RequestMapping(method= RequestMethod.GET,value = "/{postId}")
     public ModelAndView getPost(@PathVariable("postId") int postId,HttpSession session){
+        lionBoardService.addPostView(postId);
         ModelAndView mav = new ModelAndView("posts");
         Post post = lionBoardService.getPostByPostId(postId);
         List<Comment> comments = lionBoardService.getCommentsByPostId(postId);
-        mav.addObject("post",post);
-        mav.addObject("comments",comments);
+        mav.addObject("post", post);
+        mav.addObject("comments", comments);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String identity = auth.getName(); //get logged in username
         if(!identity.equals("anonymousUser")) {
@@ -120,33 +121,41 @@ public class PostController {
 
     @ResponseBody
     @RequestMapping(method= RequestMethod.PUT,value = "/{postId}/likes")
-    public boolean updateLikeCount(@PathVariable("postId") int postId, @RequestParam(value = "action",required = true) String action){
+    public String updateLikeCount(@PathVariable("postId") int postId, @RequestParam(value = "action",required = true) String action){
+        try{
+            if(action.equals("add")){
+                lionBoardService.addPostLike(postId);
+            }else if(action.equals("sub")){
+                lionBoardService.subtractPostLike(postId);
+            }else{
+                throw new InvalidPostException("Invalid action code, please check action.");
+            }
 
-        if(action.equals("add")){
-            lionBoardService.addPostLike(postId);
-        }else if(action.equals("sub")){
-            lionBoardService.subtractPostLike(postId);
-        }else{
-            throw new InvalidPostException("Invalid action code, please check action.");
+    //      if update logic fail, throw the exception.
+            return "success";
+        }catch (RuntimeException e){
+            return e.getMessage();
         }
 
-//      if update logic fail, throw the exception.
-        return true;
     }
 
     @ResponseBody
     @RequestMapping(method= RequestMethod.PUT,value = "/{postId}/hates")
-    public boolean updateHateCount(@PathVariable("postId") int postId, @RequestParam(value = "action",required = true) String action){
-        if(action.equals("add")){
-            lionBoardService.addPostHate(postId);
-        }else if(action.equals("sub")){
-            lionBoardService.subtractPostHate(postId);
-        }else{
-            throw new InvalidPostException("Invalid action code, please check action.");
-        }
+    public String updateHateCount(@PathVariable("postId") int postId, @RequestParam(value = "action",required = true) String action){
+        try {
+            if (action.equals("add")) {
+                lionBoardService.addPostHate(postId);
+            } else if (action.equals("sub")) {
+                lionBoardService.subtractPostHate(postId);
+            } else {
+                throw new InvalidPostException("Invalid action code, please check action.");
+            }
 
 //      if update logic fail, throw the exception.
-        return true;
+            return "success";
+        } catch (RuntimeException e){
+                return e.getMessage();
+        }
     }
 
     @ResponseBody

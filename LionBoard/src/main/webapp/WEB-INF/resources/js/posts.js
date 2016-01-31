@@ -3,6 +3,104 @@
     $loginUserId = $("#loginUser").data('userid');
     $currentPostId = $("#currentPost").data('postid');
 
+    $(".post-like").click(function(){
+        var postId = $(this).data('postid');
+        var beforeCount = $(this).text().trim().substring(3).trim();
+        var $aTag = $(this);
+        console.log(beforeCount);
+        //이미 좋아요를 눌렀으면 wasPushed 클래스가 적용되어 있음.
+        if($aTag.hasClass("active")){
+            //좋아요늘 다시 누르면 좋아요 취소~
+            $.ajax({
+                url: '/posts/'+postId+"/likes?action=sub",
+                type: 'put',
+                dataType: 'text',
+                success: function (data) {
+                    if(data==="success"){
+                        var afterCount = Number(beforeCount) - 1;
+                        $aTag.text("좋아요 "+afterCount);
+                        $aTag.removeClass("active");
+                    }else{
+                        alert(data);
+                    }
+                    return false;
+                },
+                error: function(data) {
+
+                }
+            });
+        }else{
+            //좋아요 + 1 요청
+            $.ajax({
+                url: '/posts/'+postId+"/likes?action=add",
+                type: 'put',
+                dataType: 'text',
+                success: function (data) {
+                    if(data==="success"){
+                        var afterCount = Number(beforeCount) + 1;
+                        $aTag.text("좋아요 "+afterCount);
+                        $aTag.addClass("active");
+                    }else{
+                        alert(data);
+                    }
+                    return false;
+                },
+                error: function(data) {
+
+                }
+            });
+        }
+    });
+
+    $(".post-hate").click(function(){
+        var postId = $(this).data('postid');
+        var beforeCount = $(this).text().trim().substring(3).trim();
+        var $aTag = $(this);
+
+        //이미 좋아요를 눌렀으면 wasPushed 클래스가 적용되어 있음.
+        if($aTag.hasClass("active")){
+            //좋아요늘 다시 누르면 좋아요 취소~
+            $.ajax({
+                url: '/posts/'+postId+"/hates?action=sub",
+                type: 'put',
+                dataType: 'text',
+                success: function (data) {
+                    if(data==="success"){
+                        var afterCount = Number(beforeCount) - 1;
+                        $aTag.text("싫어요 "+afterCount);
+                        $aTag.removeClass("active");
+                    }else{
+                        alert(data);
+                    }
+                    return false;
+                },
+                error: function(data) {
+
+                }
+            });
+        }else{
+            //좋아요 + 1 요청
+            $.ajax({
+                url: '/posts/'+postId+"/hates?action=add",
+                type: 'put',
+                dataType: 'text',
+                success: function (data) {
+                    if(data==="success"){
+                        var afterCount = Number(beforeCount) + 1;
+                        $aTag.text("싫어요 "+afterCount);
+                        $aTag.addClass("active");
+                    }else{
+                        alert(data);
+                    }
+                    return false;
+                },
+                error: function(data) {
+
+                }
+            });
+        }
+    });
+
     $(".comment-reply").click(function(){
         var cmtId = $(this).data('cmtid');
         if($loginUserId == null){

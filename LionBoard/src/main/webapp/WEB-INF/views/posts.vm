@@ -24,7 +24,7 @@
         <div class="post-header-right-bottom">
             <span><a href="/users/$post.userId"> $post.userName </a></span>
             <span> $dateTool.format("short",$post.createdAt)</span>
-            <span> $post.viewCount </span>
+            <span> 조회수 : $post.viewCount </span>
         </div>
     </div>
     <!-- </div> -->
@@ -36,10 +36,10 @@
 </div>
 <div class="post-body-vote">
     <div class="btn-group">
-        <a href="posts/{id}/like/script" class="btn btn-default" aria-expanded="false">
+        <a href="#" class="btn btn-default post-like" data-postId="$post.postId" onclick="return false;" aria-expanded="false">
             좋아요 $post.likeCount
         </a>
-        <a href="posts/{id}/hate/script" class="btn btn-default" aria-expanded="false">
+        <a href="#" class="btn btn-default post-hate" data-postId="$post.postId" onclick="return false;" aria-expanded="false">
             싫어요 $post.hateCount
         </a>
     </div>

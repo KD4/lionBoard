@@ -12,6 +12,7 @@ public class Comment {
     private int postId;
     private int userId;
     private String userName;
+    private String profileUrl;
     private String contents;
     private int depth;
     private int cmtNum;
@@ -106,5 +107,13 @@ public class Comment {
 
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getProfileUrl() {
+        return profileUrl;
+    }
+
+    public void setProfileUrl(String profileUrl) {
+        this.profileUrl = profileUrl;
     }
 }

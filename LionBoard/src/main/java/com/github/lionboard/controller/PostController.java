@@ -219,12 +219,12 @@ public class PostController {
 
     @ExceptionHandler(InvalidPostException.class)
     public ModelAndView InvalidException(Exception e) {
-        return new ModelAndView("/errors").addObject("errorlog", e.getMessage());
+        return new ModelAndView("errors").addObject("errorlog", e.getMessage());
     }
 
     @ExceptionHandler(IncorrectAccessException.class)
     public ModelAndView IncorrectAccessException(Exception e) {
-        return new ModelAndView("/errors").addObject("errorlog", e.getMessage());
+        return new ModelAndView("errors").addObject("errorlog", e.getMessage());
     }
 
 

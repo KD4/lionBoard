@@ -11,6 +11,7 @@ import com.github.lionboard.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -19,6 +20,7 @@ import java.util.Map;
 
 /**
  * Created by lion.k on 16. 1. 20..
+ * 트랜젝션 테스트용으로 사용됨.
  */
 
 
@@ -425,6 +427,16 @@ public class LionBoardServiceMock implements LionBoardService {
     @Override
     public User getUserByName(String name) {
         return null;
+    }
+
+    @Override
+    public String uploadProfile(int userId, MultipartFile mpf) {
+        return null;
+    }
+
+    @Override
+    public void updateProfileInfoOnUser(int userId, String uploadedUrl) {
+
     }
 
 

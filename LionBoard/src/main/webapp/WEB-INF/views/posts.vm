@@ -15,7 +15,9 @@
 <div class="panel panel-default">
     <!-- <div class="panel-body"> -->
     <div class="post-header-left">
-        <div class="post-header-left-img"></div>
+        <a class="post-header-left-img" href="/users/$post.userId">
+            <img src="$post.profileUrl" alt="user-profile"/>
+        </a>
     </div>
     <div class="post-header-right">
         <div class="post-header-right-top">
@@ -93,8 +95,8 @@
                     #end
 
                     <p class="pull-right"><small>$dateTool.format("short",$comment.createdAt)</small></p>
-                    <a class="media-left" href="/users/$comment.userId">
-                        <img src="http://lorempixel.com/40/40/people/1/">
+                    <a class="media-left comment-user-profile" href="/users/$comment.userId">
+                        <img src="$comment.profileUrl" />
                     </a>
                     <div class="media-body">
 

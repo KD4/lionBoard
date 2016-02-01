@@ -80,8 +80,10 @@
   });
 
   // Form Submission
-  $("#register-form").submit(function() {
+  $("#register-form").submit(function(ev) {
 	  remove_loading($(this));
+	  console.log($("input[name=profileImage]")[0].files[0]);
+
 	  //email 유효성 검사
 	  var regex=/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/;
 	  if( regex.test($("input[name=email]").val()) === false){
@@ -95,27 +97,54 @@
 	  }
 
 
+
 	  var user = {
 		  identity:$("input[name=email]").val(),
 		  roles:"ROLE_USER",
 		  email:$("input[name=email]").val(),
 		  password:$("input[name=password]").val(),
 		  name:$("input[name=name]").val(),
-		  profileUrl:"temp.url",
-		  isOAuth:'F'
+		  isOAuth:"F",
+		  profileUrl:"http://t1.daumcdn.net/osa/tech/i1.daumcdn.jpg"
 	  };
-
 
 	  $.ajax({
 		  url: '/users',
 		  type: 'post',
 		  data: user,
-		  dataType: 'text',
-		  success: function (data) {
-			  if(data==="success"){
-			  	window.location.replace("/login");
+		  dataType: 'json',
+		  success: function (responsedData) {
+			  //회원 등록이 성공한다면, responsedData JSON 변수 첫번째 값으로 success가 들어가고, 실패하면 에러메시지가 들어감.
+			  if(responsedData[0]==="success"){
+				  // 프로필 사진을 업로드한다면, 사진 등록 로직을 수행함.
+				  if($("input[name=profileImage]")[0].files[0] != null){
+					  var formData = new FormData();
+
+					  formData.append("profileImage", $("input[name=profileImage]")[0].files[0]);
+
+					  //회원 등록 이슈가 없어서 등록에 성공한다면, responsedData json 포맷의 2번째 인덱스에 등록된 ID가 반환됨.
+
+					  $.ajax({
+						  url: '/users/'+responsedData[1]+'/profile',
+						  type: 'post',
+						  data: formData,
+						  cache: false,
+						  processData: false, // Don't process the files
+						  contentType: false, // Set content type to false as jQuery will tell the server its a query string request,
+						  dataType:'text',
+						  success:function(responsedData){
+							  if(responsedData==="success"){
+								  window.location.replace("/login");
+							  }else{
+								  alert(responsedData);
+							  }
+						  }
+					  })
+				  }else{
+				  	window.location.replace("/login");
+				  }
 			  }else{
-				alert(data);
+				  alert(responsedData);
 			  }
 		  },
 		  error: function(data) {
@@ -123,35 +152,11 @@
 		  }
 	  });
 
+
 	  return false;
 
   });
 
-	// Forgot Password Form
-	//----------------------------------------------
-	// Validation
-  $("#forgot-password-form").validate({
-  	rules: {
-      fp_email: "required",
-    },
-  	errorClass: "form-invalid"
-  });
-  
-	// Form Submission
-  $("#forgot-password-form").submit(function() {
-  	remove_loading($(this));
-		
-		if(options['useAJAX'] == true)
-		{
-			// Dummy AJAX request (Replace this with your AJAX code)
-		  // If you don't want to use AJAX, remove this
-  	  dummy_submit_form($(this));
-		
-		  // Cancel the normal submission.
-		  // If you don't want to use AJAX, remove this
-  	  return false;
-		}
-  });
 
 	// Loading
 	//----------------------------------------------

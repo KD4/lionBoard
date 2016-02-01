@@ -6,10 +6,9 @@
 
    
 }
-.post-header-left-img{
-  width: 58px;
+.post-header-left-img img{
+  width: 50px;
   height: 47px;
-  background-image: url("http://photos1.blogger.com/blogger/2921/1916/400/01051213.jpg");
 }
 
 .post-header-right-top h4{
@@ -81,3 +80,10 @@ a { text-decoration:none; }
 a:hover { text-decoration:none; !important; }
 a:visited { text-decoration:none; !important; }
 a:active { text-decoration:none; !important; }
+
+
+/* comment profile css */
+.comment-user-profile img{
+    width: 40px;
+    height: 38px;
+}

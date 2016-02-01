@@ -8,16 +8,19 @@ import com.github.lionboard.repository.CommentRepository;
 import com.github.lionboard.repository.PostFileRepository;
 import com.github.lionboard.repository.PostRepository;
 import com.github.lionboard.repository.UserRepository;
+import com.github.lionboard.tenth2.ImageFileUploadForTenth2;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.sql.SQLException;
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 /**
  * Created by lion.k on 16. 1. 20..
  */
@@ -36,6 +39,10 @@ public class LionBoardServiceImpl implements LionBoardService {
 
     @Autowired
     UserRepository userRepository;
+
+
+    @Autowired
+    ImageFileUploadForTenth2 imageFileUploadForTenth2;
 
     @Override
     public List<Post> getPosts(int offset, int limit) {
@@ -346,6 +353,70 @@ public class LionBoardServiceImpl implements LionBoardService {
         return selectedUser;
     }
 
+    @Override
+    public String uploadProfile(int userId, MultipartFile uploadFile) {
+        try {
+
+            //프로필 작명 규칙 : lionboard_profile_{userId}.jpg
+            String fileName = "lionboard_profile_"+String.valueOf(userId)+".jpg";
+
+            String uploadUrl = insertThumnailOnTenthServer(uploadFile.getBytes(), fileName);
+
+            return uploadUrl;
+        } catch (Exception e) {
+
+            //todo logging.
+            System.out.println("Thenth2 이미지 업로드 실패.");
+            e.printStackTrace();
+            throw new InvalidUserException("fail to upload profile image. but To sign up is succeeded.");
+        }
+    }
+
+    private String insertThumnailOnTenthServer(byte[] imageFileBytes, String fileName) throws Exception {
+        try {
+            imageFileUploadForTenth2.init();
+            return imageFileUploadForTenth2.create(imageFileBytes, fileName);
+        } catch (Exception e) {
+            throw new Exception(e);
+        }
+    }
+
+    private void insertFileOnLocalServer(MultipartFile uploadFile, String fileName, String pathSet) {
+        if (uploadFile != null) {
+            byte[] bytes = new byte[0];
+            BufferedOutputStream bos = null;
+            try {
+                bytes = uploadFile.getBytes();
+                /* 파일 쓰기 */
+                bos = new BufferedOutputStream(new FileOutputStream(pathSet+fileName));
+                bos.write(bytes);
+                bos.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    bos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
+    }
+
+    @Override
+    public void updateProfileInfoOnUser(int userId, String uploadedUrl) {
+        User user = new User();
+        user.setId(userId);
+        user.setProfileUrl(uploadedUrl);
+        try {
+            userRepository.updateProfileInfo(user);
+        }catch (RuntimeException e){
+            //todo:logging
+            System.out.println(e.getStackTrace());
+            throw new InvalidUserException(e.getMessage());
+        }
+    }
 
 
     @Override

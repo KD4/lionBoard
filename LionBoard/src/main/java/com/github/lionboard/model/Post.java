@@ -11,6 +11,7 @@ public class Post {
     private int postId;
     private int userId;
     private String userName;
+    private String profileUrl;
     private String title;
     private String contents;
     private int depth;
@@ -136,5 +137,13 @@ public class Post {
 
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getProfileUrl() {
+        return profileUrl;
+    }
+
+    public void setProfileUrl(String profileUrl) {
+        this.profileUrl = profileUrl;
     }
 }

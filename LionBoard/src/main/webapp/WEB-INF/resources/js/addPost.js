@@ -1,5 +1,5 @@
 (function($) {
-    $("#post-form").submit(function(){
+    $("#post-form").submit(function(ev){
         var postInfo = {
             title:$("input[name=title]").val(),
             contents:CKEDITOR.instances.contents.getData(),

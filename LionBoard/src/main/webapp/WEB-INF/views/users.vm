@@ -15,7 +15,7 @@
 <div class="panel panel-default user-panel">
     <div class="panel-body">
         <div class="user-photo">
-        $user.profileUrl
+            <img src="$user.profileUrl" alt="user-profile"/>
         </div>
         <div class="user-info">
         <div class="user-name"><h3>$user.name</h3></div>

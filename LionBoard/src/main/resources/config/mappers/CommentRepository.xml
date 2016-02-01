@@ -6,7 +6,7 @@
 <mapper namespace="com.github.lionboard.repository.CommentRepository">
 
     <select id="findCommentsByPostId" resultType="com.github.lionboard.model.Comment">
-        SELECT *, users.name username, status.cmtStatus
+        SELECT *, users.name username, users.profileUrl profileUrl, status.cmtStatus
         FROM CMT_TB cmts
         LEFT JOIN USER_TB users ON cmts.userId = users.id
         LEFT JOIN CMT_STATUS_TB status ON cmts.cmtId = status.cmtId
@@ -15,7 +15,7 @@
     </select>
 
     <select id="findComments" resultType="com.github.lionboard.model.Comment">
-        SELECT *, users.name username, status.cmtStatus
+        SELECT *, users.name username, users.profileUrl profileUrl, status.cmtStatus
         FROM CMT_TB cmts
         LEFT JOIN USER_TB users ON cmts.userId = users.id
         LEFT JOIN CMT_STATUS_TB status ON cmts.cmtId = status.cmtId
@@ -24,7 +24,7 @@
 
 
     <select id="findCommentByCmtId" parameterType="int" resultType="com.github.lionboard.model.Comment">
-        SELECT *, users.name username, status.cmtStatus
+        SELECT *, users.name username, users.profileUrl profileUrl, status.cmtStatus
         FROM CMT_TB cmts
         LEFT JOIN USER_TB users ON cmts.userId = users.id
         LEFT JOIN CMT_STATUS_TB status ON cmts.cmtId = status.cmtId
@@ -103,7 +103,7 @@
     </update>
 
     <select id="findCommentsByUserId" resultType="com.github.lionboard.model.Comment">
-        SELECT *, users.name username, status.cmtStatus
+        SELECT *,users.name username, users.profileUrl profileUrl, status.cmtStatus
         FROM CMT_TB cmts
         LEFT JOIN USER_TB users ON cmts.userId = users.id
         LEFT JOIN CMT_STATUS_TB status ON cmts.cmtId = status.cmtId

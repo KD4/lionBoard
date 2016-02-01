@@ -6,7 +6,7 @@
 <mapper namespace="com.github.lionboard.repository.PostRepository">
 
     <select id="findByPage" parameterType="java.util.Map" resultType="com.github.lionboard.model.Post">
-        SELECT *, users.name userName
+        SELECT *, users.name username, users.profileUrl profileUrl
         FROM POST_TB posts
         LEFT JOIN USER_TB users ON posts.userId = users.id
         LEFT JOIN POST_STATUS_TB status ON posts.postId = status.postId
@@ -16,7 +16,7 @@
     </select>
 
     <select id="findPostByPostId" parameterType="int" resultType="com.github.lionboard.model.Post">
-        SELECT posts.*, users.name username, status.postStatus
+        SELECT posts.*, users.name username, users.profileUrl profileUrl, status.postStatus
         FROM POST_TB AS posts
         LEFT JOIN USER_TB AS users ON posts.userId = users.id
         LEFT JOIN POST_STATUS_TB AS status ON posts.postId = status.postId
@@ -100,7 +100,7 @@
     </update>
 
     <select id="findPostByPostNum" resultType="com.github.lionboard.model.Post">
-        SELECT posts.*, users.name username, status.postStatus
+        SELECT posts.*, users.name username, users.profileUrl profileUrl, status.postStatus
         FROM POST_TB AS posts
         LEFT JOIN USER_TB AS users ON posts.userId = users.id
         LEFT JOIN POST_STATUS_TB AS status ON posts.postId = status.postId
@@ -134,7 +134,7 @@
     </insert>
 
     <select id="findPostsByUserId" resultType="com.github.lionboard.model.Post">
-        SELECT posts.*, users.name username, status.postStatus
+        SELECT posts.*, users.name username, users.profileUrl profileUrl, status.postStatus
         FROM POST_TB AS posts
         LEFT JOIN USER_TB AS users ON posts.userId = users.id
         LEFT JOIN POST_STATUS_TB AS status ON posts.postId = status.postId

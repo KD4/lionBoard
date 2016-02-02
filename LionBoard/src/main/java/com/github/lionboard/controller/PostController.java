@@ -66,6 +66,8 @@ public class PostController {
         List<Pagination> paginations = lionBoardService.getPagination(offset);
         mav.addObject("posts",posts);
         mav.addObject("paginations",paginations);
+
+        //Spring Security session에 저장된 login된 유저 정보 가져오기.
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String identity = auth.getName(); //get logged in username
         if(!identity.equals("anonymousUser")) {
@@ -101,7 +103,6 @@ public class PostController {
             consumes="application/json",
             value = "/{postId}")
     public String editPost(@PathVariable("postId") int postId,@RequestBody Post post){
-        post.setPostId(postId);
         lionBoardService.modifyPost(post);
         return String.valueOf(postId);
     }

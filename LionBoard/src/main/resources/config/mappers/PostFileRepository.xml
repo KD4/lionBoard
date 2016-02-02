@@ -9,7 +9,7 @@
     <select id="findFilesByPostId" parameterType="int" resultType="com.github.lionboard.model.PostFile">
         SELECT *
         FROM POST_FILE_TB
-        WHERE postId = #{postId}
+        WHERE postId = #{postId} AND fileStatus='S'
     </select>
 
     <insert id="insertPostFile" parameterType="com.github.lionboard.model.PostFile">
@@ -18,6 +18,10 @@
             SELECT LAST_INSERT_ID()
         </selectKey>
     </insert>
+
+    <update id="updateStatusByFileId" parameterType="com.github.lionboard.model.PostFile">
+        UPDATE POST_FILE_TB SET fileStatus = #{fileStatus} WHERE fileId=#{fileId}
+    </update>
 
 </mapper>
 

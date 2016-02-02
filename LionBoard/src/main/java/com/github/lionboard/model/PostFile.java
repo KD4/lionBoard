@@ -8,6 +8,7 @@ public class PostFile {
     private int fileId;
     private String fileName;
     private String fileUrl;
+    private String fileStatus;
 
     public int getPostId() {
         return postId;
@@ -39,5 +40,13 @@ public class PostFile {
 
     public void setFileUrl(String fileUrl) {
         this.fileUrl = fileUrl;
+    }
+
+    public String getFileStatus() {
+        return fileStatus;
+    }
+
+    public void setFileStatus(String fileStatus) {
+        this.fileStatus = fileStatus;
     }
 }

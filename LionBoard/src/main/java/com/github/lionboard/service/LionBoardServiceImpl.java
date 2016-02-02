@@ -402,7 +402,6 @@ public class LionBoardServiceImpl implements LionBoardService {
     @Override
     public PostFile addFileToTenth(int postId, MultipartFile uploadFile) {
 
-        List<PostFile> postFiles = new ArrayList<PostFile>();
         PostFile postFile = new PostFile();
 
         try {
@@ -413,7 +412,6 @@ public class LionBoardServiceImpl implements LionBoardService {
             postFile.setPostId(postId);
             postFile.setFileUrl(uploadUrl);
             postFile.setFileName(uploadFile.getOriginalFilename());
-            postFiles.add(postFile);
         } catch (Exception e) {
 
             //todo logging.
@@ -425,14 +423,6 @@ public class LionBoardServiceImpl implements LionBoardService {
         return postFile;
     }
 
-    @Override
-    public void addPostFile(int postId, PostFile postFile) {
-        postFile.setPostId(postId);
-        postFile.setFileName(postFile.getFileName());
-        postFile.setFileUrl(postFile.getFileUrl());
-        System.out.println("uploaded file named" + postFile.getFileName() + " url is " + postFile.getFileUrl() + " to " + postId);
-        postFileRepository.insertPostFile(postFile);
-    }
 
     @Override
     public void addPostWithFile(Post post) {
@@ -475,6 +465,22 @@ public class LionBoardServiceImpl implements LionBoardService {
         selectedPost.setPostNum(selectedPost.getPostNum()-1);
 
         return selectedPost;
+    }
+
+    @Override
+    public void changeFileStatusToDelete(int fileId) {
+        PostFile postFile = new PostFile();
+        postFile.setFileId(fileId);
+        postFile.setFileStatus("D");
+        postFileRepository.updateStatusByFileId(postFile);
+    }
+
+    @Override
+    public void addFileOnPost(Post post) {
+
+        PostFile postFile = addFileToTenth(post.getPostId(),post.getUploadFile());
+        addPostFile(postFile);
+
     }
 
 

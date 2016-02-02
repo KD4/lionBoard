@@ -19,7 +19,12 @@
     <link href="/css/posts.css" rel="stylesheet">
     <link href="/css/users.css" rel="stylesheet">
 
-
+    <!-- java script Lib -->
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="http://cdn.jsdelivr.net/jquery.validation/1.14.0/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <!-- Text editor -->
+    <script type="text/javascript" src="/ckeditor/ckeditor.js"></script>
 </head>
 <body>
 
@@ -34,12 +39,7 @@
         </footer>
     </div>
 
-    <!-- java script -->
-    <!-- Text editor -->
-    <script type="text/javascript" src="/ckeditor/ckeditor.js"></script>
-    <script type="text/javascript" src="/js/jquery.min.js"></script>
-    <script type="text/javascript" src="http://cdn.jsdelivr.net/jquery.validation/1.14.0/jquery.validate.min.js"></script>
-    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+
     <script type="text/javascript" src="/js/posts.js"></script>
     <script type="text/javascript" src="/js/loginAndRegist.js"></script>
     <script type="text/javascript" src="/js/addPost.js"></script>

@@ -4,6 +4,7 @@ import com.github.lionboard.error.IncorrectAccessException;
 import com.github.lionboard.error.InvalidUserException;
 import com.github.lionboard.model.Post;
 //import com.github.lionboard.model.User;
+import com.github.lionboard.model.PostFile;
 import com.github.lionboard.service.IndexService;
 import com.github.lionboard.model.TempModel;
 import com.github.lionboard.service.LionBoardService;
@@ -64,6 +65,7 @@ public class IndexController {
             value = "view/addPost",
             method = RequestMethod.GET)
     public ModelAndView viewAddPost() {
+        //Spring Security session에 저장된 login된 유저 정보 가져오기.
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String identity = auth.getName(); //get logged in username
         com.github.lionboard.model.User loginUser = lionBoardService.getUserByIdentity(identity);
@@ -78,14 +80,19 @@ public class IndexController {
             method = RequestMethod.GET)
     public ModelAndView editPost(@PathVariable("postId") int postId) {
         Post post = lionBoardService.getPostByPostId(postId);
+
+        //Spring Security session에 저장된 login된 유저 정보 가져오기.
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String identity = auth.getName(); //get logged in username
         com.github.lionboard.model.User loginUser = lionBoardService.getUserByIdentity(identity);
 
+        //첨부파일 목록 반환.
+        List<PostFile> postFiles = lionBoardService.getPostFilesByPostId(postId);
         if(post.getUserId() == loginUser.getId()) {
             ModelAndView mav = new ModelAndView("editPost");
             mav.addObject("post", post);
             mav.addObject("loginUserId", loginUser.getId());
+            mav.addObject("postFiles",postFiles);
             return mav;
         }else{
             throw new IncorrectAccessException();
@@ -132,6 +139,7 @@ public class IndexController {
 
     @RequestMapping(value="logout", method = RequestMethod.GET)
     public String logoutPage (HttpServletRequest request, HttpServletResponse response) {
+
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null){
             new SecurityContextLogoutHandler().logout(request, response, auth);

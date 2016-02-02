@@ -444,11 +444,6 @@ public class LionBoardServiceMock implements LionBoardService {
 
 
     @Override
-    public void addPostFile(int postId, PostFile postFiles) {
-
-    }
-
-    @Override
     public void addPostWithFile(Post post) {
 
     }
@@ -461,6 +456,16 @@ public class LionBoardServiceMock implements LionBoardService {
     @Override
     public Post getReplyPostByPostId(int postId) {
         return null;
+    }
+
+    @Override
+    public void changeFileStatusToDelete(int fileId) {
+
+    }
+
+    @Override
+    public void addFileOnPost(Post post) {
+
     }
 
 

@@ -44,5 +44,6 @@
     <script type="text/javascript" src="/js/loginAndRegist.js"></script>
     <script type="text/javascript" src="/js/addPost.js"></script>
     <script type="text/javascript" src="/js/editPost.js"></script>
+    <script type="text/javascript" src="/js/replyPost.js"></script>
 </body>
 </html>

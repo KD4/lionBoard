@@ -60,7 +60,7 @@
     </update>
 
     <update id="updatePostNumForInsertRow" parameterType="java.util.Map">
-        UPDATE POST_TB set postNum = postNum - 1 WHERE postNum BETWEEN #{lowerNum} AND #{upperNum}
+        UPDATE POST_TB set postNum = postNum - 1 WHERE postNum BETWEEN #{lowerLimit} AND #{upperLimit}
     </update>
 
     <select id="getLikeCount" resultType="java.lang.Integer">
@@ -134,11 +134,12 @@
     </insert>
 
     <select id="findPostsByUserId" resultType="com.github.lionboard.model.Post">
-        SELECT posts.*, users.name username, users.profileUrl profileUrl, status.postStatus
+        SELECT posts.*, users.name username, status.postStatus
         FROM POST_TB AS posts
         LEFT JOIN USER_TB AS users ON posts.userId = users.id
         LEFT JOIN POST_STATUS_TB AS status ON posts.postId = status.postId
         WHERE posts.userId = #{userId} AND status.postStatus = 'S'
+        ORDER BY posts.postId DESC
     </select>
 </mapper>
 

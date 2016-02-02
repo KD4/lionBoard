@@ -48,18 +48,21 @@
 </div>
 <div class="panel panel-default post-footer">
     <span class="post-attach-file">
-      첨부파일 :<a href="#">$post.existFiles</a>
+      첨부파일 :
+        #foreach($postFile in $postFiles)
+        <a href="$postFile.fileUrl"  download>$postFile.fileName</a>
+        #end
     </span>
     <span class="post-btn-group">
         #if($post.userId == $loginUserId)
-        <a href="#" class="btn btn-default edit-btn" data-postId="$postId" aria-expanded="false">
+        <a href="#" id="edit-post" class="btn btn-default" data-postId="$postId" aria-expanded="false">
             수정
         </a>
-        <a href="/editPost/$postId" class="btn btn-default" aria-expanded="false">
+        <a href="#" id="delete-post" class="btn btn-default" aria-expanded="false">
             삭제
         </a>
         #end
-        <a href="/view/addPost" class="btn btn-default" aria-expanded="false" data-parent="$post.postId">
+        <a href="#" id="reply-post" class="btn btn-default" aria-expanded="false" data-parent="$post.postId">
             답글
         </a>
     </span>

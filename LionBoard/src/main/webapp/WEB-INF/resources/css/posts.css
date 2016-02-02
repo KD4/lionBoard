@@ -87,3 +87,7 @@ a:active { text-decoration:none; !important; }
     width: 40px;
     height: 38px;
 }
+
+.reply-margin{
+    margin-left:15px;
+}

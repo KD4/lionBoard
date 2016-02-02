@@ -35,22 +35,30 @@ public class PostController {
             headers = "Accept=application/json",
             method= RequestMethod.POST)
     public String writePost(Post post){
+        try {
+            if (post.getUploadFile() != null) {
+                post.setExistFiles("T");
+               //ToDo 여러 개의 파일 업로드
+                lionBoardService.addPostWithFile(post);
+            } else {
+                post.setExistFiles("F");
+                lionBoardService.addPost(post);
+            }
+            Post insertedPost = lionBoardService.getPostByPostId(post.getPostId());
 
-        lionBoardService.addPost(post);
-
-        Post insertedPost = lionBoardService.getPostByPostId(post.getPostId());
-
-        if(insertedPost != null){
+            //올라간 게시글의 아이디를 클라이언트로 보냄.
             return String.valueOf(insertedPost.getPostId());
-        }else{
-            throw new InvalidPostException();
+
+        }catch (RuntimeException re){
+            //에러 메시지를 클라이언트로 보냄.
+            return re.getMessage();
         }
+
     }
 
 
     @RequestMapping(method= RequestMethod.GET)
-    public ModelAndView getPosts(@RequestParam(value = "offset", required = false, defaultValue = "0") int offset, @RequestParam(value = "limit", required = false, defaultValue = "20") int limit
-            ,HttpSession session,HttpServletResponse response){
+    public ModelAndView getPosts(@RequestParam(value = "offset", required = false, defaultValue = "0") int offset, @RequestParam(value = "limit", required = false, defaultValue = "20") int limit){
 
         ModelAndView mav = new ModelAndView("index");
 
@@ -75,8 +83,10 @@ public class PostController {
         ModelAndView mav = new ModelAndView("posts");
         Post post = lionBoardService.getPostByPostId(postId);
         List<Comment> comments = lionBoardService.getCommentsByPostId(postId);
+        List<PostFile> postFiles = lionBoardService.getPostFilesByPostId(postId);
         mav.addObject("post", post);
         mav.addObject("comments", comments);
+        mav.addObject("postFiles",postFiles);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String identity = auth.getName(); //get logged in username
         if(!identity.equals("anonymousUser")) {
@@ -97,10 +107,15 @@ public class PostController {
     }
 
 
+    @ResponseBody
     @RequestMapping(method= RequestMethod.DELETE,value = "/{postId}")
     public String removePost(@PathVariable("postId") int postId){
-        lionBoardService.changePostStatusToDelete(postId);
-        return "redirect:index";
+        try {
+            lionBoardService.changePostStatusToDelete(postId);
+            return "success";
+        }catch (RuntimeException e){
+            return e.getMessage();
+        }
     }
 
     @ResponseBody

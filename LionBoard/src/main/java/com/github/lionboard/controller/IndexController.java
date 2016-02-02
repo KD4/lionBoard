@@ -49,7 +49,9 @@ public class IndexController {
     @RequestMapping(
             value = "index",
             method = RequestMethod.GET)
-    public String index(ModelMap modelMap,Model model) {
+    public String index(ModelMap modelMap) {
+
+        //postsController에서 넘어온 로직인지 확인함.
         if (modelMap.containsAttribute("posts")) {
             return "index";
         }
@@ -61,7 +63,7 @@ public class IndexController {
     @RequestMapping(
             value = "view/addPost",
             method = RequestMethod.GET)
-    public ModelAndView viewAddPost(HttpSession session,HttpServletResponse response) {
+    public ModelAndView viewAddPost() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String identity = auth.getName(); //get logged in username
         com.github.lionboard.model.User loginUser = lionBoardService.getUserByIdentity(identity);
@@ -74,7 +76,7 @@ public class IndexController {
     @RequestMapping(
             value = "view/editPost/{postId}",
             method = RequestMethod.GET)
-    public ModelAndView editPost(@PathVariable("postId") int postId, HttpSession session,HttpServletResponse response) {
+    public ModelAndView editPost(@PathVariable("postId") int postId) {
         Post post = lionBoardService.getPostByPostId(postId);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String identity = auth.getName(); //get logged in username
@@ -88,6 +90,25 @@ public class IndexController {
         }else{
             throw new IncorrectAccessException();
         }
+
+    }
+
+    @RequestMapping(
+            value = "view/replyPost/{postId}",
+            method = RequestMethod.GET)
+    public ModelAndView replyPost(@PathVariable("postId") int postId) {
+        Post basePost = lionBoardService.getReplyPostByPostId(postId);
+
+        //Spring Security session에 저장된 login된 유저 정보 가져오기.
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String identity = auth.getName(); //get logged in username
+        com.github.lionboard.model.User loginUser = lionBoardService.getUserByIdentity(identity);
+
+
+        ModelAndView mav = new ModelAndView("replyPost");
+        mav.addObject("basePost", basePost);
+        mav.addObject("loginUserId", loginUser.getId());
+        return mav;
 
     }
 

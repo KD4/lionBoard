@@ -1,11 +1,12 @@
 (function($) {
-    $("#post-form").submit(function(){
+    $("#reply-form").submit(function(){
 
         var formData = new FormData();
         formData.append("userId",$("input[name=userId]").val());
+        formData.append("depth",$("input[name=depth]").val());
+        formData.append("postNum",$("input[name=postNum]").val());
         formData.append("title",$("input[name=title]").val());
         formData.append("contents",CKEDITOR.instances.contents.getData());
-        formData.append("depth","0");
 
         //첨부된 파일이 있을때만 formdata객체에 파일 속성을 생성함.
         if($("input[name=uploadFile]")[0].files[0] != null){

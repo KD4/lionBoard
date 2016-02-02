@@ -3,6 +3,40 @@
     $loginUserId = $("#loginUser").data('userid');
     $currentPostId = $("#currentPost").data('postid');
 
+
+    $("#edit-post").click(function(){
+        var urlForEdit = "/view/editPost/"+$currentPostId;
+        window.location.replace(urlForEdit);
+    });
+    $('#delete-post').click(function(){
+        if (confirm("정말 삭제하시겠습니까??") == true){    //확인
+            var urlForDelete = "/posts/"+$currentPostId;
+            $.ajax({
+                url: urlForDelete,
+                type: 'delete',
+                dataType: 'text',
+                success: function (data) {
+                    if(data==="success"){
+                        alert("삭제되었습니다.");
+                        //삭제 후 메인 페이지로 이동.
+                        window.location.replace("/index");
+                    }else {
+                        alert(data);
+                    }
+                },
+                error: function(data) {
+                    alert(data);
+                }
+            });
+        }else{   //취소
+            return;
+        }
+    });
+    $('#reply-post').click(function(){
+        var urlToEdit = "/view/replyPost/"+$currentPostId;
+        window.location.replace(urlToEdit);
+    });
+
     $(".post-like").click(function(){
         var postId = $(this).data('postid');
         var beforeCount = $(this).text().trim().substring(3).trim();
@@ -229,10 +263,7 @@
         });
     });
 
-    $(".edit-btn").click(function(){
-        var urlToEdit = "/view/editPost/"+$currentPostId;
-        window.location.replace(urlToEdit);
-    });
+
 
     $("#comment-from").submit(function(){
         var comment = {
@@ -264,15 +295,14 @@
     });
 
     $(".reply-comment-form").submit(function(){
-        var $parentDepth = $(this).data('depth');
-        var depth = $parentDepth + 1;
-        var parentNum = $(this).data('parentnum');
+        var depth = Number($(this).data('depth'))+1;
+        var cmtNum = Number($(this).data('parentnum'))-1;
         var contents = $("textarea[name=contents]",this).val();
         var comment = {
             userId:$loginUserId,
             postId:$currentPostId,
             depth:depth,
-            cmtNum:parentNum,
+            cmtNum:cmtNum,
             contents:contents
         };
 

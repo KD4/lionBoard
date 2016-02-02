@@ -3,24 +3,20 @@ package com.github.lionboard.service;
 import com.github.lionboard.error.InvalidCmtException;
 import com.github.lionboard.error.InvalidPostException;
 import com.github.lionboard.error.InvalidUserException;
+import com.github.lionboard.error.UploadFileToTenthException;
 import com.github.lionboard.model.*;
 import com.github.lionboard.repository.CommentRepository;
 import com.github.lionboard.repository.PostFileRepository;
 import com.github.lionboard.repository.PostRepository;
 import com.github.lionboard.repository.UserRepository;
 import com.github.lionboard.tenth2.ImageFileUploadForTenth2;
-import org.joda.time.DateTime;
+import org.apache.commons.fileupload.FileUploadException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.BufferedOutputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 /**
  * Created by lion.k on 16. 1. 20..
  */
@@ -63,14 +59,17 @@ public class LionBoardServiceImpl implements LionBoardService {
                 postRepository.insertPost(post);
                 postRepository.insertPostStatus(post);
             }else{
-                Map<String,Integer> range = new HashMap<>();
-                range.put("upperNum",post.getPostNum()-1);
-                int lowerNum = (post.getPostNum()-1) / 1000 * 1000 + 1;
-                range.put("lowerNum", lowerNum);
-                if(postRepository.findPostByPostNum(lowerNum) != null){
-                    throw new InvalidPostException("because the number of reply exceed limit, you can't write reply. Sorry ~ ");
+                if((post.getPostNum()-1) % 1000 < 2){
+                    throw new InvalidPostException("because the number of reply exceed limit, you can't write the reply.");
                 }
+
+                // 답글의 PostNum(부모글의 -1)와 부모글의 이전글 사이의 글들의 PostNum값을 -1 해서 답글이 들어갈 자리를 만듦.
+                Map<String,Integer> range = new HashMap<>();
+                range.put("upperLimit",post.getPostNum());
+                int lowerLimit = (post.getPostNum()-1) / 1000 * 1000 + 1;
+                range.put("lowerLimit", lowerLimit);
                 postRepository.updatePostNumForInsertRow(range);
+
                 postRepository.insertPost(post);
                 postRepository.insertPostStatus(post);
             }
@@ -123,6 +122,7 @@ public class LionBoardServiceImpl implements LionBoardService {
     @Override
     public void changePostStatusToDelete(int postId) {
         postRepository.updatePostStatusToDelete(postId);
+        changeCmtStatusByPostId(postId,"D");
 
     }
 
@@ -263,17 +263,21 @@ public class LionBoardServiceImpl implements LionBoardService {
 
     @Override
     public void addComment(Comment comment) {
+
+        //없는 게시글에 코멘트를 달려고 할 때, 예외처리.
         if(postRepository.findPostByPostId(comment.getPostId()) == null){
             throw new InvalidPostException("post is nonexistent. check post information.");
         }
+
+
         if(comment.getDepth() < 1){
             commentRepository.insertComment(comment);
             commentRepository.insertCommentStatus(comment);
         }else{
             Map<String,Integer> range = new HashMap<>();
-            range.put("upperNum",comment.getCmtNum()-1);
-            int lowerNum = (comment.getCmtNum()-1) / 1000 * 1000 +1;
-            range.put("lowerNum", lowerNum);
+            range.put("upperLimit",comment.getCmtNum());
+            int lowerLimit = (comment.getCmtNum()) / 1000 * 1000 +1;
+            range.put("lowerLimit", lowerLimit);
             commentRepository.updateCmtNumForInsertRow(range);
             commentRepository.insertComment(comment);
             commentRepository.insertCommentStatus(comment);
@@ -360,7 +364,7 @@ public class LionBoardServiceImpl implements LionBoardService {
             //프로필 작명 규칙 : lionboard_profile_{userId}.jpg
             String fileName = "lionboard_profile_"+String.valueOf(userId)+".jpg";
 
-            String uploadUrl = insertThumnailOnTenthServer(uploadFile.getBytes(), fileName);
+            String uploadUrl = insertFileOnTenthServer(uploadFile.getBytes(), fileName);
 
             return uploadUrl;
         } catch (Exception e) {
@@ -372,35 +376,12 @@ public class LionBoardServiceImpl implements LionBoardService {
         }
     }
 
-    private String insertThumnailOnTenthServer(byte[] imageFileBytes, String fileName) throws Exception {
+    private String insertFileOnTenthServer(byte[] imageFileBytes, String fileName) throws Exception {
         try {
             imageFileUploadForTenth2.init();
             return imageFileUploadForTenth2.create(imageFileBytes, fileName);
         } catch (Exception e) {
             throw new Exception(e);
-        }
-    }
-
-    private void insertFileOnLocalServer(MultipartFile uploadFile, String fileName, String pathSet) {
-        if (uploadFile != null) {
-            byte[] bytes = new byte[0];
-            BufferedOutputStream bos = null;
-            try {
-                bytes = uploadFile.getBytes();
-                /* 파일 쓰기 */
-                bos = new BufferedOutputStream(new FileOutputStream(pathSet+fileName));
-                bos.write(bytes);
-                bos.flush();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                try {
-                    bos.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
         }
     }
 
@@ -416,6 +397,84 @@ public class LionBoardServiceImpl implements LionBoardService {
             System.out.println(e.getStackTrace());
             throw new InvalidUserException(e.getMessage());
         }
+    }
+
+    @Override
+    public PostFile addFileToTenth(int postId, MultipartFile uploadFile) {
+
+        List<PostFile> postFiles = new ArrayList<PostFile>();
+        PostFile postFile = new PostFile();
+
+        try {
+
+            //첨부파일 작명 규칙 : lionboard_post_File_{postId}_{originalFileName}
+            String fileName = "lionboard_post_File_"+postId+"_"+uploadFile.getOriginalFilename();
+            String uploadUrl = insertFileOnTenthServer(uploadFile.getBytes(), fileName);
+            postFile.setPostId(postId);
+            postFile.setFileUrl(uploadUrl);
+            postFile.setFileName(uploadFile.getOriginalFilename());
+            postFiles.add(postFile);
+        } catch (Exception e) {
+
+            //todo logging.
+            System.out.println("Thenth2 업로드 실패.");
+            e.printStackTrace();
+            throw new InvalidPostException("fail to upload files.");
+        }
+
+        return postFile;
+    }
+
+    @Override
+    public void addPostFile(int postId, PostFile postFile) {
+        postFile.setPostId(postId);
+        postFile.setFileName(postFile.getFileName());
+        postFile.setFileUrl(postFile.getFileUrl());
+        System.out.println("uploaded file named" + postFile.getFileName() + " url is " + postFile.getFileUrl() + " to " + postId);
+        postFileRepository.insertPostFile(postFile);
+    }
+
+    @Override
+    public void addPostWithFile(Post post) {
+        try {
+            //Post 기본 정보 등록
+            addPost(post);
+            // 등록된 Post Id 반환.
+            int postId = post.getPostId();
+            //Id와 uploadfile 정보를 이용해서 tenth서버에 파일 업로드 후
+            PostFile postFile = addFileToTenth(post.getPostId(), post.getUploadFile());
+            System.out.println("uploaded file named" + postFile.getFileName() + " url is " + postFile.getFileUrl() + " to " + postId);
+            postFileRepository.insertPostFile(postFile);
+        }catch (RuntimeException re){
+            throw new InvalidPostException(re.getMessage());
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new UploadFileToTenthException("Tenth 서버에 파일을 업로드할 수 없습니다."+e.getMessage());
+        }
+    }
+
+
+    //특정 포스트의 상태가 변경되면 해당 포스트의 코멘트도 상태가 같이 변경됨.
+    @Override
+    public void changeCmtStatusByPostId(int postId, String status) {
+        Comment comment = new Comment();
+        comment.setPostId(postId);
+        comment.setCmtStatus(status);
+        commentRepository.updateCmtStatusByPostId(comment);
+    }
+
+    @Override
+    public Post getReplyPostByPostId(int postId) {
+        Post selectedPost = postRepository.findPostByPostId(postId);
+        if(selectedPost == null){
+            throw new InvalidPostException();
+        }
+        //답글은 부모글의 depth + 1에 해당하는 depth를 가짐.
+        selectedPost.setDepth(selectedPost.getDepth()+1);
+        //답글은 부모글의 PostNum - 1에 해당하는 PostNum를 가짐.
+        selectedPost.setPostNum(selectedPost.getPostNum()-1);
+
+        return selectedPost;
     }
 
 

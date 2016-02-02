@@ -7,11 +7,13 @@
     <a href="/index"><h3 class="text-muted">LIONBOARD</h3></a>
 </div>
 <div class="panel panel-default">
-    <form id="post-form" method="post">
+    <form id="reply-form" method="post">
         <input type="hidden" name="userId" value="$loginUserId"/>
+        <input type="hidden" name="depth" value="$basePost.depth"/>
+        <input type="hidden" name="postNum" value="$basePost.postNum"/>
         <div class="form-group">
             <label for="postTitle">제목</label>
-            <input type="text" class="form-control" id="postTitle" name="title" placeholder="제목을 입력하세요.">
+            <input type="text" class="form-control" id="postTitle" name="title" value="$basePost.title 의 답글">
         </div>
         <textarea id="contents" name="contents" class="ckeditor" rows="12" cols="50"></textarea>
         <div class="form-group">

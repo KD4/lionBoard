@@ -113,4 +113,14 @@ public interface LionBoardService {
     String uploadProfile(int userId, MultipartFile mpf);
 
     void updateProfileInfoOnUser(int userId, String uploadedUrl);
+
+    PostFile addFileToTenth(int postId,MultipartFile uploadFiles);
+
+    void addPostFile(int postId, PostFile postFiles);
+
+    void addPostWithFile(Post post);
+
+    void changeCmtStatusByPostId(int postId, String status);
+
+    Post getReplyPostByPostId(int postId);
 }

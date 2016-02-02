@@ -118,7 +118,7 @@ public class UserController {
 
 
 
-    
+
     @ResponseBody @RequestMapping(
             value="/{userId}/profile",
             produces="application/json;charset=utf8",

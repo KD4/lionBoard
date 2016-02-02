@@ -48,7 +48,14 @@
             #foreach($post in $posts)
                 <tr>
                     <td>$post.postId</td>
-                    <td><a href="/posts/$post.postId">$post.title </a></td>
+                    <td>
+                        #if($post.depth > 0)
+                            #foreach($depth in [1..$post.depth])
+                                <span class="reply-margin" aria-hidden="true"></span>
+                            #end
+                            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                        #end
+                        <a href="/posts/$post.postId">$post.title </a></td>
                     <td><a href="/users/$post.userId">$!post.userName </a></td>
                     <td><small>$dateTool.format("short",$post.createdAt)</small></td>
                     <td>$post.viewCount</td>

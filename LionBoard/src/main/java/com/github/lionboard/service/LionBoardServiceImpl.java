@@ -200,9 +200,9 @@ public class LionBoardServiceImpl implements LionBoardService {
     @Override
     public List<Pagination> getPagination(int offset) {
 //        offset param을 이용해서 현재 페이지 넘버를 계산합니다.
-        int currentPage = offset/20 + 1;
+        int currentPage = offset/15 + 1;
 
-//        페이징은 5 페이지씩 그룹핑을 합니다.이전 그룹 페이지 offset을 담는 변수를 선언.
+//        페이징은 5 페이지씩 그룹핑을 합니다.이전 그룹 페이지 번호를 담는 변수를 선언.
         int previousPage;
 
         // 현재 페이지가 5보다 크면 이전 페이지를 계산해야하고, 그렇지 않다면 이전 페이지는 첫번째 페이지가 됩니다.
@@ -212,11 +212,11 @@ public class LionBoardServiceImpl implements LionBoardService {
             previousPage = 1;
         }
 
-        // 다음 그룹 페이지 offset을 계산해서 olderpage 변수에 담습니다.
+        // 다음 그룹 페이지 페이지 번호를 계산해서 olderpage 변수에 담습니다.
         int olderPage = previousPage + 5;
 
         // 현재 게시물을 표시하는 페이지가 총 5개가 안된다면, maxPage가 최종페이지가 됩니다.
-        int maxPage = postRepository.countPost() / 20 + 1;
+        int maxPage = postRepository.countPost() / 15 + 1;
         if(maxPage<olderPage){
             olderPage = maxPage;
         }
@@ -226,7 +226,7 @@ public class LionBoardServiceImpl implements LionBoardService {
         for(int i = previousPage;i<=olderPage;i++){
             Pagination pagination = new Pagination();
             pagination.setPage(i);
-            pagination.setOffset(i*20);
+            pagination.setOffset((i-1)*15);
             if(i==currentPage){
                 pagination.setIsCurrent(true);
             }else{

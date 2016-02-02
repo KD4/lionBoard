@@ -88,6 +88,40 @@ a:active { text-decoration:none; !important; }
     height: 38px;
 }
 
+
+/* index post list css */
+.th-num{
+    width: 7%;
+}
+.th-title{
+    height: 1.5em;
+    width:60%;
+    overflow:hidden;
+}
+.th-figure{
+    width:5%;
+}
+.th-author{
+    width:9%;
+}
+.th-date{
+    width:11%;
+}
+.th-view{
+    width:11%;
+}
+
 .reply-margin{
     margin-left:15px;
+}
+
+.post-figures{
+    font-size: 12px;
+}
+.td-num{
+    font-size: 14px;
+}
+
+.column-header{
+    font-size: 14px;
 }

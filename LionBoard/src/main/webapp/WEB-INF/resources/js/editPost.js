@@ -1,12 +1,7 @@
 (function($) {
     $("#edit-form").submit(function(){
+        sendFileForm();
 
-        //첨부파일이 있으면 파일을 첨부하는 로직을 포함하여 수행하는 sendFileForm 함수 실행.
-        if($("input[name=uploadFile]")[0].files[0] != null){
-            sendFileForm(true);
-        }else{
-            sendFileForm(false);
-        }
         return false;
     });
 
@@ -21,7 +16,7 @@
                 dataType: 'text',
                 success: function (responsedData) {
                     if(responsedData=='success'){
-                        sendFileForm(false);
+                        sendFileForm();
                     }else{
                         alert(responsedData);
                     }
@@ -35,16 +30,13 @@
 
 
 
-    function sendFileForm(existFiles){
+    function sendFileForm(){
         var postId =$("input[name=postId]").val();
-
-        if(existFiles==true){
+        if($("input[name=uploadFile]")[0].files[0] != null){
             var formData = new FormData();
             formData.append("postId",postId);
-
             //첨부된 파일이 있을때만 formdata객체에 파일 속성을 생성함.
             formData.append("uploadFile", $("input[name=uploadFile]")[0].files[0]);
-
             console.log(formData);
             $.ajax({
                 url: '/files',
@@ -56,6 +48,7 @@
                 dataType:'text',
                 success:function(responsedData){
                     if(responsedData=="success"){
+                        //var postId =$("input[name=postId]").val();
                         var postInfo = {
                             title:$("input[name=title]").val(),
                             contents:CKEDITOR.instances.contents.getData(),
@@ -79,6 +72,7 @@
                 }
             });
         }else{
+            //var postId =$("input[name=postId]").val();
             var postInfo = {
                 title:$("input[name=title]").val(),
                 contents:CKEDITOR.instances.contents.getData(),
@@ -86,6 +80,8 @@
                 userId:$("input[name=userId]").val(),
                 existFiles:'F'
             };
+
+            console.log(postInfo);
             $.ajax({
                 url: '/posts/'+postId,
                 type: 'put',

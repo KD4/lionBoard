@@ -58,7 +58,7 @@ public class PostController {
 
 
     @RequestMapping(method= RequestMethod.GET)
-    public ModelAndView getPosts(@RequestParam(value = "offset", required = false, defaultValue = "0") int offset, @RequestParam(value = "limit", required = false, defaultValue = "20") int limit){
+    public ModelAndView getPosts(@RequestParam(value = "offset", required = false, defaultValue = "0") int offset, @RequestParam(value = "limit", required = false, defaultValue = "15") int limit){
 
         ModelAndView mav = new ModelAndView("index");
 

@@ -21,6 +21,7 @@
                 #foreach($postFile in $postFiles)
                     <li><a href="$postFile.fileUrl" download>$postFile.fileName</a> - <a href="#" class="delete-file" data-fileId="$postFile.fileId">삭제</a></li>
                 #end
+                <input type="file" class="hidden" id="postFile" name="uploadFile">
             #else
                 <div class="form-group">
                     <label for="postFile">파일 업로드</label>

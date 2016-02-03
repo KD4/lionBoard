@@ -6,30 +6,29 @@
 <mapper namespace="com.github.lionboard.repository.CommentRepository">
 
     <select id="findCommentsByPostId" resultType="com.github.lionboard.model.Comment">
-        SELECT *, users.name username, status.cmtStatus
+        SELECT *, users.name username, users.profileUrl profileUrl, status.cmtStatus
         FROM CMT_TB cmts
         LEFT JOIN USER_TB users ON cmts.userId = users.id
         LEFT JOIN CMT_STATUS_TB status ON cmts.cmtId = status.cmtId
-        WHERE cmts.postId = #{postId} AND status.cmtStatus = 'S'
+        WHERE cmts.postId = #{postId}
         ORDER BY cmts.cmtNum DESC
     </select>
 
     <select id="findComments" resultType="com.github.lionboard.model.Comment">
-        SELECT *, users.name username, status.cmtStatus
+        SELECT *, users.name username, users.profileUrl profileUrl, status.cmtStatus
         FROM CMT_TB cmts
         LEFT JOIN USER_TB users ON cmts.userId = users.id
         LEFT JOIN CMT_STATUS_TB status ON cmts.cmtId = status.cmtId
-        WHERE status.cmtStatus = 'S'
         ORDER BY cmts.cmtNum DESC
     </select>
 
 
     <select id="findCommentByCmtId" parameterType="int" resultType="com.github.lionboard.model.Comment">
-        SELECT *, users.name username, status.cmtStatus
+        SELECT *, users.name username, users.profileUrl profileUrl, status.cmtStatus
         FROM CMT_TB cmts
         LEFT JOIN USER_TB users ON cmts.userId = users.id
         LEFT JOIN CMT_STATUS_TB status ON cmts.cmtId = status.cmtId
-        WHERE cmts.cmtId = #{cmtId} AND status.cmtStatus = 'S'
+        WHERE cmts.cmtId = #{cmtId}
     </select>
 
     <insert id="insertComment" parameterType="com.github.lionboard.model.Comment">
@@ -51,8 +50,13 @@
         UPDATE CMT_STATUS_TB SET cmtStatus=#{cmtStatus} WHERE cmtId=#{cmtId}
     </update>
 
+    <update id="updateCmtStatusByPostId" parameterType="com.github.lionboard.model.Comment">
+        UPDATE CMT_STATUS_TB status INNER JOIN CMT_TB cmt ON status.cmtId = cmt.cmtId
+        SET status.cmtStatus=#{cmtStatus} WHERE cmt.postId=#{postId}
+    </update>
+
     <update id="updateCmtNumForInsertRow" parameterType="java.util.Map">
-        UPDATE CMT_TB set cmtNum = cmtNum - 1 WHERE cmtNum BETWEEN #{lowerNum} AND #{upperNum}
+        UPDATE CMT_TB set cmtNum = cmtNum - 1 WHERE cmtNum BETWEEN #{lowerLimit} AND #{upperLimit}
     </update>
 
     <select id="getLikeCount" resultType="java.lang.Integer">
@@ -103,13 +107,14 @@
         UPDATE CMT_REPORT_TB SET processStatus=#{processStatus} WHERE id=#{id}
     </update>
 
+
     <select id="findCommentsByUserId" resultType="com.github.lionboard.model.Comment">
-        SELECT *, users.name username, status.cmtStatus
+        SELECT *,users.name username, users.profileUrl profileUrl, status.cmtStatus
         FROM CMT_TB cmts
         LEFT JOIN USER_TB users ON cmts.userId = users.id
         LEFT JOIN CMT_STATUS_TB status ON cmts.cmtId = status.cmtId
         WHERE cmts.userId = #{cmtuserIdId} AND status.cmtStatus = 'S'
-        ORDER BY cmts.cmtNum DESC
+        ORDER BY cmts.cmtId DESC
     </select>
 </mapper>
 

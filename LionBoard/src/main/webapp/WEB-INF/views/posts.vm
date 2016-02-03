@@ -2,7 +2,7 @@
     <nav>
         <ul class="nav nav-pills pull-right">
             #if($!loginUserId)
-                <li role="presentation"><a href="/users/$loginUserId">My Page</a></li>
+                <li role="presentation"><a href="/users/$loginUserId" id="loginUser" data-userId="$loginUserId">My Page</a></li>
                 <li role="presentation"><a href="/logout">LogOut</a></li>
             #else
                 <li role="presentation"><a href="/signup">Sign Up</a></li>
@@ -15,16 +15,18 @@
 <div class="panel panel-default">
     <!-- <div class="panel-body"> -->
     <div class="post-header-left">
-        <div class="post-header-left-img"></div>
+        <a class="post-header-left-img" href="/users/$post.userId">
+            <img src="$post.profileUrl" alt="user-profile"/>
+        </a>
     </div>
     <div class="post-header-right">
         <div class="post-header-right-top">
-            <h4>$post.title</h4>
+            <h4 id="currentPost" data-postId="$post.postId" >$post.title</h4>
         </div>
         <div class="post-header-right-bottom">
             <span><a href="/users/$post.userId"> $post.userName </a></span>
             <span> $dateTool.format("short",$post.createdAt)</span>
-            <span> $post.viewCount </span>
+            <span> 조회수 : $post.viewCount </span>
         </div>
     </div>
     <!-- </div> -->
@@ -36,132 +38,113 @@
 </div>
 <div class="post-body-vote">
     <div class="btn-group">
-        <a href="posts/{id}/like/script" class="btn btn-default" aria-expanded="false">
+        <a href="#" class="btn btn-default post-like" data-postId="$post.postId" onclick="return false;" aria-expanded="false">
             좋아요 $post.likeCount
         </a>
-        <a href="posts/{id}/hate/script" class="btn btn-default" aria-expanded="false">
+        <a href="#" class="btn btn-default post-hate" data-postId="$post.postId" onclick="return false;" aria-expanded="false">
             싫어요 $post.hateCount
         </a>
     </div>
 </div>
 <div class="panel panel-default post-footer">
     <span class="post-attach-file">
-      첨부파일 :<a href="#">$post.existFiles</a>
+      첨부파일 :
+        #foreach($postFile in $postFiles)
+        <a href="$postFile.fileUrl"  download>$postFile.fileName</a>
+        #end
     </span>
     <span class="post-btn-group">
         #if($post.userId == $loginUserId)
-        <a href="#" class="btn btn-default edit-btn" data-postId="$postId" aria-expanded="false">
+        <a href="#" id="edit-post" class="btn btn-default" data-postId="$postId" aria-expanded="false">
             수정
         </a>
-        <a href="/editPost/$postId" class="btn btn-default" aria-expanded="false">
+        <a href="#" id="delete-post" class="btn btn-default" aria-expanded="false">
             삭제
         </a>
         #end
-        <a href="/view/addPost" class="btn btn-default" aria-expanded="false" data-parent="$post.postId">
+        <a href="#" id="reply-post" class="btn btn-default" aria-expanded="false" data-parent="$post.postId">
             답글
         </a>
     </span>
 </div>
 <div class="row">
-<form>
-    <div class="form-group">
-        <label for="comment">Your Comment</label>
-        <textarea name="comment" class="form-control" rows="3"></textarea>
-    </div>
-    <button type="submit" class="btn btn-default">Send</button>
-</form>
+##로그인한 유저일 때만 코멘트 입력 폼 출력
+#if($!loginUserId)
+    <form id="comment-from">
+        <div class="form-group">
+            <label for="comments">Your Comment</label>
+            <textarea id="comment-contents" name="contents" class="form-control" rows="3"></textarea>
+        </div>
+        <button type="submit" class="btn btn-default">Send</button>
+    </form>
+#end
     <div class="col-md-12">
         <div class="page-header">
             <h4><small class="pull-right">$comments.size() comments</small> Comments </h4>
         </div>
         <div class="comments-list">
             #foreach($comment in $comments)
-                #if($comment.depth == 0)
-                <div class="media">
+                #if($comment.cmtStatus eq 'S')
+                    #if($comment.depth == 0)
+                    ##루트 코멘트
+                    <div class="media">
+                    #elseif($comment.depth == 1)
+                    ##답글 코멘트들
+                    <div class="media second-comment">
+                    #elseif($comment.depth == 2)
+                    <div class="media third-comment">
+                    #else
+                    <div class="media fourth-comment">
+                    #end
+
                     <p class="pull-right"><small>$dateTool.format("short",$comment.createdAt)</small></p>
-                    <a class="media-left" href="#">
-                        <img src="http://lorempixel.com/40/40/people/1/">
+                    <a class="media-left comment-user-profile" href="/users/$comment.userId">
+                        <img src="$comment.profileUrl" />
                     </a>
                     <div class="media-body">
 
                         <h4 class="media-heading user_name">$comment.userName</h4>
                         $comment.contents
-
-                        <p><small><a href="">Like</a> - <a href="">Hate</a> - <a href="#" class="comment-reply" data-num="$comment.cmtId">Reply</a></small></p>
+                        <p>
+                            <small>
+                                <a href="#" class="comment-like" data-cmtId="$comment.cmtId" onclick="return false;">Like $comment.likeCount</a> -
+                                <a href="#" class="comment-hate" data-cmtId="$comment.cmtId" onclick="return false;">Hate $comment.hateCount</a> -
+                                <a href="#" class="comment-reply" data-cmtId="$comment.cmtId">Reply</a>
+                            #if($comment.userId == $loginUserId)
+                                - <a href="#" class="comment-delete" data-cmtId="$comment.cmtId">Delete</a>
+                            #end
+                        </small></p>
                     </div>
-                    <form class="hide replyNum$comment.cmtId">
+
+                    <form class="reply-comment-form hide replyId-$comment.cmtId" data-cmtId="$comment.cmtId" data-depth="$comment.depth" data-parentNum="$comment.cmtNum" >
                         <div class="form-group">
-                            <label for="comment">Reply Comment</label>
-                            <textarea name="comment" class="form-control" rows="3"></textarea>
+                            <label>Reply Comment</label>
+                            <textarea class="reply-contents-$comment.cmtId form-control" name="contents" rows="3"></textarea>
                         </div>
                         <button type="submit" class="btn btn-default">Reply</button>
                     </form>
                 </div>
-                #elseif($comment.depth == 1)
-                    <div class="media second-comment">
-                        <p class="pull-right"><small>$dateTool.format("short",$comment.createdAt)</small></p>
-                        <a class="media-left" href="#">
-                            <img src="http://lorempixel.com/40/40/people/1/">
-                        </a>
-                        <div class="media-body">
-
-                            <h4 class="media-heading user_name">$comment.userName</h4>
-                            $comment.contents
-
-                            <p><small><a href="">Like</a> - <a href="">Hate</a> - <a href="#" class="comment-reply" data-num="$comment.cmtId">Reply</a></small></p>
-                        </div>
-                        <form class="hide replyNum$comment.cmtId">
-                            <div class="form-group">
-                                <label for="comment">Reply Comment</label>
-                                <textarea name="comment" class="form-control" rows="3"></textarea>
-                            </div>
-                            <button type="submit" class="btn btn-default">Reply</button>
-                        </form>
+                #else
+                ##삭제된 댓글들
+                    #if($comment.depth == 0)
+                    ##루트 코멘트
+                    <div class="media deleted-media">
+                    #elseif($comment.depth == 1)
+                    ##답글 코멘트들
+                    <div class="media deleted-media second-comment">
+                    #elseif($comment.depth == 2)
+                    <div class="media deleted-media third-comment">
+                    #else
+                    <div class="media deleted-media fourth-comment">
+                    #end
+                    <p class="pull-right"><small>$dateTool.format("short",$comment.createdAt)</small></p>
+                    <div class="media-body">
+                        <h4 class="media-heading user_name">Comment not found</h4>
+                        삭제된 댓글입니다.
                     </div>
-                #elseif($comment.depth == 2)
-                    <div class="media third-comment">
-                        <p class="pull-right"><small>$dateTool.format("short",$comment.createdAt)</small></p>
-                        <a class="media-left" href="#">
-                            <img src="http://lorempixel.com/40/40/people/1/">
-                        </a>
-                        <div class="media-body">
-
-                            <h4 class="media-heading user_name">$comment.userName</h4>
-                            $comment.contents
-
-                            <p><small><a href="">Like</a> - <a href="">Hate</a> - <a href="#" class="comment-reply" data-num="$comment.cmtId">Reply</a></small></p>
-                        </div>
-                        <form class="hide replyNum$comment.cmtId">
-                            <div class="form-group">
-                                <label for="comment">Reply Comment</label>
-                                <textarea name="comment" class="form-control" rows="3"></textarea>
-                            </div>
-                            <button type="submit" class="btn btn-default">Reply</button>
-                        </form>
-                    </div>
-                 #else
-                    <div class="media fourth-comment">
-                        <p class="pull-right"><small>$dateTool.format("short",$comment.createdAt)</small></p>
-                        <a class="media-left" href="#">
-                            <img src="http://lorempixel.com/40/40/people/1/">
-                        </a>
-                        <div class="media-body">
-
-                            <h4 class="media-heading user_name">$comment.userName</h4>
-                            $comment.contents
-
-                            <p><small><a href="">Like</a> - <a href="">Hate</a> - <a href="#" class="comment-reply" data-num="$comment.cmtId">Reply</a></small></p>
-                        </div>
-                        <form class="hide replyNum$comment.cmtId">
-                            <div class="form-group">
-                                <label for="comment">Reply Comment</label>
-                                <textarea name="comment" class="form-control" rows="3"></textarea>
-                            </div>
-                            <button type="submit" class="btn btn-default">Reply</button>
-                        </form>
-                    </div>
+                </div>
                 #end
             #end
         </div>
-    </div>
-</div>
+        </div>
+        </div>

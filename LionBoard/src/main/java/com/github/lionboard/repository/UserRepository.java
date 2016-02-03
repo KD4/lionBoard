@@ -27,4 +27,6 @@ public interface UserRepository {
     void updateUserStatusToLeave(int userId);
 
     User findUserByName(String name);
+
+    void updateProfileInfo(User user);
 }

@@ -6,10 +6,9 @@
 
    
 }
-.post-header-left-img{
-  width: 58px;
+.post-header-left-img img{
+  width: 50px;
   height: 47px;
-  background-image: url("http://photos1.blogger.com/blogger/2921/1916/400/01051213.jpg");
 }
 
 .post-header-right-top h4{
@@ -47,7 +46,10 @@
 .posts-list .media{
     border-bottom: 1px dotted #ccc;
 }
-
+.deleted-media{
+    background-color: #EEE;
+    color: #999;
+}
 .second-comment{
   margin-left:5%;
 }
@@ -57,6 +59,9 @@
 }
 .fourth-comment{
   margin-left:20%;
+}
+.wasClicked{
+    font-weight: bold;
 }
 
 ol, ul { list-style: none; }
@@ -71,7 +76,52 @@ ul, li {
 
 
 /* 링크에서 밑줄 없애기 */
-a { text-decoration:none }
+a { text-decoration:none; }
+a:hover { text-decoration:none; !important; }
+a:visited { text-decoration:none; !important; }
+a:active { text-decoration:none; !important; }
 
-/* 마우스 지나갈 때만 삭제 + 강제로 없애기 */
-a:hover { text-decoration:none !important }
+
+/* comment profile css */
+.comment-user-profile img{
+    width: 40px;
+    height: 38px;
+}
+
+
+/* index post list css */
+.th-num{
+    width: 7%;
+}
+.th-title{
+    height: 1.5em;
+    width:60%;
+    overflow:hidden;
+}
+.th-figure{
+    width:5%;
+}
+.th-author{
+    width:9%;
+}
+.th-date{
+    width:11%;
+}
+.th-view{
+    width:11%;
+}
+
+.reply-margin{
+    margin-left:15px;
+}
+
+.post-figures{
+    font-size: 12px;
+}
+.td-num{
+    font-size: 14px;
+}
+
+.column-header{
+    font-size: 14px;
+}

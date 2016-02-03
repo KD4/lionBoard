@@ -244,7 +244,77 @@
         </dependency>
 
 
+        <!-- MultipartHttpServletRequset -->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.4</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.3.1</version>
+        </dependency>
+
+        <!-- static server named tenth2  -->
+        <dependency>
+            <groupId>net.daum.tenth2</groupId>
+            <artifactId>tenth2-lib</artifactId>
+            <version>0.71</version>
+        </dependency>
+
+
     </dependencies>
+
+    <!-- kakao nexus config   -->
+    <repositories>
+        <repository>
+            <id>daum-public</id>
+            <url>
+                http://maven.daumcorp.com/content/groups/daum-public
+            </url>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+            </snapshots>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>daum-public</id>
+            <url>
+                http://maven.daumcorp.com/content/groups/daum-public
+            </url>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+    <distributionManagement>
+        <repository>
+            <id>daum</id>
+            <name>Daum Repository</name>
+            <url>
+                http://maven.daumcorp.com/content/repositories/daum
+            </url>
+        </repository>
+        <snapshotRepository>
+            <id>daum-snapshots</id>
+            <name>Daum Snapshot Repository</name>
+            <url>
+                http://maven.daumcorp.com/content/repositories/daum-snapshots
+            </url>
+        </snapshotRepository>
+    </distributionManagement>
 
     <build>
         <finalName>${project.artifactId}-${project.version}</finalName>

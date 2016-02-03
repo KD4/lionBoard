@@ -7,19 +7,27 @@
     <a href="/index"><h3 class="text-muted">LIONBOARD</h3></a>
 </div>
 <div class="panel panel-default">
-    <form>
+    <form id="edit-form">
+        <input type="hidden" name="userId" value="$loginUserId"/>
+        <input type="hidden" name="postId" value="$post.postId"/>
         <div class="form-group">
             <label for="postTitle">제목</label>
             <input type="text" class="form-control" id="postTitle" name="title" value="$post.title">
         </div>
-        <textarea name="contents" class="ckeditor" rows="12" cols="50" value="$post.contents"></textarea>
+        <textarea name="contents" class="ckeditor" rows="12" cols="50">$post.contents</textarea>
         <ul>
             <li>첨부파일</li>
-            <li><a href="#">$postFile.fileName</a> - <a href="$postFile.fileUrl">삭제</a></li>
+            #if($postFiles.size() > 0)
+                #foreach($postFile in $postFiles)
+                    <li><a href="$postFile.fileUrl" download>$postFile.fileName</a> - <a href="#" class="delete-file" data-fileId="$postFile.fileId">삭제</a></li>
+                #end
+                <input type="file" class="hidden" id="postFile" name="uploadFile">
+            #else
+                <div class="form-group">
+                    <label for="postFile">파일 업로드</label>
+                    <input type="file" id="postFile" name="uploadFile">
+                </div>
+            #end
         </ul>
-        <div class="form-group">
-            <label>파일 업로드</label>
-            <input type="file" id="postFile" name="files">
-        </div>
         <button type="submit" class="btn btn-default">수정</button>
 </div>

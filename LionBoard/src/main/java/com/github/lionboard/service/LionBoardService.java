@@ -1,6 +1,7 @@
 package com.github.lionboard.service;
 
 import com.github.lionboard.model.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -108,4 +109,20 @@ public interface LionBoardService {
     List<Comment> getCommentsByUserId(int userId);
 
     User getUserByName(String name);
+
+    String uploadProfile(int userId, MultipartFile mpf);
+
+    void updateProfileInfoOnUser(int userId, String uploadedUrl);
+
+    PostFile addFileToTenth(int postId,MultipartFile uploadFiles);
+
+    void addPostWithFile(Post post);
+
+    void changeCmtStatusByPostId(int postId, String status);
+
+    Post getReplyPostByPostId(int postId);
+
+    void changeFileStatusToDelete(int fileId);
+
+    void addFileOnPost(Post post);
 }

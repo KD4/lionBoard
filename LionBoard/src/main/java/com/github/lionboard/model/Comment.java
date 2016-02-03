@@ -12,12 +12,13 @@ public class Comment {
     private int postId;
     private int userId;
     private String userName;
+    private String profileUrl;
     private String contents;
     private int depth;
     private int cmtNum;
     private int likeCount;
     private int hateCount;
-    private Date createAt;
+    private Date createdAt;
     private String cmtStatus;
 
     public int getCmtId() {
@@ -100,11 +101,19 @@ public class Comment {
         this.cmtStatus = cmtStatus;
     }
 
-    public Date getCreateAt() {
-        return createAt;
+    public Date getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreateAt(Date createAt) {
-        this.createAt = createAt;
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getProfileUrl() {
+        return profileUrl;
+    }
+
+    public void setProfileUrl(String profileUrl) {
+        this.profileUrl = profileUrl;
     }
 }

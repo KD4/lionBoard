@@ -52,4 +52,6 @@ public interface CommentRepository {
     void updateProcessStatus(CommentReport commentReport);
 
     List<Comment> findCommentsByUserId(int userId);
+
+    void updateCmtStatusByPostId(Comment comment);
 }

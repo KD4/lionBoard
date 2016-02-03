@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by daum on 16. 1. 29..
+ * Created by Lion.k on 16. 1. 29..
  */
 public class AuthenticationSucessHandlerImpl implements AuthenticationSuccessHandler {
 

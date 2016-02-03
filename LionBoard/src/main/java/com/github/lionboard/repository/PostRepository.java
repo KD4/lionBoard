@@ -21,7 +21,7 @@ public interface PostRepository {
 
     Post findPostByPostId(int postId);
 
-    void updatePostStatus(Map<String, Object> postStatusArgs);
+    void updatePostStatus(Post post);
 
     void insertPostStatus(Post post);
 

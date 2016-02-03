@@ -19,6 +19,8 @@ import java.util.*;
 
 /**
  * Created by lion.k on 16. 1. 20..
+ * LionBoard Service gateway.
+ * 예외처리.
  */
 
 @Service
@@ -40,38 +42,41 @@ public class LionBoardServiceImpl implements LionBoardService {
     @Autowired
     ImageFileUploadForTenth2 imageFileUploadForTenth2;
 
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    PostService postService;
+
+    @Autowired
+    CommentService commentService;
+
     @Override
     public List<Post> getPosts(int offset, int limit) {
-        Map<String,Integer> pageArgs = new HashMap<>();
-        pageArgs.put("offset",offset);
-        pageArgs.put("limit",limit);
-        List<Post> posts = postRepository.findByPage(pageArgs);
-
-        //ToDo: Post 객체에 이름을 어떻게 넣을 것인가 ? 일단은 SQL 문으로 !
-
+        List<Post> posts = postService.getPosts(offset, limit);
         return posts;
+    }
+
+    @Override
+    public List<Post> getPostsByUserId(int userId) {
+        try{
+            List<Post> posts = postService.getPostsByUserId(userId);
+            return posts;
+        }catch (RuntimeException re){
+//            userId 정보가 도메인에 어긋나면 예외가 발생함.
+            throw new InvalidUserException("사용자가 작성한 게시글이 없거나 반환할 수 없습니다. "+re.getMessage());
+        }
+
     }
 
     @Override
     public void addPost(Post post) {
         try{
+            //파라미터로 받은 post의 depth를 판단해서 루트글인지, 답글인지 확인함.
             if(post.getDepth() < 1){
-                postRepository.insertPost(post);
-                postRepository.insertPostStatus(post);
+                postService.insertRootPost(post);
             }else{
-                if((post.getPostNum()-1) % 1000 < 2){
-                    throw new InvalidPostException("because the number of reply exceed limit, you can't write the reply.");
-                }
-
-                // 답글의 PostNum(부모글의 -1)와 부모글의 이전글 사이의 글들의 PostNum값을 -1 해서 답글이 들어갈 자리를 만듦.
-                Map<String,Integer> range = new HashMap<>();
-                range.put("upperLimit",post.getPostNum());
-                int lowerLimit = (post.getPostNum()-1) / 1000 * 1000 + 1;
-                range.put("lowerLimit", lowerLimit);
-                postRepository.updatePostNumForInsertRow(range);
-
-                postRepository.insertPost(post);
-                postRepository.insertPostStatus(post);
+                postService.insertReplyPost(post);
             }
         }catch (RuntimeException re){
             throw new InvalidPostException(re.getMessage());
@@ -80,12 +85,12 @@ public class LionBoardServiceImpl implements LionBoardService {
 
     @Override
     public void deleteAllPosts() {
-        postRepository.deleteAll();
+        postService.hardDeleteAllPosts();
     }
 
     @Override
     public Post getPostByPostId(int postId) {
-        Post selectedPost = postRepository.findPostByPostId(postId);
+        Post selectedPost = postService.getPostByPostId(postId);
         if(selectedPost == null){
             throw new InvalidPostException();
         }
@@ -94,20 +99,18 @@ public class LionBoardServiceImpl implements LionBoardService {
 
     @Override
     public void changePostStatusByPostId(int postId, String postStatus) {
-        Map<String,Object> postStatusArgs = new HashMap<>();
-        postStatusArgs.put("postId",postId);
-        postStatusArgs.put("postStatus", postStatus);
-        postRepository.updatePostStatus(postStatusArgs);
+        try {
+            postService.updatePostStatusByPostId(postId, postStatus);
+        }catch (RuntimeException re){
+            //updatePostStatus에서 발생할 수 있는 예외는 postId가 null값이거나 등록되지 않은 Post인 경우. 즉 SqlException(runtimeException)이 발생함.
+            throw new InvalidPostException("등록되지 않은 Post이거나 올바르지 않은 Post입니다. "+ re.getMessage());
+        }
     }
 
-    @Override
-    public void addPostFile(PostFile postFile) {
-        postFileRepository.insertPostFile(postFile);
-    }
 
     @Override
     public List<PostFile> getPostFilesByPostId(int postId) {
-        List<PostFile> postFiles = postFileRepository.findFilesByPostId(postId);
+        List<PostFile> postFiles = postService.getPostFilesByPostId(postId);
         if(postFiles == null){
             throw new InvalidPostException();
         }
@@ -116,35 +119,50 @@ public class LionBoardServiceImpl implements LionBoardService {
 
     @Override
     public void modifyPost(Post post) {
-        postRepository.updatePost(post);
+        try {
+            postService.modifyPost(post);
+        }catch (RuntimeException e){
+            //modifyPost에서 발생할 수 있는 예외는 Post 값들이 도메인에 맞지 않는 값들 일 때 발생하는 DB 예외임.
+            throw new InvalidPostException("게시글 변경에 실패하였습니다. Post 정보에 올바르지 않는 값이 포함되어 있습니다."+ e.getMessage());
+        }
+
     }
 
     @Override
     public void changePostStatusToDelete(int postId) {
-        postRepository.updatePostStatusToDelete(postId);
-        changeCmtStatusByPostId(postId,"D");
-
+        try {
+            postService.updatePostStatusByPostId(postId,"D");
+            //ToDo commentService로 바꾸기
+            changeCmtStatusByPostId(postId, "D");
+        }catch (RuntimeException re){
+            //updatePostStatus에서 발생할 수 있는 예외는 postId가 null값이거나 등록되지 않은 Post인 경우. 즉 SqlException(runtimeException)이 발생함.
+            throw new InvalidPostException("등록되지 않은 Post이거나 올바르지 않은 Post입니다. "+ re.getMessage());
+        }
     }
 
     @Override
     public int getPostReportCount(int postId) {
-
-        return postRepository.getReportCount(postId);
+        try {
+            return postService.getReportCount(postId);
+        }catch (RuntimeException re){
+            //updatePostStatus에서 발생할 수 있는 예외는 postId가 null값이거나 등록되지 않은 Post인 경우. 즉 SqlException(runtimeException)이 발생함.
+            throw new InvalidPostException("등록되지 않은 Post이거나 올바르지 않은 Post입니다. "+ re.getMessage());
+        }
     }
 
     @Override
     public void reportPost(PostReport postReport) {
         try {
-            postRepository.insertReport(postReport);
+            postService.reportPost(postReport);
         }catch (RuntimeException re){
-            throw new InvalidPostException("can't report."+re.getMessage());
+            throw new InvalidPostException("등록되지 않은 Post이거나 신고할 수 없는 Post입니다. "+ re.getMessage());
         }
     }
 
     @Override
     public List<PostReport> getPostReports(int postId) {
         try{
-            return postRepository.findReportByPostId(postId);
+            return postService.getReportsByPostId(postId);
         }catch (RuntimeException re){
             throw new InvalidPostException();
         }
@@ -153,45 +171,57 @@ public class LionBoardServiceImpl implements LionBoardService {
     @Override
     public void changeProcessStatusFromPost(PostReport postReport) {
         try{
-            postRepository.updateProcessStatus(postReport);
+            postService.changeProcessStatusAboutReport(postReport);
         }catch (RuntimeException re){
-            throw new InvalidPostException();
+            throw new InvalidPostException("등록되지 않은 Post이거나 신고할 수 없는 Post입니다. "+ re.getMessage());
         }
     }
 
     @Override
     public void modifyComment(Comment comment) {
-        commentRepository.updateComment(comment);
-
+        //댓글 수정하는 기능은 테스트에서만 사용됨.
+        try {
+            commentService.modifyComment(comment);
+        }catch (RuntimeException re){
+            //comment Id정보가 없거나, 도메인에 어긋나는 값이 포함되어 있다면 SQL예외가 발생함.
+            throw new InvalidCmtException("등록되지 않은 Comment이거나 변경하려는 정보에 올바르지 않은 값이 포함되어 있습니다.");
+        }
     }
 
     @Override
     public int getCmtReportCount(int cmtId) {
-        return commentRepository.getReportCount(cmtId);
+        try {
+            return commentService.getCmtReportCount(cmtId);
+        }catch (RuntimeException re){
+            re.printStackTrace();
+            throw new InvalidCmtException("코맨트가 신고 정보를 접근할 수 없습니다. 서버 로그를 확인해주세요.");
+        }
     }
+
 
     @Override
     public void reportComment(CommentReport commentReport) {
         try {
-            commentRepository.insertReport(commentReport);
+            commentService.reportComment(commentReport);
         }catch (RuntimeException re){
-            throw new InvalidPostException("can't report."+re.getMessage());
+            //comment Id정보가 없거나, 도메인에 어긋나는 값이 포함되어 있다면 SQL예외가 발생함.
+            throw new InvalidCmtException("등록되지 않은 Comment이거나 변경하려는 정보에 올바르지 않은 값이 포함되어 있습니다.");
         }
     }
 
     @Override
     public List<CommentReport> getCommentReports(int cmtId) {
         try{
-            return commentRepository.findReportByCmtId(cmtId);
+            return commentService.getCommentReports(cmtId);
         }catch (RuntimeException re){
-            throw new InvalidPostException();
+            throw new InvalidCmtException();
         }
     }
 
     @Override
     public void changeProcessStatusFromCmt(CommentReport commentReport) {
         try{
-            commentRepository.updateProcessStatus(commentReport);
+            commentService.changeProcessStatusAboutReport(commentReport);
         }catch (RuntimeException re){
             throw new InvalidPostException();
         }
@@ -216,7 +246,7 @@ public class LionBoardServiceImpl implements LionBoardService {
         int olderPage = previousPage + 5;
 
         // 현재 게시물을 표시하는 페이지가 총 5개가 안된다면, maxPage가 최종페이지가 됩니다.
-        int maxPage = postRepository.countPost() / 15 + 1;
+        int maxPage = postService.countPost() / 15 + 1;
         if(maxPage<olderPage){
             olderPage = maxPage;
         }
@@ -237,103 +267,110 @@ public class LionBoardServiceImpl implements LionBoardService {
         return paginations;
     }
 
-    @Override
-    public List<Post> getPostsByUserId(int userId) {
-        return postRepository.findPostsByUserId(userId);
-    }
+
 
     @Override
     public List<Comment> getCommentsByUserId(int userId) {
-        return commentRepository.findCommentsByUserId(userId);
-
+        try {
+            return commentService.getCommentsByUserId(userId);
+        }catch (RuntimeException e){
+            e.printStackTrace();
+            throw new InvalidUserException("사용자가 정보가 올바르지 않습니다.");
+        }
     }
 
 
 
     @Override
     public List<Comment> getComments() {
-        return commentRepository.findComments();
+        return commentService.getComments();
     }
 
     @Override
     public List<Comment> getCommentsByPostId(int postId) {
-        return commentRepository.findCommentsByPostId(postId);
+        try {
+            return commentService.getCommentsByPostId(postId);
+        }catch (RuntimeException re){
+            re.printStackTrace();
+            throw new InvalidCmtException("덧글 목록을 반환할 수 없습니다. 서버 로그를 확인해주세요.");
+        }
     }
 
 
     @Override
     public void addComment(Comment comment) {
-
         //없는 게시글에 코멘트를 달려고 할 때, 예외처리.
-        if(postRepository.findPostByPostId(comment.getPostId()) == null){
-            throw new InvalidPostException("post is nonexistent. check post information.");
+        if(postService.getPostByPostId(comment.getPostId()) == null){
+            throw new InvalidPostException("등록하고자 하는 Comment의 Post 정보가 올바르지 않습니다. 서버로그를 확인해주세요.");
         }
 
+        try {
+            if (comment.getDepth() < 1) {
+                commentService.insertRootComment(comment);
+            } else {
+                commentService.insertReplyComment(comment);
+            }
 
-        if(comment.getDepth() < 1){
-            commentRepository.insertComment(comment);
-            commentRepository.insertCommentStatus(comment);
-        }else{
-            Map<String,Integer> range = new HashMap<>();
-            range.put("upperLimit",comment.getCmtNum());
-            int lowerLimit = (comment.getCmtNum()) / 1000 * 1000 +1;
-            range.put("lowerLimit", lowerLimit);
-            commentRepository.updateCmtNumForInsertRow(range);
-            commentRepository.insertComment(comment);
-            commentRepository.insertCommentStatus(comment);
+        }catch (RuntimeException re){
+            //등록하고자하는 comment의 정보가 도메인에 어긋나면 SQL 에러가 발생함.
+            throw new InvalidCmtException("Comment를 추가할 수 없습니다. Comment 정보가 올바르지 않습니다.");
         }
-        postRepository.addCmtCount(comment.getPostId());
+
+        try {
+            postService.addCmtCount(comment.getPostId());
+        }catch (RuntimeException re){
+            throw new InvalidPostException("등록하고자 하는 Comment의 Post 정보가 올바르지 않습니다. 서버로그를 확인해주세요.");
+        }
     }
 
     @Override
     public void deleteAllComments() {
-        commentRepository.deleteAll();
+        commentService.hardDeleteAllComments();
+
     }
 
     @Override
     public void changeCmtStatusByCmtId(int cmtId, String cmtStatus) {
-        Map<String,Object> cmtStatusArgs = new HashMap<>();
-        cmtStatusArgs.put("cmtId",cmtId);
-        cmtStatusArgs.put("cmtStatus", cmtStatus);
-        commentRepository.updateCmtStatusByCmtId(cmtStatusArgs);
+        commentService.updateCmtStatusByCmtId(cmtId, cmtStatus);
     }
 
     @Override
     public Comment getCommentByCmtId(int cmtId) {
         try {
-            Comment selectedCmt = commentRepository.findCommentByCmtId(cmtId);
+            Comment selectedCmt = commentService.getCommentByCmtId(cmtId);
             if (selectedCmt == null) {
-                throw new InvalidCmtException();
+                throw new InvalidCmtException(cmtId+"에 해당하는 덧글이 존재하지 않습니다.");
             }
             return selectedCmt;
         }catch (RuntimeException re){
-            throw new InvalidCmtException(re.getMessage());
+            throw new InvalidCmtException(cmtId+"에 해당하는 덧글을 반환할 수 없습니다.");
         }
     }
 
+
     @Override
     public void deleteAllUsers() {
-        userRepository.deleteAll();
+        userService.hardDeleteAllUsers();
     }
 
     @Override
     public void addUser(User user){
         try {
             if (user.getIsOAuth().equals("F")) {
-                userRepository.insertUser(user);
+                userService.insertNormalUser(user);
             } else {
                 //Todo: OAuth logic
             }
         }catch(Exception sq){
-            throw new InvalidUserException("User email or Identity is already existed. (detail : "+sq.getMessage()+")");
+            throw new InvalidUserException("등록하려던 유저 정보가 올바르지 않습니다. (details : "+sq.getMessage()+")");
         }
     }
 
     @Override
     public User getUserByUserId(int userId) {
-        User selectedUser = userRepository.findUserByUserId(userId);
+        User selectedUser = userService.getUserByUserId(userId);
         if(selectedUser == null){
-            throw new InvalidUserException();
+            throw new InvalidUserException("등록된 유저 정보가 없거나 탈퇴한 회원입니다.");
         }
         return selectedUser;
 
@@ -341,16 +378,16 @@ public class LionBoardServiceImpl implements LionBoardService {
 
     @Override
     public User getUserByIdentity(String identity) {
-        User selectedUser = userRepository.findUserByIdentity(identity);
+        User selectedUser = userService.getUserByIdentity(identity);
         if(selectedUser == null){
-            throw new InvalidUserException();
+            throw new InvalidUserException("등록된 유저 정보가 없거나 탈퇴한 회원입니다.");
         }
         return selectedUser;
     }
 
     @Override
     public User getUserByName(String name) {
-        User selectedUser = userRepository.findUserByName(name);
+        User selectedUser = userService.getUserByName(name);
         if(selectedUser == null){
             throw new InvalidUserException();
         }
@@ -364,6 +401,7 @@ public class LionBoardServiceImpl implements LionBoardService {
             //프로필 작명 규칙 : lionboard_profile_{userId}.jpg
             String fileName = "lionboard_profile_"+String.valueOf(userId)+".jpg";
 
+            //tenth2에 등록 성공하면, 접근할 수 있는 URL을 반환함.
             String uploadUrl = insertFileOnTenthServer(uploadFile.getBytes(), fileName);
 
             return uploadUrl;
@@ -376,6 +414,7 @@ public class LionBoardServiceImpl implements LionBoardService {
         }
     }
 
+    //업로드 팜을 이용해서 tenth서버에 업로드된 파일을 다시 업로드하는 로직.
     private String insertFileOnTenthServer(byte[] imageFileBytes, String fileName) throws Exception {
         try {
             imageFileUploadForTenth2.init();
@@ -387,18 +426,15 @@ public class LionBoardServiceImpl implements LionBoardService {
 
     @Override
     public void updateProfileInfoOnUser(int userId, String uploadedUrl) {
-        User user = new User();
-        user.setId(userId);
-        user.setProfileUrl(uploadedUrl);
         try {
-            userRepository.updateProfileInfo(user);
+            userService.updateUserProfile(userId, uploadedUrl);
         }catch (RuntimeException e){
-            //todo:logging
             System.out.println(e.getStackTrace());
-            throw new InvalidUserException(e.getMessage());
+            throw new InvalidUserException("등록된 User가 아니거나, 해당 User의 Profile을 업데이트할 수 없습니다.");
         }
     }
 
+    //첨부파일을 등록하는 로직. insertFileOnTenthServer메소드를 이용함.
     @Override
     public PostFile addFileToTenth(int postId, MultipartFile uploadFile) {
 
@@ -413,9 +449,6 @@ public class LionBoardServiceImpl implements LionBoardService {
             postFile.setFileUrl(uploadUrl);
             postFile.setFileName(uploadFile.getOriginalFilename());
         } catch (Exception e) {
-
-            //todo logging.
-            System.out.println("Thenth2 업로드 실패.");
             e.printStackTrace();
             throw new InvalidPostException("fail to upload files.");
         }
@@ -433,8 +466,7 @@ public class LionBoardServiceImpl implements LionBoardService {
             int postId = post.getPostId();
             //Id와 uploadfile 정보를 이용해서 tenth서버에 파일 업로드 후
             PostFile postFile = addFileToTenth(post.getPostId(), post.getUploadFile());
-            System.out.println("uploaded file named" + postFile.getFileName() + " url is " + postFile.getFileUrl() + " to " + postId);
-            postFileRepository.insertPostFile(postFile);
+            postService.addPostFile(postFile);
         }catch (RuntimeException re){
             throw new InvalidPostException(re.getMessage());
         }catch (Exception e){
@@ -446,57 +478,68 @@ public class LionBoardServiceImpl implements LionBoardService {
 
     //특정 포스트의 상태가 변경되면 해당 포스트의 코멘트도 상태가 같이 변경됨.
     @Override
-    public void changeCmtStatusByPostId(int postId, String status) {
-        Comment comment = new Comment();
-        comment.setPostId(postId);
-        comment.setCmtStatus(status);
-        commentRepository.updateCmtStatusByPostId(comment);
+    public void changeCmtStatusByPostId(int postId, String cmtStatus) {
+        commentService.updateCmtStatusByPostId(postId,cmtStatus);
     }
 
     @Override
-    public Post getReplyPostByPostId(int postId) {
-        Post selectedPost = postRepository.findPostByPostId(postId);
+    public Post createBasePostForReply(int postId) {
+        Post selectedPost = postService.getPostByPostId(postId);
         if(selectedPost == null){
             throw new InvalidPostException();
         }
         //답글은 부모글의 depth + 1에 해당하는 depth를 가짐.
         selectedPost.setDepth(selectedPost.getDepth()+1);
         //답글은 부모글의 PostNum - 1에 해당하는 PostNum를 가짐.
-        selectedPost.setPostNum(selectedPost.getPostNum()-1);
+        selectedPost.setPostNum(selectedPost.getPostNum() - 1);
 
         return selectedPost;
     }
 
     @Override
     public void changeFileStatusToDelete(int fileId) {
-        PostFile postFile = new PostFile();
-        postFile.setFileId(fileId);
-        postFile.setFileStatus("D");
-        postFileRepository.updateStatusByFileId(postFile);
+        try {
+            postService.updateFileStatusByFileId(fileId, "D");
+        }catch (RuntimeException re){
+            re.printStackTrace();
+            throw new InvalidPostException("해당 파일이 존재하지 않습니다.");
+        }
     }
 
     @Override
     public void addFileOnPost(Post post) {
+        PostFile postFile = addFileToTenth(post.getPostId(), post.getUploadFile());
+        postService.addPostFile(postFile);
+    }
 
-        PostFile postFile = addFileToTenth(post.getPostId(),post.getUploadFile());
-        addPostFile(postFile);
-
+    @Override
+    public void addPostFile(PostFile postFile) {
+        postService.addPostFile(postFile);
     }
 
 
     @Override
     public void modifyUser(User user) {
-        userRepository.updateUser(user);
+        try {
+            userService.updateUser(user);
+        }catch (RuntimeException re){
+            throw new InvalidUserException("사용자 정보를 업데이트할 수 없습니다.");
+        }
     }
 
     @Override
     public void removeUserById(int userId) {
-        userRepository.deleteUserById(userId);
+        try{
+            userService.hardDeleteUserById(userId);
+        }catch (RuntimeException e){
+            throw new InvalidUserException("해당 유저를 삭제할 수 없습니다.");
+        }
+
     }
 
     @Override
     public void changeUserStatusToLeave(int userId) {
-        userRepository.updateUserStatusToLeave(userId);
+        userService.updateUserStatusByUserId(userId, "L");
 
     }
 
@@ -505,7 +548,7 @@ public class LionBoardServiceImpl implements LionBoardService {
 
     @Override
     public int getPostLike(int postId) {
-        Integer likeCount = postRepository.getLikeCount(postId);
+        Integer likeCount = postService.getLikeCount(postId);
         if(likeCount == null){
             throw new InvalidPostException();
         }
@@ -514,7 +557,8 @@ public class LionBoardServiceImpl implements LionBoardService {
 
     @Override
     public void addPostLike(int postId) {
-        int rows = postRepository.addLikeCount(postId);
+        int rows = postService.addLikeCount(postId);
+
         if(rows == 0){
             throw new InvalidPostException();
         }
@@ -522,7 +566,7 @@ public class LionBoardServiceImpl implements LionBoardService {
 
     @Override
     public void subtractPostLike(int postId) {
-        int rows = postRepository.subtractLikeCount(postId);
+        int rows = postService.subtractLikeCount(postId);
         if(rows == 0){
             throw new InvalidPostException();
         }
@@ -530,7 +574,7 @@ public class LionBoardServiceImpl implements LionBoardService {
 
     @Override
     public int getPostHate(int postId) {
-        Integer hateCount = postRepository.getHateCount(postId);
+        Integer hateCount = postService.getHateCount(postId);
         if(hateCount == null){
             throw new InvalidPostException();
         }
@@ -539,7 +583,7 @@ public class LionBoardServiceImpl implements LionBoardService {
 
     @Override
     public void addPostHate(int postId) {
-        int rows = postRepository.addHateCount(postId);
+        int rows = postService.addHateCount(postId);
         if(rows == 0){
             throw new InvalidPostException();
         }
@@ -547,7 +591,7 @@ public class LionBoardServiceImpl implements LionBoardService {
 
     @Override
     public void subtractPostHate(int postId) {
-        int rows = postRepository.subtractHateCount(postId);
+        int rows = postService.subtractHateCount(postId);
         if(rows == 0){
             throw new InvalidPostException();
         }
@@ -555,7 +599,7 @@ public class LionBoardServiceImpl implements LionBoardService {
 
     @Override
     public int getPostView(int postId) {
-        Integer hateCount = postRepository.getViewCount(postId);
+        Integer hateCount = postService.getViewCount(postId);
         if(hateCount == null){
             throw new InvalidPostException();
         }
@@ -564,7 +608,7 @@ public class LionBoardServiceImpl implements LionBoardService {
 
     @Override
     public void addPostView(int postId) {
-        int rows = postRepository.addViewCount(postId);
+        int rows = postService.addViewCount(postId);
         if(rows == 0){
             throw new InvalidPostException();
         }
@@ -572,7 +616,7 @@ public class LionBoardServiceImpl implements LionBoardService {
 
     @Override
     public void subtractPostView(int postId) {
-        int rows = postRepository.subtractViewCount(postId);
+        int rows = postService.subtractViewCount(postId);
         if(rows == 0){
             throw new InvalidPostException();
         }
@@ -580,7 +624,7 @@ public class LionBoardServiceImpl implements LionBoardService {
 
     @Override
     public int getCmtLike(int cmtId) {
-        Integer likeCount = commentRepository.getLikeCount(cmtId);
+        Integer likeCount = commentService.getLikeCount(cmtId);
         if(likeCount == null){
             throw new InvalidCmtException();
         }
@@ -589,7 +633,7 @@ public class LionBoardServiceImpl implements LionBoardService {
 
     @Override
     public void addCmtLike(int cmtId) {
-        int rows = commentRepository.addLikeCount(cmtId);
+        int rows = commentService.addLikeCount(cmtId);
         if(rows == 0){
             throw new InvalidCmtException();
         }
@@ -597,7 +641,7 @@ public class LionBoardServiceImpl implements LionBoardService {
 
     @Override
     public void subtractCmtLike(int cmtId) {
-        int rows = commentRepository.subtractLikeCount(cmtId);
+        int rows = commentService.subtractLikeCount(cmtId);
         if(rows == 0){
             throw new InvalidCmtException();
         }
@@ -605,7 +649,7 @@ public class LionBoardServiceImpl implements LionBoardService {
 
     @Override
     public int getCmtHate(int cmtId) {
-        Integer likeCount = commentRepository.getHateCount(cmtId);
+        Integer likeCount = commentService.getHateCount(cmtId);
         if(likeCount == null){
             throw new InvalidCmtException();
         }
@@ -614,7 +658,7 @@ public class LionBoardServiceImpl implements LionBoardService {
 
     @Override
     public void addCmtHate(int cmtId) {
-        int rows = commentRepository.addHateCount(cmtId);
+        int rows = commentService.addHateCount(cmtId);
         if(rows == 0){
             throw new InvalidCmtException();
         }
@@ -622,7 +666,7 @@ public class LionBoardServiceImpl implements LionBoardService {
 
     @Override
     public void subtractCmtHate(int cmtId) {
-        int rows = commentRepository.subtractHateCount(cmtId);
+        int rows = commentService.subtractHateCount(cmtId);
         if(rows == 0){
             throw new InvalidCmtException();
         }

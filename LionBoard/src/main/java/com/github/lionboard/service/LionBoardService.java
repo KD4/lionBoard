@@ -19,8 +19,6 @@ public interface LionBoardService {
 
     void changePostStatusByPostId(int postId, String postStatus);
 
-    void addPostFile(PostFile postFile);
-
     List<PostFile> getPostFilesByPostId(int postId);
 
     List<Comment> getComments();
@@ -120,9 +118,11 @@ public interface LionBoardService {
 
     void changeCmtStatusByPostId(int postId, String status);
 
-    Post getReplyPostByPostId(int postId);
+    Post createBasePostForReply(int postId);
 
     void changeFileStatusToDelete(int fileId);
 
     void addFileOnPost(Post post);
+
+    void addPostFile(PostFile postFile);
 }

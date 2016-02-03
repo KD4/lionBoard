@@ -46,7 +46,7 @@
         DELETE FROM CMT_TB;
     </delete>
 
-    <update id="updateCmtStatusByCmtId" parameterType="java.util.Map">
+    <update id="updateCmtStatusByCmtId" parameterType="com.github.lionboard.model.Comment">
         UPDATE CMT_STATUS_TB SET cmtStatus=#{cmtStatus} WHERE cmtId=#{cmtId}
     </update>
 

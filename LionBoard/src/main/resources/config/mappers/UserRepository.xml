@@ -52,8 +52,8 @@
         DELETE FROM USER_TB WHERE id=#{id}
     </delete>
 
-    <update id="updateUserStatusToLeave" >
-        UPDATE USER_TB SET userStatus='L' WHERE id=#{id}
+    <update id="updateUserStatus" >
+        UPDATE USER_TB SET userStatus=#{userStatus} WHERE id=#{id}
     </update>
 
     <update id="updateProfileInfo">

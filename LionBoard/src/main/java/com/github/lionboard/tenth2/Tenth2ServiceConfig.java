@@ -1,7 +1,7 @@
 package com.github.lionboard.tenth2;
 
 /**
- * Created by daum on 15. 10. 16..
+ * Created by Lion.k on 15. 10. 16..
  */
 public class Tenth2ServiceConfig {
     private static boolean isService = true;

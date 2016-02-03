@@ -1,37 +1,30 @@
 package com.github.lionboard.controller;
 
 import com.github.lionboard.error.IncorrectAccessException;
-import com.github.lionboard.error.InvalidUserException;
 import com.github.lionboard.model.Post;
 //import com.github.lionboard.model.User;
 import com.github.lionboard.model.PostFile;
-import com.github.lionboard.service.IndexService;
-import com.github.lionboard.model.TempModel;
 import com.github.lionboard.service.LionBoardService;
-import com.sun.javafx.sg.prism.NGShape;
-import org.apache.velocity.tools.generic.DateTool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
  * Created by Lion.k on 16. 1. 12..
+ *
+ * Index, Login, SignUp, Logout page
+ * view pages 
  */
 
 
@@ -104,7 +97,7 @@ public class IndexController {
             value = "view/replyPost/{postId}",
             method = RequestMethod.GET)
     public ModelAndView replyPost(@PathVariable("postId") int postId) {
-        Post basePost = lionBoardService.getReplyPostByPostId(postId);
+        Post basePost = lionBoardService.createBasePostForReply(postId);
 
         //Spring Security session에 저장된 login된 유저 정보 가져오기.
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();

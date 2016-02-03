@@ -1,7 +1,7 @@
 package com.github.lionboard.error;
 
 /**
- * Created by daum on 16. 2. 2..
+ * Created by Lion.k on 16. 2. 2..
  */
 public class UploadFileToTenthException extends RuntimeException{
     public UploadFileToTenthException(){

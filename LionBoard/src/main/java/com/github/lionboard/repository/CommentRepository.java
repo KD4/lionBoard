@@ -23,7 +23,7 @@ public interface CommentRepository {
 
     void deleteAll();
 
-    void updateCmtStatusByCmtId(Map<String, Object> cmtStatusArgs);
+    void updateCmtStatusByCmtId(Comment comment);
 
     Comment findCommentByCmtId(int cmtId);
 

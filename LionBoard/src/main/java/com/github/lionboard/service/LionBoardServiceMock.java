@@ -93,10 +93,7 @@ public class LionBoardServiceMock implements LionBoardService {
 
     @Override
     public void changePostStatusByPostId(int postId, String postStatus) {
-        Map<String,Object> postStatusArgs = new HashMap<>();
-        postStatusArgs.put("postId",postId);
-        postStatusArgs.put("postStatus", postStatus);
-        postRepository.updatePostStatus(postStatusArgs);
+
     }
 
     @Override
@@ -154,10 +151,6 @@ public class LionBoardServiceMock implements LionBoardService {
 
     @Override
     public void changeCmtStatusByCmtId(int cmtId, String cmtStatus) {
-        Map<String,Object> cmtStatusArgs = new HashMap<>();
-        cmtStatusArgs.put("cmtId",cmtId);
-        cmtStatusArgs.put("cmtStatus", cmtStatus);
-        commentRepository.updateCmtStatusByCmtId(cmtStatusArgs);
     }
 
     @Override
@@ -454,7 +447,7 @@ public class LionBoardServiceMock implements LionBoardService {
     }
 
     @Override
-    public Post getReplyPostByPostId(int postId) {
+    public Post createBasePostForReply(int postId) {
         return null;
     }
 

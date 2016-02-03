@@ -48,7 +48,7 @@ public class LionBoardServiceTest {
 
 
     @Autowired
-    LionBoardServiceMock lionBoardServiceMock;
+//    LionBoardServiceMock lionBoardServiceMock;
 
     Post firstPost;
     Post secondPost;
@@ -107,22 +107,22 @@ public class LionBoardServiceTest {
         Assert.assertEquals(afterPosts.get(1).getPostNum(), 1000);
     }
 
-    @Test
-    public void addWithTransaction(){
-        List<Post> beforePosts = lionBoardServiceMock.getPosts(0, 20);
-        Assert.assertEquals(beforePosts.size(), 0);
-        try{
-            lionBoardServiceMock.addPost(firstPost);
-        }catch (InvalidPostException e){
-        }
-        Post insertedPost = null;
-        //so, below method's returned value is null.
-        try{
-            insertedPost = lionBoardServiceMock.getPostByPostId(firstPost.getPostId());
-        }catch (InvalidPostException e){
-        }
-        Assert.assertNull(insertedPost);
-    }
+//    @Test
+//    public void addWithTransaction(){
+//        List<Post> beforePosts = lionBoardServiceMock.getPosts(0, 20);
+//        Assert.assertEquals(beforePosts.size(), 0);
+//        try{
+//            lionBoardServiceMock.addPost(firstPost);
+//        }catch (InvalidPostException e){
+//        }
+//        Post insertedPost = null;
+//        //so, below method's returned value is null.
+//        try{
+//            insertedPost = lionBoardServiceMock.getPostByPostId(firstPost.getPostId());
+//        }catch (InvalidPostException e){
+//        }
+//        Assert.assertNull(insertedPost);
+//    }
 
 
 

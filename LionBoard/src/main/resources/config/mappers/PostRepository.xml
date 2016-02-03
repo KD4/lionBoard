@@ -51,7 +51,7 @@
         UPDATE POST_TB SET title=#{title}, contents=#{contents} WHERE postId=#{postId}
     </update>
 
-    <update id="updatePostStatus" parameterType="java.util.Map">
+    <update id="updatePostStatus" parameterType="com.github.lionboard.model.Post">
       UPDATE POST_STATUS_TB SET postStatus=#{postStatus} WHERE postId=#{postId}
     </update>
 

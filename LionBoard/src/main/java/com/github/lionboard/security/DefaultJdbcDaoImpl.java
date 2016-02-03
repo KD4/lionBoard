@@ -20,7 +20,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Created by daum on 16. 1. 28..
+ * Created by Lion.k on 16. 1. 28..
  */
 public class DefaultJdbcDaoImpl implements UserDetailsService {
 

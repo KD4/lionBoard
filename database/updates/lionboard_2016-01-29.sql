@@ -84,8 +84,6 @@ DELIMITER ;;
     ELSE
       SET NEW.cmtNum = @cmtNum + 1000;
     END IF;
-ELSE
-  SET NEW.cmtNum = NEW.cmtNum - 1;
 END IF */;;
 DELIMITER ;
 /*!50003 SET SESSION SQL_MODE=@OLD_SQL_MODE */;
@@ -199,8 +197,6 @@ DELIMITER ;;
     ELSE
       SET NEW.postNum = @postNum + 1000;
     END IF;
-ELSE
-  SET NEW.postNum = NEW.postNum - 1;
 END IF */;;
 DELIMITER ;
 /*!50003 SET SESSION SQL_MODE=@OLD_SQL_MODE */;

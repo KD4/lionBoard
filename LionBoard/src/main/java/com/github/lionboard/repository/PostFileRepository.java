@@ -14,4 +14,6 @@ public interface PostFileRepository {
     void insertPostFile(PostFile postFile);
 
     List<PostFile> findFilesByPostId(int postId);
+
+    void updateStatusByFileId(PostFile postFile);
 }

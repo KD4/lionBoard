@@ -10,15 +10,15 @@ import com.github.lionboard.repository.PostRepository;
 import com.github.lionboard.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
-import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Created by lion.k on 16. 1. 20..
+ * 트랜젝션 테스트용으로 사용됨.
  */
 
 
@@ -425,6 +425,47 @@ public class LionBoardServiceMock implements LionBoardService {
     @Override
     public User getUserByName(String name) {
         return null;
+    }
+
+    @Override
+    public String uploadProfile(int userId, MultipartFile mpf) {
+        return null;
+    }
+
+    @Override
+    public void updateProfileInfoOnUser(int userId, String uploadedUrl) {
+
+    }
+
+    @Override
+    public PostFile addFileToTenth(int postId, MultipartFile uploadFiles) {
+        return null;
+    }
+
+
+    @Override
+    public void addPostWithFile(Post post) {
+
+    }
+
+    @Override
+    public void changeCmtStatusByPostId(int postId, String status) {
+
+    }
+
+    @Override
+    public Post getReplyPostByPostId(int postId) {
+        return null;
+    }
+
+    @Override
+    public void changeFileStatusToDelete(int fileId) {
+
+    }
+
+    @Override
+    public void addFileOnPost(Post post) {
+
     }
 
 

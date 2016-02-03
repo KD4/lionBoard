@@ -3,9 +3,8 @@
 	height: 150px;
 }
 
-.user-photo{
+.user-photo img{
 	float:left;
-	margin-left:30px;
 	width: 100px;
 	height: 120px;
 }
@@ -14,3 +13,5 @@
 	float:left;
 	margin-left:30px;
 }
+
+

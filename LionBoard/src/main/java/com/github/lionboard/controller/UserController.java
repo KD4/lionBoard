@@ -14,8 +14,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -34,31 +39,32 @@ public class UserController {
             headers = "Accept=application/json",
             produces="application/json;charset=utf8",
             method= RequestMethod.POST)
-    public String signUp(User user){
+    public List<String> signUp(User user){
 
+        List<String> results = new ArrayList<String>();
         //검색된 결과가 없어서 예외가 발생하는 것이 정상.
         try {
             if (lionBoardService.getUserByIdentity(user.getIdentity()) != null) {
-                return "이미 등록된 이메일입니다. 다른 이메일을 사용해주세요.";
+                results.add("이미 등록된 이메일입니다. 다른 이메일을 사용해주세요.");
             }
+                return results;
         }catch (InvalidUserException e){}
 
         try{
             if(lionBoardService.getUserByName(user.getName()) != null){
-                return "이미 등록된 이름입니다. 다른 이름을 사용해주세요.";
+                results.add("이미 등록된 이름입니다. 다른 이름을 사용해주세요.");
             }
+                return results;
         }catch (InvalidUserException e){}
-
 
         lionBoardService.addUser(user);
 
-        User insertedUser = lionBoardService.getUserByUserId(user.getId());
+        //results 첫번째 인덱스는 작업결과 (success or error msg) 두번째 인덱스는 등록에 성공한 유저 아이디.
+        //results 값으로 프론트에서 Tenth2 업로드 요청을 함. - img 업로드 API 와 회원등록 API 분리.
+        results.add("success");
+        results.add(String.valueOf(user.getId()));
 
-        if (insertedUser != null) {
-            return "success";
-        } else {
-            return "알 수 없는 이유로 로그인의 실패하였습니다.";
-        }
+        return results;
     }
 
     @RequestMapping(
@@ -113,6 +119,29 @@ public class UserController {
 
 
 
+    @ResponseBody @RequestMapping(
+            value="/{userId}/profile",
+            produces="application/json;charset=utf8",
+            method= RequestMethod.POST)
+    public String uploadProfile(@PathVariable("userId") int userId, MultipartHttpServletRequest request){
+        //1. get the files from the request object
+        Iterator<String> itr =  request.getFileNames();
+
+        MultipartFile mpf = request.getFile(itr.next());
+        System.out.println(mpf.getOriginalFilename() +" uploaded!");
+
+        //2. send it back to the client as <result>
+        try {
+            //tenth2 서버로 이미지 업로드를 요청함.
+            String uploadedUrl = lionBoardService.uploadProfile(userId, mpf);
+            lionBoardService.updateProfileInfoOnUser(userId,uploadedUrl);
+            return "success";
+        } catch (InvalidUserException e) {
+            return e.getMessage();
+        }
+
+
+    }
 
 
     @RequestMapping(
@@ -123,12 +152,12 @@ public class UserController {
 
     @ExceptionHandler(InvalidUserException.class)
     public ModelAndView InvalidException(Exception e) {
-        return new ModelAndView("/errors").addObject("errorlog", e.getMessage());
+        return new ModelAndView("errors").addObject("errorlog", e.getMessage());
     }
 
     @ExceptionHandler(IncorrectAccessException.class)
     public ModelAndView IncorrectAccessException(Exception e) {
-        return new ModelAndView("/errors").addObject("errorlog", e.getMessage());
+        return new ModelAndView("errors").addObject("errorlog", e.getMessage());
     }
 
 

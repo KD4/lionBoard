@@ -56,7 +56,9 @@
         UPDATE USER_TB SET userStatus='L' WHERE id=#{id}
     </update>
 
-
+    <update id="updateProfileInfo">
+        UPDATE USER_TB SET profileUrl = #{profileUrl} WHERE id=#{id}
+    </update>
     <!--<update id="addCmtCount">-->
         <!--UPDATE POST_TB SET cmtCount = cmtCount+1 WHERE postId=#{postId}-->
     <!--</update>-->

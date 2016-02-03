@@ -38,23 +38,40 @@
 
         <!-- Table -->
         <table class="table table-striped">
-            <tr>
-                <th width="10%">번호</th>
-                <th width="60%">제목</th>
-                <th width="10%">작성자</th>
-                <th width="10%">작성일</th>
-                <th width="10%">조회수</th>
+            <tr class="column-header">
+                <th class="th-num">번호</th>
+                <th class="th-title">제목</th>
+                <th class="th-figure"> </th>
+                <th class="th-author">작성자</th>
+                <th class="th-date">작성일</th>
+                <th class="th-view">조회수</th>
             </tr>
             #foreach($post in $posts)
                 <tr>
-                    <td>$post.postId</td>
-                    <td><a href="/posts/$post.postId">$post.title </a></td>
+                    <td class="postIds">$post.postId</td>
+                    <td>
+                        #if($post.depth > 0)
+                            #foreach($depth in [1..$post.depth])
+                                <span class="reply-margin" aria-hidden="true"></span>
+                            #end
+                            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                        #end
+                        <a href="/posts/$post.postId">$post.title </a>
+
+                    </td>
+                    <td>
+                        <div class="glyphicon glyphicon-thumbs-up">$post.likeCount</div>
+##                        <div class="glyphicon glyphicon-thumbs-down">$post.hateCount</div>
+                        <div class="glyphicon glyphicon-comment">$post.cmtCount</div>
+                    </td>
                     <td><a href="/users/$post.userId">$!post.userName </a></td>
                     <td><small>$dateTool.format("short",$post.createdAt)</small></td>
                     <td>$post.viewCount</td>
                 </tr>
             #end
         </table>
+
+
     </div>
     <nav>
         <ul class="pagination">

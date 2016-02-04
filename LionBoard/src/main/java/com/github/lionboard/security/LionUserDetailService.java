@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * Created by Lion.k on 16. 1. 28..
  */
-public class DefaultJdbcDaoImpl implements UserDetailsService {
+public class LionUserDetailService implements UserDetailsService {
 
     private SqlSession sqlSession;
     public void setSqlSession(SqlSession sqlSession){
@@ -32,7 +32,6 @@ public class DefaultJdbcDaoImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email)
             throws UsernameNotFoundException {
-        System.out.println(sqlSession);
         com.github.lionboard.model.User user = sqlSession.getMapper(UserRepository.class).findUserByIdentity(email);
         String password=user.getPassword();
         Collection<SimpleGrantedAuthority> roles = new ArrayList<SimpleGrantedAuthority>();

@@ -22,8 +22,8 @@
   //  },
   //	errorClass: "form-invalid"
   //});
-  
-	// Form Submission
+
+	//Form Submission
   //$("#login-form").submit(function() {
 	//  remove_loading($(this));
   //
@@ -34,19 +34,18 @@
   //
   //
 	//  $.ajax({
-	//	  url: '/login',
+	//	  url: '/loginProcess',
 	//	  type: 'post',
 	//	  data: account,
 	//	  dataType: 'text',
 	//	  success: function (data) {
 	//		  console.log(data);
-  //
-	//		  if(data == "ok") {
+	//		  //if(data == "ok") {
 	//			  window.location.replace("/index");
-	//		  }else{
-	//			  alert(data);
-	//			  return false;
-	//		  }
+	//		  //}else{
+	//			//  alert(data);
+	//			//  return false;
+	//		  //}
 	//	  },
 	//	  error: function(data) {
 	//		  console.log(data);
@@ -54,7 +53,7 @@
 	//  });
   //
 	//  return false;
-  //
+
   //});
 	
 	// Register Form
@@ -201,3 +200,4 @@
   }
 	
 })(jQuery);
+

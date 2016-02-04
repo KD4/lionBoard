@@ -21,7 +21,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 
 //ToDo: change configuration path with classpath.
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("file:src/test/resources/config/testApplicationContext.xml")
+@ContextConfiguration("classpath:/config/mvc-dispatcher-servlet.xml")
 public class IndexControllerTest {
     private MockMvc mockMvc;
 

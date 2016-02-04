@@ -40,7 +40,7 @@ import org.mockito.stubbing.Answer;
 //ToDo: change configuration path with classpath.
 @RunWith(SpringJUnit4ClassRunner.class)
 //@RunWith(MockitoJUnitRunner.class)
-@ContextConfiguration("file:src/test/resources/config/testApplicationContext.xml")
+@ContextConfiguration("classpath:config/testApplicationContext.xml")
 public class LionBoardServiceTest {
 
     @Autowired

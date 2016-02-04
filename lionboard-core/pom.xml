@@ -7,9 +7,9 @@
         <version>0.1</version>
     </parent>
 
-    <artifactId>lionboard</artifactId>
-    <packaging>war</packaging>
-    <name>lionboard</name>
+    <artifactId>lionboard-core</artifactId>
+    <packaging>jar</packaging>
+    <name>lionboard-core</name>
 
     <properties>
         <!-- maven -->
@@ -50,11 +50,6 @@
         <org.aspectj.version>1.8.7</org.aspectj.version>
     </properties>
     <dependencies>
-        <dependency>
-            <groupId>com.github.kd4.lionboard</groupId>
-            <artifactId>lionboard-core</artifactId>
-            <version>${parent.version}</version>
-        </dependency>
 
 
         <!-- Spring MVC -->

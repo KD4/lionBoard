@@ -1,0 +1,7 @@
+
+<title>facebook 로그인 하기 Sample</title>
+<script type="text/javascript">
+##        #if(!$oauthUrl)
+        window.open('$oauthUrl',"facebookLogin", "width=1000, height=500, scrollbars=yes, resizable=yes");
+##        #end
+</script>

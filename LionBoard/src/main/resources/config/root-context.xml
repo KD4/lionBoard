@@ -5,9 +5,9 @@
        http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 
-    <import resource="classpath:/config/repository.xml" />
-
-    <import resource="classpath:/config/security.xml" />
+    <import resource="classpath:/config/applicationContext-persistence.xml" />
+    <import resource="classpath:/config/applicationContext-security.xml" />
+    <import resource="classpath:/config/applicationContext-social.xml" />
 
     <!-- MultipartResolver 설정 -->
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">

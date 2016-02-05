@@ -102,6 +102,11 @@ public class LionBoardServiceMock implements LionBoardService {
     }
 
     @Override
+    public User existUserByIdentity(String identity) {
+        return null;
+    }
+
+    @Override
     public List<PostFile> getPostFilesByPostId(int postId) {
         List<PostFile> postFiles = postFileRepository.findFilesByPostId(postId);
         if(postFiles == null){

@@ -4,16 +4,24 @@ import com.github.lionboard.error.IncorrectAccessException;
 import com.github.lionboard.model.Post;
 //import com.github.lionboard.model.User;
 import com.github.lionboard.model.PostFile;
+import com.github.lionboard.model.RegistrationForm;
 import com.github.lionboard.service.LionBoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.springframework.social.connect.Connection;
+import org.springframework.social.connect.ConnectionKey;
+import org.springframework.social.connect.UserProfile;
+import org.springframework.social.connect.web.ProviderSignInUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,6 +42,9 @@ public class IndexController {
 
     @Autowired
     LionBoardService lionBoardService;
+
+    @Autowired
+    private ProviderSignInUtils providerSignInUtils;
 
     @RequestMapping(method = RequestMethod.GET)
     public String root() {
@@ -115,17 +126,36 @@ public class IndexController {
     @RequestMapping(
             value = "signup",
             method = RequestMethod.GET)
-    public String viewSignUp() {
-        //todo:세션 로그인 확인
+    public String showRegistrationForm(WebRequest request, Model model) {
+        Connection<?> connection = providerSignInUtils.getConnectionFromSession(request);
+        com.github.lionboard.model.User registration = createRegistrationDTO(connection);
+        model.addAttribute("user", registration);
         return "signUp";
+    }
+
+
+    private com.github.lionboard.model.User createRegistrationDTO(Connection<?> connection) {
+        com.github.lionboard.model.User dto = new com.github.lionboard.model.User();
+
+        if (connection != null) {
+            UserProfile socialMediaProfile = connection.fetchUserProfile();
+            dto.setEmail(socialMediaProfile.getEmail());
+            dto.setName(socialMediaProfile.getName());
+            dto.setIsOAuth("T");
+        }
+        else{
+            dto.setIsOAuth("F");
+        }
+
+        return dto;
     }
 
 
     @RequestMapping(
             value = "login",
             method = RequestMethod.GET)
-    public String viewLogIn() {
-        //todo:세션 로그인 확인
+    public String viewLogIn(Model model, @RequestParam(value = "error", required = false, defaultValue = "") String error) {
+        model.addAttribute("error",error);
         return "login";
     }
 

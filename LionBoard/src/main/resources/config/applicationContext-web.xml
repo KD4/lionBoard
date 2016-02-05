@@ -43,5 +43,5 @@
         <property name="toolboxConfigLocation" value="/WEB-INF/velocity-conf/toolbox.xml" />
     </beans:bean>
 
-    <import resource="classpath:/config/repository.xml" />
+    <import resource="classpath:/config/applicationContext-persistence.xml" />
 </beans>

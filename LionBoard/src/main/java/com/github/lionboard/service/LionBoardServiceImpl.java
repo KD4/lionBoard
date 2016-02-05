@@ -27,19 +27,6 @@ import java.util.*;
 public class LionBoardServiceImpl implements LionBoardService {
 
     @Autowired
-    PostRepository postRepository;
-
-    @Autowired
-    PostFileRepository postFileRepository;
-
-    @Autowired
-    CommentRepository commentRepository;
-
-    @Autowired
-    UserRepository userRepository;
-
-
-    @Autowired
     ImageFileUploadForTenth2 imageFileUploadForTenth2;
 
     @Autowired
@@ -359,7 +346,7 @@ public class LionBoardServiceImpl implements LionBoardService {
             if (user.getIsOAuth().equals("F")) {
                 userService.insertNormalUser(user);
             } else {
-                //Todo: OAuth logic
+                userService.insertOAuthUser(user);
             }
         }catch(Exception sq){
             throw new InvalidUserException("등록하려던 유저 정보가 올바르지 않습니다. (details : "+sq.getMessage()+")");
@@ -379,9 +366,9 @@ public class LionBoardServiceImpl implements LionBoardService {
     @Override
     public User getUserByIdentity(String identity) {
         User selectedUser = userService.getUserByIdentity(identity);
-        if(selectedUser == null){
-            throw new InvalidUserException("등록된 유저 정보가 없거나 탈퇴한 회원입니다.");
-        }
+//        if(selectedUser == null){
+//            throw new InvalidUserException("등록된 유저 정보가 없거나 탈퇴한 회원입니다.");
+//        }
         return selectedUser;
     }
 
@@ -515,6 +502,11 @@ public class LionBoardServiceImpl implements LionBoardService {
     @Override
     public void addPostFile(PostFile postFile) {
         postService.addPostFile(postFile);
+    }
+
+    @Override
+    public User existUserByIdentity(String identity) {
+        return userService.existUserByIdentity(identity);
     }
 
 

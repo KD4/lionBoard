@@ -46,6 +46,7 @@ public class UserControllerTest {
     @Autowired
     LionBoardService lionBoardService;
 
+
     User firstUser;
     User secondUser;
 

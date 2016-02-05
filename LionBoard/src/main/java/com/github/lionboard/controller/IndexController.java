@@ -13,7 +13,6 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionKey;
 import org.springframework.social.connect.UserProfile;
-import org.springframework.social.connect.web.ProviderSignInUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -42,9 +41,9 @@ public class IndexController {
 
     @Autowired
     LionBoardService lionBoardService;
-
-    @Autowired
-    private ProviderSignInUtils providerSignInUtils;
+//
+//    @Autowired
+//    private ProviderSignInUtils providerSignInUtils;
 
     @RequestMapping(method = RequestMethod.GET)
     public String root() {
@@ -127,9 +126,9 @@ public class IndexController {
             value = "signup",
             method = RequestMethod.GET)
     public String showRegistrationForm(WebRequest request, Model model) {
-        Connection<?> connection = providerSignInUtils.getConnectionFromSession(request);
-        com.github.lionboard.model.User registration = createRegistrationDTO(connection);
-        model.addAttribute("user", registration);
+//        Connection<?> connection = providerSignInUtils.getConnectionFromSession(request);
+//        com.github.lionboard.model.User registration = createRegistrationDTO(connection);
+//        model.addAttribute("user", registration);
         return "signUp";
     }
 

@@ -10,7 +10,6 @@ import com.github.lionboard.repository.PostFileRepository;
 import com.github.lionboard.repository.PostRepository;
 import com.github.lionboard.repository.UserRepository;
 import com.github.lionboard.tenth2.ImageFileUploadForTenth2;
-import org.apache.commons.fileupload.FileUploadException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;

@@ -40,5 +40,5 @@
         <property name="contentType" value="text/html; charset=UTF-8" />
     </beans:bean>
 
-    <beans:import resource="../../../../../lionboard-web/src/main/resources/root-context.xml" />
+    <beans:import resource="classpath:/config/root-context.xml" />
 </beans>

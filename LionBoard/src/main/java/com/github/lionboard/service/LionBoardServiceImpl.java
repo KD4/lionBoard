@@ -25,18 +25,6 @@ import java.util.*;
 @Service
 public class LionBoardServiceImpl implements LionBoardService {
 
-    @Autowired
-    PostRepository postRepository;
-
-    @Autowired
-    PostFileRepository postFileRepository;
-
-    @Autowired
-    CommentRepository commentRepository;
-
-    @Autowired
-    UserRepository userRepository;
-
 
     @Autowired
     ImageFileUploadForTenth2 imageFileUploadForTenth2;
@@ -478,7 +466,7 @@ public class LionBoardServiceImpl implements LionBoardService {
     //특정 포스트의 상태가 변경되면 해당 포스트의 코멘트도 상태가 같이 변경됨.
     @Override
     public void changeCmtStatusByPostId(int postId, String cmtStatus) {
-        commentService.updateCmtStatusByPostId(postId,cmtStatus);
+        commentService.updateCmtStatusByPostId(postId, cmtStatus);
     }
 
     @Override
@@ -514,6 +502,11 @@ public class LionBoardServiceImpl implements LionBoardService {
     @Override
     public void addPostFile(PostFile postFile) {
         postService.addPostFile(postFile);
+    }
+
+    @Override
+    public User existUserByIdentity(String identity) {
+        return userService.getUserByIdentity(identity);
     }
 
 

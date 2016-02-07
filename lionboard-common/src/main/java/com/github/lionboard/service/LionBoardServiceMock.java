@@ -436,7 +436,7 @@ public class LionBoardServiceMock implements LionBoardService {
     }
 
     @Override
-    public PostFile addFileToTenth(int postId, MultipartFile uploadFiles) {
+    public String addFileToServer(int postId, MultipartFile uploadFiles) {
         return null;
     }
 

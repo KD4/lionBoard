@@ -10,7 +10,9 @@
     <!-- Main Form -->
     <div class="login-form-1">
         <form id="login-form" class="text-left" action="loginProcess" method="POST">
-            <div class="login-form-main-message"></div>
+            #if($error eq 'bad_credentials')
+                    <div class="login-form-main-message show error">Wrong login credentials!</div>
+            #end
             <div class="main-login-form">
                 <div class="login-group">
                     <div class="form-group">

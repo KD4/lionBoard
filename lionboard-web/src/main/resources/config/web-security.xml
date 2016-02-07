@@ -10,14 +10,14 @@
     <http auto-config="true" use-expressions="true">
         <intercept-url pattern="/view/**" access="hasRole('ROLE_USER')"/>
         <csrf disabled="true"/>
-        <form-login login-page="/login" username-parameter="email"
-                    password-parameter="password" login-processing-url="/loginProcess"
+        <form-login login-page="/signIn" username-parameter="email"
+                    password-parameter="password" login-processing-url="/signInProcess"
                     default-target-url="/index"
-                    authentication-failure-url="/login?error=bad_credentials"
+                    authentication-failure-url="/signIn?error=bad_credentials"
         />
 
         <logout
-                logout-success-url="/login"
+                logout-success-url="/signIn"
                 invalidate-session="true"  />
     </http>
 

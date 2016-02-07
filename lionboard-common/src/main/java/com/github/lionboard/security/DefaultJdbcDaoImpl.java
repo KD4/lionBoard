@@ -1,6 +1,7 @@
 package com.github.lionboard.security;
 
 //import com.github.lionboard.model.User;
+import com.github.lionboard.error.InvalidUserException;
 import com.github.lionboard.repository.UserRepository;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.jdbc.core.RowMapper;
@@ -30,14 +31,17 @@ public class DefaultJdbcDaoImpl implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String email)
+    public UserDetails loadUserByUsername(String identity)
             throws UsernameNotFoundException {
         System.out.println(sqlSession);
-        com.github.lionboard.model.User user = sqlSession.getMapper(UserRepository.class).findUserByIdentity(email);
+        com.github.lionboard.model.User user = sqlSession.getMapper(UserRepository.class).findUserByIdentity(identity);
+        if(user.getIsOAuth().equals("T")){
+            throw new InvalidUserException("소셜 가입 유저입니다. 소셜 로그인을 이용해주세요.");
+        }
         String password=user.getPassword();
         Collection<SimpleGrantedAuthority> roles = new ArrayList<SimpleGrantedAuthority>();
         roles.add(new SimpleGrantedAuthority(user.getRoles()));
-        UserDetails userDetail = new User(email, password, roles);
+        UserDetails userDetail = new User(identity, password, roles);
         return userDetail;
     }
 }

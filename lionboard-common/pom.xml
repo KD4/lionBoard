@@ -17,6 +17,27 @@
             <artifactId>lionboard-core</artifactId>
             <version>${parent.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.github.kd4.lionboard</groupId>
+            <artifactId>lionboard-attachment</artifactId>
+            <version>${parent.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <!-- when using tenth server to upload and download file. -->
+        <!--<dependency>-->
+            <!--<groupId>com.github.kd4.lionboard</groupId>-->
+            <!--<artifactId>lionboard-tenth2-attachment</artifactId>-->
+            <!--<version>${parent.version}</version>-->
+            <!--<scope>runtime</scope>-->
+        <!--</dependency>-->
+
+        <!-- when using local server to upload and download file.-->
+        <dependency>
+            <groupId>com.github.kd4.lionboard</groupId>
+            <artifactId>lionboard-local-attachment</artifactId>
+            <version>${parent.version}</version>
+            <scope>runtime</scope>
+        </dependency>
 
         <!-- Spring MVC -->
         <dependency>
@@ -72,13 +93,7 @@
             <artifactId>aspectjrt</artifactId>
         </dependency>
 
-        <!-- TODO: tenth 레이어 추상화-->
-        <!-- static server named tenth2  -->
-        <dependency>
-            <groupId>net.daum.tenth2</groupId>
-            <artifactId>tenth2-lib</artifactId>
-            <version>0.71</version>
-        </dependency>
+
 
     </dependencies>
 

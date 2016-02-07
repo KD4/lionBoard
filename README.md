@@ -9,5 +9,9 @@ lionboard
 ```
 $ git clone git@github.com:KD4/LionBoard.git
 $ cd lionboard
-$ mvn package
+$ mvn clean package -Dmaven.test.skip=true
 ```
+
+모듈 다이어그램
+-----------
+![diagram_1](lionboard-modules.png)

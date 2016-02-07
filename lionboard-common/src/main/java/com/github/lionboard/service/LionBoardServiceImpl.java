@@ -9,7 +9,6 @@ import com.github.lionboard.repository.CommentRepository;
 import com.github.lionboard.repository.PostFileRepository;
 import com.github.lionboard.repository.PostRepository;
 import com.github.lionboard.repository.UserRepository;
-import com.github.lionboard.tenth2.ImageFileUploadForTenth2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,7 +26,7 @@ public class LionBoardServiceImpl implements LionBoardService {
 
 
     @Autowired
-    ImageFileUploadForTenth2 imageFileUploadForTenth2;
+    AttachmentService attachmentService;
 
     @Autowired
     UserService userService;
@@ -384,14 +383,10 @@ public class LionBoardServiceImpl implements LionBoardService {
     @Override
     public String uploadProfile(int userId, MultipartFile uploadFile) {
         try {
-
             //프로필 작명 규칙 : lionboard_profile_{userId}.jpg
             String fileName = "lionboard_profile_"+String.valueOf(userId)+".jpg";
 
-            //tenth2에 등록 성공하면, 접근할 수 있는 URL을 반환함.
-            String uploadUrl = insertFileOnTenthServer(uploadFile.getBytes(), fileName);
-
-            return uploadUrl;
+            return attachmentService.uploadFile(uploadFile.getBytes(), fileName);
         } catch (Exception e) {
 
             //todo logging.
@@ -401,15 +396,6 @@ public class LionBoardServiceImpl implements LionBoardService {
         }
     }
 
-    //업로드 팜을 이용해서 tenth서버에 업로드된 파일을 다시 업로드하는 로직.
-    private String insertFileOnTenthServer(byte[] imageFileBytes, String fileName) throws Exception {
-        try {
-            imageFileUploadForTenth2.init();
-            return imageFileUploadForTenth2.create(imageFileBytes, fileName);
-        } catch (Exception e) {
-            throw new Exception(e);
-        }
-    }
 
     @Override
     public void updateProfileInfoOnUser(int userId, String uploadedUrl) {
@@ -423,24 +409,20 @@ public class LionBoardServiceImpl implements LionBoardService {
 
     //첨부파일을 등록하는 로직. insertFileOnTenthServer메소드를 이용함.
     @Override
-    public PostFile addFileToTenth(int postId, MultipartFile uploadFile) {
+    public String addFileToServer(int postId, MultipartFile uploadFile) {
 
-        PostFile postFile = new PostFile();
 
         try {
 
             //첨부파일 작명 규칙 : lionboard_post_File_{postId}_{originalFileName}
             String fileName = "lionboard_post_File_"+postId+"_"+uploadFile.getOriginalFilename();
-            String uploadUrl = insertFileOnTenthServer(uploadFile.getBytes(), fileName);
-            postFile.setPostId(postId);
-            postFile.setFileUrl(uploadUrl);
-            postFile.setFileName(uploadFile.getOriginalFilename());
+            return attachmentService.uploadFile(uploadFile.getBytes(), fileName);
+
         } catch (Exception e) {
             e.printStackTrace();
             throw new InvalidPostException("fail to upload files.");
         }
 
-        return postFile;
     }
 
 
@@ -451,8 +433,14 @@ public class LionBoardServiceImpl implements LionBoardService {
             addPost(post);
             // 등록된 Post Id 반환.
             int postId = post.getPostId();
-            //Id와 uploadfile 정보를 이용해서 tenth서버에 파일 업로드 후
-            PostFile postFile = addFileToTenth(post.getPostId(), post.getUploadFile());
+
+            PostFile postFile = new PostFile();
+            //Id와 파일 정보를 이용해서 서버에 파일 업로드 후, 파일 정보를 디비에 저장.
+            String uploadUrl = addFileToServer(post.getPostId(), post.getUploadFile());
+            postFile.setPostId(postId);
+            postFile.setFileUrl(uploadUrl);
+            postFile.setFileName(post.getUploadFile().getOriginalFilename());
+
             postService.addPostFile(postFile);
         }catch (RuntimeException re){
             throw new InvalidPostException(re.getMessage());
@@ -462,6 +450,18 @@ public class LionBoardServiceImpl implements LionBoardService {
         }
     }
 
+
+    @Override
+    public void addFileOnPost(Post post) {
+        //게시글 수정 화면에서 파일만 업로드할 때, 수행되는 로직.
+        PostFile postFile = new PostFile();
+        //Id와 파일 정보를 이용해서 서버에 파일 업로드 후, 파일 정보를 디비에 저장.
+        String uploadUrl = addFileToServer(post.getPostId(), post.getUploadFile());
+        postFile.setPostId(post.getPostId());
+        postFile.setFileUrl(uploadUrl);
+        postFile.setFileName(post.getUploadFile().getOriginalFilename());
+        postService.addPostFile(postFile);
+    }
 
     //특정 포스트의 상태가 변경되면 해당 포스트의 코멘트도 상태가 같이 변경됨.
     @Override
@@ -491,12 +491,6 @@ public class LionBoardServiceImpl implements LionBoardService {
             re.printStackTrace();
             throw new InvalidPostException("해당 파일이 존재하지 않습니다.");
         }
-    }
-
-    @Override
-    public void addFileOnPost(Post post) {
-        PostFile postFile = addFileToTenth(post.getPostId(), post.getUploadFile());
-        postService.addPostFile(postFile);
     }
 
     @Override

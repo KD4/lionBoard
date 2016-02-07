@@ -9,6 +9,9 @@
 
     <modules>
         <module>lionboard-core</module>
+        <module>lionboard-attachment</module>
+        <module>lionboard-local-attachment</module>
+        <module>lionboard-tenth2-attachment</module>
         <module>lionboard-common</module>
         <module>lionboard-web</module>
     </modules>

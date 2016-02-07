@@ -112,7 +112,7 @@ public interface LionBoardService {
 
     void updateProfileInfoOnUser(int userId, String uploadedUrl);
 
-    PostFile addFileToTenth(int postId,MultipartFile uploadFiles);
+    String addFileToServer(int postId,MultipartFile uploadFiles);
 
     void addPostWithFile(Post post);
 

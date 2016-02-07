@@ -14,6 +14,7 @@ import java.io.IOException;
 public class LocalAttachmentService implements AttachmentService {
     public static final String serverPath = "/Users/daum/LionProject/lionboard-web/target/lionboard-web-0.1/WEB-INF/resources";
     public static final String fileUploadPath = "/uploadFile/";
+
     @Override
     public String uploadFile(byte[] bytes, String fileName) throws Exception {
         String filePath =serverPath+fileUploadPath+fileName;

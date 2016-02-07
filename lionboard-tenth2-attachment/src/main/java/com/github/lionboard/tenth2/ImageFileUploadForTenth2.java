@@ -6,7 +6,6 @@ import net.daum.tenth2.Tenth2File;
 import net.daum.tenth2.exceptions.AuthenticationException;
 import net.daum.tenth2.util.Tenth2Util;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import java.io.File;
 import java.io.FileInputStream;

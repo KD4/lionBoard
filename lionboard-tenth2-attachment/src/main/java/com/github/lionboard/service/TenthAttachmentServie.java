@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
  * Created by Lion.k on 16. 2. 7..
  */
 
+@Service
 public class TenthAttachmentServie implements AttachmentService{
     @Override
     public String uploadFile(byte[] bytes, String fileName) throws Exception {

@@ -1,0 +1,26 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.github.kd4.lionboard</groupId>
+        <artifactId>lionboard-parent</artifactId>
+        <version>0.1</version>
+    </parent>
+
+    <artifactId>lionboard-tenth2-attachment</artifactId>
+    <packaging>jar</packaging>
+    <name>lionboard-tenth2-attachment</name>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.github.kd4.lionboard</groupId>
+            <artifactId>lionboard-attachment</artifactId>
+            <version>${parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.daum.tenth2</groupId>
+            <artifactId>tenth2-lib</artifactId>
+            <version>0.71</version>
+        </dependency>
+    </dependencies>
+</project>

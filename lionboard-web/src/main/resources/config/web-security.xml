@@ -13,7 +13,7 @@
         <form-login login-page="/login" username-parameter="email"
                     password-parameter="password" login-processing-url="/loginProcess"
                     default-target-url="/index"
-                    authentication-failure-url="/login"
+                    authentication-failure-url="/login?error=bad_credentials"
         />
 
         <logout

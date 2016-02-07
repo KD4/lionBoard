@@ -7,9 +7,9 @@
         <version>0.1</version>
     </parent>
 
-    <artifactId>lionboard</artifactId>
+    <artifactId>lionboard-common</artifactId>
     <packaging>jar</packaging>
-    <name>lionboard</name>
+    <name>lionboard-common</name>
 
     <dependencies>
         <dependency>
@@ -27,7 +27,6 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-context-support</artifactId>
         </dependency>
-
 
         <!--spring security-->
         <dependency>
@@ -82,5 +81,10 @@
         </dependency>
 
     </dependencies>
+
+    <build>
+        <finalName>${project.artifactId}-${project.version}</finalName>
+    </build>
+
 
 </project>

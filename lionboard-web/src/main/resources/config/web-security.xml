@@ -19,7 +19,6 @@
         <logout
                 logout-success-url="/login"
                 invalidate-session="true"  />
-
     </http>
 
 </beans:beans>

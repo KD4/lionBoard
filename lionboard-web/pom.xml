@@ -21,7 +21,7 @@
 
         <dependency>
             <groupId>com.github.kd4.lionboard</groupId>
-            <artifactId>lionboard</artifactId>
+            <artifactId>lionboard-common</artifactId>
             <version>${parent.version}</version>
             <scope>runtime</scope>
         </dependency>
@@ -36,6 +36,14 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
         </dependency>
 
         <!-- Other Web dependencies -->
@@ -70,6 +78,7 @@
         </dependency>
 
     </dependencies>
+
 
     <build>
         <finalName>${project.artifactId}-${project.version}</finalName>

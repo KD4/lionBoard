@@ -9,7 +9,7 @@
 
     <modules>
         <module>lionboard-core</module>
-        <module>lionboard</module>
+        <module>lionboard-common</module>
         <module>lionboard-web</module>
     </modules>
 

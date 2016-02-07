@@ -6,8 +6,8 @@
 
 
     <import resource="classpath:/config/repository.xml" />
-
     <import resource="classpath:/config/security.xml" />
+    <import resource="classpath:/config/web-security.xml" />
 
     <!-- MultipartResolver 설정 -->
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">

@@ -8,6 +8,9 @@
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
 			classpath:/config/root-context.xml
+			<!--classpath:/config/repository.xml-->
+			<!--classpath:/config/security.xml-->
+			<!--classpath:/config/web-security.xml-->
 		</param-value>
 	</context-param>
 

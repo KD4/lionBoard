@@ -5,10 +5,7 @@ import com.github.lionboard.error.InvalidPostException;
 import com.github.lionboard.error.InvalidUserException;
 import com.github.lionboard.error.UploadFileToTenthException;
 import com.github.lionboard.model.*;
-import com.github.lionboard.repository.CommentRepository;
-import com.github.lionboard.repository.PostFileRepository;
-import com.github.lionboard.repository.PostRepository;
-import com.github.lionboard.repository.UserRepository;
+import com.github.lionboard.security.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -345,7 +342,7 @@ public class LionBoardServiceImpl implements LionBoardService {
             if (user.getIsOAuth().equals("F")) {
                 userService.insertNormalUser(user);
             } else {
-                //Todo: OAuth logic
+                userService.insertOAuthUser(user);
             }
         }catch(Exception sq){
             throw new InvalidUserException("등록하려던 유저 정보가 올바르지 않습니다. (details : "+sq.getMessage()+")");
@@ -501,6 +498,11 @@ public class LionBoardServiceImpl implements LionBoardService {
     @Override
     public User existUserByIdentity(String identity) {
         return userService.getUserByIdentity(identity);
+    }
+
+    @Override
+    public void securityLogin(User user) {
+        SecurityUtil.logInUser(user);
     }
 
 

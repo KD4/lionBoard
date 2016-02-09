@@ -88,6 +88,14 @@
             <artifactId>httpclient</artifactId>
             <version>4.5.1</version>
         </dependency>
+
+
+        <!--twitter-->
+        <dependency>
+            <groupId>org.twitter4j</groupId>
+            <artifactId>twitter4j-core</artifactId>
+            <version>4.0.4</version>
+        </dependency>
     </dependencies>
 
 

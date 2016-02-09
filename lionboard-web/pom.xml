@@ -96,6 +96,21 @@
             <artifactId>twitter4j-core</artifactId>
             <version>4.0.4</version>
         </dependency>
+
+
+        <!-- cache managerment -->
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-redis</artifactId>
+            <version>1.5.0.RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>2.7.3</version>
+        </dependency>
+
     </dependencies>
 
 

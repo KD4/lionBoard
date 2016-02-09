@@ -1,10 +1,9 @@
 package com.github.lionboard.controller;
 
-import com.github.lionboard.error.InvalidCmtException;
 import com.github.lionboard.error.InvalidUserException;
 import com.github.lionboard.model.User;
 import com.github.lionboard.service.LionBoardService;
-import common.OAuthHeaderTwitter;
+import com.github.lionboard.common.OAuthHeaderTwitter;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -15,6 +14,8 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -27,6 +28,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.sql.ResultSet;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Lion.k on 16. 2. 7..
@@ -42,6 +47,12 @@ public class SocialController {
 
     @Autowired
     LionBoardService lionBoardService;
+
+    @Autowired
+    RedisTemplate<String, String> redisTemplate;
+
+    @Resource(name="redisTemplate")
+    private ValueOperations<String, HashMap> valueOps;
 
 
     @RequestMapping(value = "/facebook")
@@ -122,10 +133,16 @@ public class SocialController {
         String requestToken = twitter_api.getRequestToken().getToken();
         String requestTokenSecret = twitter_api.getRequestToken().getTokenSecret();
 
-        System.out.println("after redirecting, request Token is " + requestToken);
 
         //Todo : store the requestToken and secret to redis cache.
-
+        HashMap savedTokens = (HashMap) valueOps.get(session.getId());
+        if(savedTokens == null) {
+            HashMap tokenMap = new HashMap();
+            tokenMap.put("requestToken",requestToken);
+            tokenMap.put("requestTokenSecret", requestTokenSecret);
+            valueOps.set(session.getId(),tokenMap, 1, TimeUnit.MINUTES);
+            savedTokens = valueOps.get(session.getId());
+        }
         String authenticationUrl = twitter_api.getRequestToken().getAuthenticationURL();
 
 
@@ -141,17 +158,19 @@ public class SocialController {
         String oauthToken = request.getParameter("oauth_token"); // requestToken 토큰과 같은 값이여야 한다. (보안)
         String oauthVerifier = request.getParameter("oauth_verifier"); // 트위터에서 인증요청하면서 생성한 토큰
 
-        //Todo : Get the requestToken and secret from redis cache.
-        String requestToken = (String) session.getAttribute("requestToken");
-        String requestTokenSecret = (String) session.getAttribute("requestTokenSecret");
-        String contact = null;
+        System.out.println(session.getId());
+
+        HashMap savedTokens = valueOps.get(session.getId());
+
+        String requestToken = (String) savedTokens.get("requestToken");
+        String requestTokenSecret = (String) savedTokens.get("requestTokenSecret");
 
         // 보안상 토큰이 일치하는 지 비교.
         if (requestToken.equals(oauthToken)) {
 
             OAuthHeaderTwitter twitter_api = new OAuthHeaderTwitter();
-            twitter_api.setConsumer_key("oi9uv7nIxPqcTTKu3WpOQeW4C");
-            twitter_api.setConsumer_secret("d26Hq4TMBo2uNOplbI5hbmKObXKB4BUgl335ODOYNfymawVkv3");
+            twitter_api.setConsumer_key(environment.getProperty("twitter.app.id"));
+            twitter_api.setConsumer_secret(environment.getProperty("twitter.app.secret"));
 
 
             // 인증된 토큰 생성

@@ -1,4 +1,4 @@
-package common;
+package com.github.lionboard.common;
 
 /**
  * Created by Lion.k on 16. 2. 9..
@@ -39,7 +39,7 @@ public class OAuthHeaderTwitter {
     // 인증 요청 토큰 생성
     public void setRequestToken()  throws TwitterException{
         twitter.setOAuthConsumer(this.consumer_key, this.consumer_secret);
-        requestToken = twitter.getOAuthRequestToken("http://127.0.0.1:8080/auth/twitter_success");
+        requestToken = twitter.getOAuthRequestToken("http://localhost:8080/auth/twitter_success");
 
     }
     public RequestToken getRequestToken(){

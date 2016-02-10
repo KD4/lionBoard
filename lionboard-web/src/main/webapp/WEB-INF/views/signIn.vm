@@ -30,6 +30,7 @@
                 <p><a href="/auth/facebook">Sign In with facebook</a></p>
                 <p><a href="/auth/twitter">Sign In with twitter</a></p>
                 <p><a href="/auth/kakao">Sign In with kakao</a></p>
+                <p><a href="/auth/daum">Sign In with daum</a></p>
                 <p>new user? <a href="/signup">create new account</a></p>
             </div>
         </form>

@@ -210,14 +210,14 @@ public class SocialController {
 
 
     @RequestMapping(value = "/kakao")
-    public String accessKakao(HttpSession session)  {
+    public String accessKakao()  {
 
-        return "redirect:https://kauth.kakao.com/oauth/authorize?client_id="+environment.getProperty("kakao.app.id")+"&redirect_uri="+environment.getProperty("kakao.redirect")+"&response_type=code";
+        return "redirect:https://kauth.kakao.com/oauth/authorize?client_id="+environment.getProperty("kakao.app.id")+"&redirect_uri="+environment.getProperty("kakao.callback")+"&response_type=code";
 
     }
 
     @RequestMapping(value = "/kakao_success")
-    public String processKakao(HttpSession session, HttpServletRequest request) throws ClientProtocolException,IOException {
+    public String processKakao(HttpServletRequest request) throws ClientProtocolException,IOException {
         String code = request.getParameter("code"); //{authorize_code}
         String accessToken = "";
         String result = "";
@@ -229,7 +229,7 @@ public class SocialController {
             final ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
             postParameters.add(new BasicNameValuePair("grant_type", "authorization_code"));
             postParameters.add(new BasicNameValuePair("client_id", environment.getProperty("kakao.app.id")));
-            postParameters.add(new BasicNameValuePair("redirect_uri", environment.getProperty("kakao.redirect")));
+            postParameters.add(new BasicNameValuePair("redirect_uri", environment.getProperty("kakao.callback")));
             postParameters.add(new BasicNameValuePair("code", code));
 
             post.setEntity(new UrlEncodedFormEntity(postParameters));
@@ -337,9 +337,136 @@ public class SocialController {
         return "redirect:/index";
     }
 
+    @RequestMapping(value = "/daum")
+    public String accessDaum()  {
+
+        return "redirect:https://apis.daum.net/oauth2/authorize?client_id="+environment.getProperty("daum.app.id")+"&redirect_uri="+environment.getProperty("daum.callback")+"&response_type=code";
+
+    }
+
+    @RequestMapping(value = "/daum_success")
+    public String processDaum(HttpServletRequest request) throws ClientProtocolException,IOException {
+        String code = request.getParameter("code"); //{authorize_code}
+        String accessToken = "";
+        String result = "";
+        BufferedReader rd = null;
+        InputStreamReader isr = null;
+        try {
+            final HttpPost post = new HttpPost("https://apis.daum.net/oauth2/token");
+
+            final ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
+            postParameters.add(new BasicNameValuePair("client_id", environment.getProperty("daum.app.id")));
+            postParameters.add(new BasicNameValuePair("client_secret", environment.getProperty("daum.app.secret")));
+            postParameters.add(new BasicNameValuePair("redirect_uri", environment.getProperty("daum.callback")));
+            postParameters.add(new BasicNameValuePair("code", code));
+            postParameters.add(new BasicNameValuePair("grant_type", "authorization_code"));
+
+            post.setEntity(new UrlEncodedFormEntity(postParameters));
+
+            HttpClient client = HttpClientBuilder.create().build();
+
+
+            final HttpResponse response = client.execute(post);
+
+
+            final int responseCode = response.getStatusLine().getStatusCode();
+
+            System.out.println("Post parameters : " + postParameters);
+            System.out.println("Response Code : " + responseCode);
+
+
+
+
+            isr = new InputStreamReader(response.getEntity().getContent());
+            rd = new BufferedReader(isr);
+            final StringBuffer buffer = new StringBuffer();
+            String line;
+            while ((line = rd.readLine()) != null) {
+                buffer.append(line);
+            }
+
+            System.out.println(buffer);
+            JSONObject jObject = new JSONObject(buffer.toString());
+
+            System.out.println("access token is "+jObject);
+            accessToken = jObject.getString("access_token");
+
+
+            /**
+             * ======= get user info with access token.============
+             */
+
+            HttpGet get = new HttpGet("https://apis.daum.net/user/v1/show.json?access_token="+accessToken);
+            HttpClient http = HttpClientBuilder.create().build();
+
+
+            final HttpResponse responseForUserInfo = http.execute(get);
+            final int responseCodeForUserInfo = responseForUserInfo.getStatusLine().getStatusCode();
+
+            System.out.println("Response Code : " + responseCodeForUserInfo );
+
+
+
+            isr = new InputStreamReader(responseForUserInfo.getEntity().getContent());
+            rd = new BufferedReader(isr);
+            final StringBuffer bufferForUserInfo = new StringBuffer();
+            String lineForUserInfo;
+            while ((lineForUserInfo = rd.readLine()) != null) {
+                bufferForUserInfo.append(lineForUserInfo);
+            }
+
+            System.out.println(bufferForUserInfo);
+            JSONObject jObjectForUserInfo = new JSONObject(bufferForUserInfo.toString());
+            System.out.println(jObjectForUserInfo);
+            User user = new User();
+            user.setIdentity(String.valueOf(jObjectForUserInfo.getJSONObject("result").getInt("id")));
+            user.setEmail(String.valueOf(jObjectForUserInfo.getJSONObject("result").getInt("id")));
+            user.setName(jObjectForUserInfo.getJSONObject("result").getString("nickname"));
+            user.setProfileUrl(jObjectForUserInfo.getJSONObject("result").getString("imagePath"));
+            user.setRoles("ROLE_USER");
+            user.setIsOAuth("T");
+            user.setPassword("");
+
+
+            if(1 > user.getProfileUrl().trim().length()){
+                user.setProfileUrl("http://t1.daumcdn.net/osa/tech/i1.daumcdn.jpg");
+            }
+
+            User existedUser = lionBoardService.existUserByIdentity(user.getIdentity());
+            if(existedUser == null){
+                lionBoardService.addUser(user);
+                lionBoardService.securityLogin(user);
+            }else{
+                lionBoardService.securityLogin(user);
+            }
+
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            // clear resources
+            if (rd != null) {
+                try {
+                    rd.close();
+                } catch(Exception ignore) {
+                }
+            }
+            if (isr != null) {
+                try {
+                    isr.close();
+                } catch(Exception ignore) {
+                }
+            }
+        }
+
+        return "redirect:/index";
+    }
+
 
     //TODO facebook,twitter,kakao,daum 각 provider 구별 방법
-    //TODO normal 로그인을 시도하는 유저가 Oauth 유저면 예외처리
     //TODO email 인증처리
 
 }

@@ -23,4 +23,9 @@ public interface UserService {
     void hardDeleteUserById(int userId);
 
     void updateUserStatusByUserId(int userId,String userStatus);
+
+    User existUserByIdentity(String identity);
+
+    void insertOAuthUser(User user);
+
 }

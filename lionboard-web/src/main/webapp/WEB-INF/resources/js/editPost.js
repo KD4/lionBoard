@@ -63,7 +63,7 @@
                             contentType:"application/json; charset=UTF-8",
                             dataType: 'text',
                             success: function (postId) {
-                                window.location.replace("/view/editPost/"+postId);
+                                window.location.replace("/posts/"+postId);
                             }
                         });
                     }else{
@@ -89,7 +89,7 @@
                 contentType:"application/json; charset=UTF-8",
                 dataType: 'text',
                 success: function (postId) {
-                    window.location.replace("/view/editPost/"+postId);
+                    window.location.replace("/posts/"+postId);
                 }
             });
         }

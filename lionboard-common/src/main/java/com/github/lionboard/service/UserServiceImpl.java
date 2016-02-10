@@ -115,4 +115,27 @@ public class UserServiceImpl implements UserService{
         userRepository.updateUserStatus(user);
 
     }
+
+    /**
+     * identity 정보로 등록된 유저가 있는지 확인합니다.
+     *
+     * @param identity
+     */
+    @Override
+    public User existUserByIdentity(String identity) {
+        return userRepository.findUserByIdentity(identity);
+    }
+
+
+    /**
+     * OAuth 사용자 정보를 저장합니다.
+     *
+     * @param user
+     */
+    @Override
+    public void insertOAuthUser(User user) {
+        //TODO OAuth 유저 구별 저장과 패스워드 정책 수립.
+        userRepository.insertUser(user);
+    }
+
 }

@@ -4,6 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 <link href="/css/loginAndRegist.css" rel="stylesheet">
 
+<a href="/index"><h3 class="text-muted">LIONBOARD</h3></a>
 <!-- REGISTRATION FORM -->
 <div class="text-center" style="padding:50px 0">
     <div class="logo">register</div>

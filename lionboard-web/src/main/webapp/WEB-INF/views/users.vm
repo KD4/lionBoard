@@ -3,10 +3,10 @@
     <ul class="nav nav-pills pull-right">
         #if($!loginUserId)
             <li role="presentation"><a href="/users/$loginUserId">My Page</a></li>
-            <li role="presentation"><a href="/logout">LogOut</a></li>
+            <li role="presentation"><a href="/signOut">Sign Out</a></li>
         #else
             <li role="presentation"><a href="/signup">Sign Up</a></li>
-            <li role="presentation"><a href="/login">Sign In</a></li>
+            <li role="presentation"><a href="/signIn">Sign In</a></li>
         #end
     </ul>
     </nav>

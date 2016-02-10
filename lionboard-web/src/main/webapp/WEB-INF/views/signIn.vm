@@ -4,12 +4,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 <link href="/css/loginAndRegist.css" rel="stylesheet">
 <!-- REGISTRATION FORM -->
-
+<a href="/index"><h3 class="text-muted">LIONBOARD</h3></a>
 <div class="text-center" style="padding:50px 0">
-    <div class="logo">login</div>
+    <div class="logo">Sign In</div>
     <!-- Main Form -->
     <div class="login-form-1">
-        <form id="login-form" class="text-left" action="loginProcess" method="POST">
+        <form id="login-form" class="text-left" action="/signInProcess" method="POST">
             #if($error eq 'bad_credentials')
                     <div class="login-form-main-message show error">Wrong login credentials!</div>
             #end
@@ -27,9 +27,11 @@
                 <button type="submit" class="login-button"><i class="fa fa-chevron-right"></i></button>
             </div>
             <div class="etc-login-form">
-                <p>Login by Facebook<a href="#"> click here</a></p>
-                <p>Login by Kakao<a href="#"> click here</a></p>
-                <p>new user? <a href="signup.html">create new account</a></p>
+                <a href="/auth/facebook"><div id="facebookBtn"></div></a>
+                <a href="/auth/twitter"><div id="twitterBtn"></div></a>
+                <a href="/auth/kakao"><div id="kakaoBtn"></div></a>
+                <a href="/auth/daum"><div id="daumBtn"></div></a>
+                <p>new User ?<a href="/signup">create new account.</a></p>
             </div>
         </form>
     </div>

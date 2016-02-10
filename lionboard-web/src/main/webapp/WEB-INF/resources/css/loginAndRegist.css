@@ -42,6 +42,13 @@ a:hover {
 .etc-login-form p {
   margin-bottom: 5px;
 }
+
+.etc-login-form div{
+  margin-bottom: 5px;
+  width: 220px;
+  height: 49px;
+  background-size: 220px 49px;
+}
 /*=== 4. Main Form ===*/
 .login-form-1 {
   max-width: 300px;
@@ -284,4 +291,38 @@ label:hover:before {
   font-size: 25px;
   color: #aaaaaa;
   font-weight: bold;
+}
+
+
+
+#daumBtn{
+  background-image: url('/bt/daum_btn.png');
+}
+
+#daumBtn:hover {
+  background-image: url('/bt/daum_hover_btn.png');
+}
+
+#kakaoBtn{
+  background-image: url('/bt/kakao_btn.png');
+}
+
+#kakaoBtn:hover{
+  background-image: url('/bt/kakao_hover_btn.png');
+}
+
+#facebookBtn{
+  background-image: url('/bt/facebook_btn.png');
+}
+
+#facebookBtn:hover{
+  background-image: url('/bt/facebook_hover_btn.png');
+}
+
+#twitterBtn{
+  background-image: url('/bt/twitter_btn.png');
+}
+
+#twitterBtn:hover{
+  background-image: url('/bt/twitter_hover_btn.png');
 }

@@ -27,11 +27,11 @@
                 <button type="submit" class="login-button"><i class="fa fa-chevron-right"></i></button>
             </div>
             <div class="etc-login-form">
-                <p><a href="/auth/facebook">Sign In with facebook</a></p>
-                <p><a href="/auth/twitter">Sign In with twitter</a></p>
-                <p><a href="/auth/kakao">Sign In with kakao</a></p>
-                <p><a href="/auth/daum">Sign In with daum</a></p>
-                <p>new user? <a href="/signup">create new account</a></p>
+                <a href="/auth/facebook"><div id="facebookBtn"></div></a>
+                <a href="/auth/twitter"><div id="twitterBtn"></div></a>
+                <a href="/auth/kakao"><div id="kakaoBtn"></div></a>
+                <a href="/auth/daum"><div id="daumBtn"></div></a>
+                <p>new User ?<a href="/signup">create new account.</a></p>
             </div>
         </form>
     </div>

@@ -5,11 +5,16 @@ import com.github.lionboard.model.User;
 import com.github.lionboard.service.LionBoardService;
 import com.github.lionboard.common.OAuthHeaderTwitter;
 import org.apache.commons.lang.StringUtils;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
@@ -22,13 +27,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -56,7 +59,7 @@ public class SocialController {
 
 
     @RequestMapping(value = "/facebook")
-    public String facebookOAuth(HttpSession session)  {
+    public String accessFacebook(HttpSession session)  {
 
         session.setAttribute("facebookAppKey", environment.getProperty("facebook.app.id"));
         session.setAttribute("appSecret", environment.getProperty("facebook.app.secret"));
@@ -69,7 +72,7 @@ public class SocialController {
     }
 
     @RequestMapping(value = "/facebook_success")
-    public String processFacebookSignIn(HttpSession session, HttpServletRequest request) throws ClientProtocolException,IOException {
+    public String processFacebook(HttpSession session, HttpServletRequest request) throws ClientProtocolException,IOException {
         String code = request.getParameter("code");
         String accessToken = "";
         String result = "";
@@ -117,7 +120,7 @@ public class SocialController {
     }
 
     @RequestMapping(value = "/twitter")
-    public String twitter_access(HttpSession session) throws Exception{
+    public String accessTwitter(HttpSession session) throws Exception{
 
         OAuthHeaderTwitter twitter_api = new OAuthHeaderTwitter();
 
@@ -152,7 +155,7 @@ public class SocialController {
     }
 
     @RequestMapping(value = "/twitter_success")
-    public String twitter_success(HttpSession session, HttpServletRequest request) throws Exception {
+    public String processTwitter(HttpSession session, HttpServletRequest request) throws Exception {
 
         // 트위터에서 받은 인증토큰
         String oauthToken = request.getParameter("oauth_token"); // requestToken 토큰과 같은 값이여야 한다. (보안)
@@ -204,6 +207,136 @@ public class SocialController {
         }
 
     }
+
+
+    @RequestMapping(value = "/kakao")
+    public String accessKakao(HttpSession session)  {
+
+        return "redirect:https://kauth.kakao.com/oauth/authorize?client_id="+environment.getProperty("kakao.app.id")+"&redirect_uri="+environment.getProperty("kakao.redirect")+"&response_type=code";
+
+    }
+
+    @RequestMapping(value = "/kakao_success")
+    public String processKakao(HttpSession session, HttpServletRequest request) throws ClientProtocolException,IOException {
+        String code = request.getParameter("code"); //{authorize_code}
+        String accessToken = "";
+        String result = "";
+        BufferedReader rd = null;
+        InputStreamReader isr = null;
+        try {
+            final HttpPost post = new HttpPost("https://kauth.kakao.com/oauth/token");
+
+            final ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
+            postParameters.add(new BasicNameValuePair("grant_type", "authorization_code"));
+            postParameters.add(new BasicNameValuePair("client_id", environment.getProperty("kakao.app.id")));
+            postParameters.add(new BasicNameValuePair("redirect_uri", environment.getProperty("kakao.redirect")));
+            postParameters.add(new BasicNameValuePair("code", code));
+
+            post.setEntity(new UrlEncodedFormEntity(postParameters));
+
+            HttpClient client = HttpClientBuilder.create().build();
+
+
+            final HttpResponse response = client.execute(post);
+
+
+            final int responseCode = response.getStatusLine().getStatusCode();
+
+            System.out.println("Post parameters : " + postParameters);
+            System.out.println("Response Code : " + responseCode);
+
+
+
+
+            isr = new InputStreamReader(response.getEntity().getContent());
+            rd = new BufferedReader(isr);
+            final StringBuffer buffer = new StringBuffer();
+            String line;
+            while ((line = rd.readLine()) != null) {
+                buffer.append(line);
+            }
+
+            System.out.println(buffer);
+            JSONObject jObject = new JSONObject(buffer.toString());
+
+            System.out.println("access token is "+jObject);
+            accessToken = jObject.getString("access_token");
+
+
+            /**
+             * ======= get user info with access token.============
+             */
+
+            HttpGet get = new HttpGet("https://kapi.kakao.com/v1/user/me");
+            get.setHeader("Authorization","Bearer "+accessToken);
+            HttpClient http = HttpClientBuilder.create().build();
+
+
+            final HttpResponse responseForUserInfo = http.execute(get);
+            final int responseCodeForUserInfo = responseForUserInfo.getStatusLine().getStatusCode();
+
+            System.out.println("Response Code : " + responseCodeForUserInfo );
+
+
+
+            isr = new InputStreamReader(responseForUserInfo.getEntity().getContent());
+            rd = new BufferedReader(isr);
+            final StringBuffer bufferForUserInfo = new StringBuffer();
+            String lineForUserInfo;
+            while ((lineForUserInfo = rd.readLine()) != null) {
+                bufferForUserInfo.append(lineForUserInfo);
+            }
+
+            System.out.println(bufferForUserInfo);
+            JSONObject jObjectForUserInfo = new JSONObject(bufferForUserInfo.toString());
+            System.out.println(jObjectForUserInfo);
+            User user = new User();
+            user.setIdentity(String.valueOf(jObjectForUserInfo.getInt("id")));
+            user.setEmail(String.valueOf(jObjectForUserInfo.getInt("id")));
+            user.setName(jObjectForUserInfo.getJSONObject("properties").getString("nickname"));
+            user.setProfileUrl(jObjectForUserInfo.getJSONObject("properties").getString("profile_image"));
+            user.setRoles("ROLE_USER");
+            user.setIsOAuth("T");
+            user.setPassword("");
+
+
+            if(1 > user.getProfileUrl().trim().length()){
+                user.setProfileUrl("http://t1.daumcdn.net/osa/tech/i1.daumcdn.jpg");
+            }
+
+            User existedUser = lionBoardService.existUserByIdentity(user.getIdentity());
+            if(existedUser == null){
+                lionBoardService.addUser(user);
+                lionBoardService.securityLogin(user);
+            }else{
+                lionBoardService.securityLogin(user);
+            }
+
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            // clear resources
+            if (rd != null) {
+                try {
+                    rd.close();
+                } catch(Exception ignore) {
+                }
+            }
+            if (isr != null) {
+                try {
+                    isr.close();
+                } catch(Exception ignore) {
+                }
+            }
+        }
+
+        return "redirect:/index";
+    }
+
 
     //TODO facebook,twitter,kakao,daum 각 provider 구별 방법
     //TODO normal 로그인을 시도하는 유저가 Oauth 유저면 예외처리

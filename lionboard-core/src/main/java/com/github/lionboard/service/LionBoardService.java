@@ -127,4 +127,6 @@ public interface LionBoardService {
     void addPostFile(PostFile postFile);
 
     User existUserByIdentity(String identity);
+
+    void securityLogin(User user);
 }

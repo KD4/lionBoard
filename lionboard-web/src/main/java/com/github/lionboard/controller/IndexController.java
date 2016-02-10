@@ -124,22 +124,22 @@ public class IndexController {
 
 
     @RequestMapping(
-            value = "login",
+            value = "signIn",
             method = RequestMethod.GET)
-    public String viewLogIn(Model model,@RequestParam(value = "error", required = false, defaultValue = "")String error) {
+    public String showSignInPage(Model model,@RequestParam(value = "error", required = false, defaultValue = "")String error) {
         model.addAttribute("error",error);
-        return "login";
+        return "signIn";
     }
 
 
-    @RequestMapping(value="logout", method = RequestMethod.GET)
-    public String logoutPage (HttpServletRequest request, HttpServletResponse response) {
+    @RequestMapping(value="signOut", method = RequestMethod.GET)
+    public String processSignOut (HttpServletRequest request, HttpServletResponse response) {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null){
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }
-        return "redirect:/login";
+        return "redirect:/signIn";
     }
 
 

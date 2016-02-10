@@ -17,6 +17,7 @@ public class LocalAttachmentService implements AttachmentService {
 
     @Override
     public String uploadFile(byte[] bytes, String fileName) throws Exception {
+        //todo fileName encoding.
         String filePath =serverPath+fileUploadPath+fileName;
         BufferedOutputStream bos = null;
         try {

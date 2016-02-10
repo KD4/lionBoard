@@ -175,7 +175,7 @@ public class SocialController {
         JSONObject jObject = new JSONObject(nextLine);
 
         User user = new User();
-        user.setIdentity(jObject.getString("id"));
+        user.setIdentity("FB"+jObject.getString("id"));
         user.setEmail(jObject.getString("email"));
         user.setName(jObject.getString("name"));
         user.setProfileUrl(jObject.getJSONObject("picture").getJSONObject("data").getString("url"));
@@ -204,7 +204,7 @@ public class SocialController {
 
     private User getTwitterUserInfo(OAuthHeaderTwitter twitter_api) throws TwitterException {
         User user = new User();
-        user.setIdentity(Long.toString(twitter_api.getTwitter().verifyCredentials().getId()));
+        user.setIdentity("TW"+Long.toString(twitter_api.getTwitter().verifyCredentials().getId()));
         user.setEmail(Long.toString(twitter_api.getTwitter().verifyCredentials().getId()));
         user.setName(twitter_api.getTwitter().verifyCredentials().getName());
         user.setProfileUrl(twitter_api.getTwitter().verifyCredentials().getOriginalProfileImageURL());
@@ -256,7 +256,7 @@ public class SocialController {
         System.out.println(bufferForUserInfo);
         JSONObject jObjectForUserInfo = new JSONObject(bufferForUserInfo.toString());
         System.out.println(jObjectForUserInfo);
-        user.setIdentity(String.valueOf(jObjectForUserInfo.getInt("id")));
+        user.setIdentity("KA"+String.valueOf(jObjectForUserInfo.getInt("id")));
         user.setEmail(String.valueOf(jObjectForUserInfo.getInt("id")));
         user.setName(jObjectForUserInfo.getJSONObject("properties").getString("nickname"));
         user.setProfileUrl(jObjectForUserInfo.getJSONObject("properties").getString("profile_image"));
@@ -382,7 +382,7 @@ public class SocialController {
             JSONObject jObjectForUserInfo = new JSONObject(bufferForUserInfo.toString());
             System.out.println(jObjectForUserInfo);
 
-            user.setIdentity(String.valueOf(jObjectForUserInfo.getJSONObject("result").getInt("id")));
+            user.setIdentity("DM" + String.valueOf(jObjectForUserInfo.getJSONObject("result").getInt("id")));
             user.setEmail(String.valueOf(jObjectForUserInfo.getJSONObject("result").getInt("id")));
             user.setName(jObjectForUserInfo.getJSONObject("result").getString("nickname"));
             user.setProfileUrl(jObjectForUserInfo.getJSONObject("result").getString("imagePath"));

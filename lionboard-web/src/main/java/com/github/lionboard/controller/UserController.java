@@ -92,19 +92,14 @@ public class UserController {
     }
 
 
+    @ResponseBody
     @RequestMapping(
             method= RequestMethod.PUT,
             value="/{userId}")
-    public ModelAndView updateUser(@PathVariable("userId") int userId,@RequestBody User user){
-        ModelAndView mav = new ModelAndView("/users");
+    public String updateUser(@PathVariable("userId") int userId,@RequestBody User user){
         user.setId(userId);
         lionBoardService.modifyUser(user);
-        User updatedUser = lionBoardService.getUserByUserId(userId);
-        if(updatedUser == null){
-            throw new InvalidUserException();
-        }
-        mav.addObject("user",updatedUser);
-        return mav;
+        return String.valueOf(user.getId());
     }
 
     @RequestMapping(

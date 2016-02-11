@@ -1,32 +1,43 @@
 <div class="header">
     <nav>
-    <ul class="nav nav-pills pull-right">
-        #if($!loginUserId)
-            <li role="presentation"><a href="/users/$loginUserId">My Page</a></li>
-            <li role="presentation"><a href="/signOut">Sign Out</a></li>
-        #else
-            <li role="presentation"><a href="/signup">Sign Up</a></li>
-            <li role="presentation"><a href="/signIn">Sign In</a></li>
-        #end
-    </ul>
+        <ul class="nav nav-pills pull-right">
+            #if($!loginUserId)
+                <li role="presentation"><a href="/users/$loginUserId">My Page</a></li>
+                <li role="presentation"><a href="/signOut">Sign Out</a></li>
+            #else
+                <li role="presentation"><a href="/signup">Sign Up</a></li>
+                <li role="presentation"><a href="/signIn">Sign In</a></li>
+            #end
+        </ul>
     </nav>
     <a href="/index"><h3 class="text-muted">LIONBOARD</h3></a>
 </div>
-<div class="panel panel-default user-panel">
+
+<div class="panel panel-default edit-user-panel">
     <div class="panel-body">
         <div class="user-photo">
             <img src="$user.profileUrl" alt="user-profile"/>
         </div>
         <div class="user-info">
-        <div class="user-name"><h3>$user.name</h3></div>
-        <div class="user-email"><h4>$user.email</h4></div>
-        <div class="user-registeredAt"><h5>가입날짜:$dateTool.format("yyyy-M-d",$user.registeredAt)</h5></div>
-        #if($loginUserId eq $user.id)
-            <div><a href="/view/editUser/$user.id"><span class="glyphicon glyphicon-cog"></span>수정</a></div>
-        #end
-    </div>
+            <form id="edit-user">
+                <input type="hidden" name="userId" value="$user.id">
+            <div>
+                <label for="updateProfile">프로필 이미지 수정</label>
+                <input id="updateProfile" type="file" name="profileImage">
+            </div>
+            <div>
+                <input type="text" name="email" value="$user.email">
+            </div>
+            <div>
+                <input type="text" name="name" value="$user.name">
+            </div>
+            <div class="user-registeredAt"><h5>가입날짜:$dateTool.format("yyyy-M-d",$user.registeredAt)</h5></div>
+            <button type="submit" class="btn btn-default">수정</button>
+            <a href="/users/$user.id" class="btn btn-default">취소</a>
+        </div>
     </div>
 </div>
+
 <div class="row marketing">
     <div class="col-md-12">
         <div class="page-header">

@@ -129,3 +129,7 @@ a:active { text-decoration:none; !important; }
 .stickyPosts{
     background: #DDEEDD;
 }
+
+.user-name h3{
+    margin-top:10px;
+}

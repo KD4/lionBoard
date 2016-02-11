@@ -1,9 +1,12 @@
 package com.github.lionboard.controller;
 
 import com.github.lionboard.error.IncorrectAccessException;
+import com.github.lionboard.error.InvalidUserException;
+import com.github.lionboard.model.Comment;
 import com.github.lionboard.model.Post;
 //import com.github.lionboard.model.User;
 import com.github.lionboard.model.PostFile;
+import com.github.lionboard.model.User;
 import com.github.lionboard.service.LionBoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -106,12 +109,38 @@ public class IndexController {
         String identity = auth.getName(); //get logged in username
         com.github.lionboard.model.User loginUser = lionBoardService.getUserByIdentity(identity);
 
-
         ModelAndView mav = new ModelAndView("replyPost");
         mav.addObject("basePost", basePost);
         mav.addObject("loginUserId", loginUser.getId());
         return mav;
+    }
 
+    @RequestMapping(
+            value = "view/editUser/{userId}",
+            method = RequestMethod.GET)
+    public ModelAndView editUser(@PathVariable("userId") int userId) {
+        //Spring Security session에 저장된 login된 유저 정보 가져오기.
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String identity = auth.getName(); //get logged in username
+        com.github.lionboard.model.User loginUser = lionBoardService.getUserByIdentity(identity);
+
+        if(loginUser.getId() != userId){
+            throw new IncorrectAccessException("해당 유저 정보를 변경할 권한이 없습니다.");
+        }
+
+
+        ModelAndView mav = new ModelAndView("editUser");
+        User selectedUser = lionBoardService.getUserByUserId(userId);
+        if(selectedUser == null){
+            throw new InvalidUserException();
+        }
+        List<Post> posts = lionBoardService.getPostsByUserId(userId);
+        List<Comment> comments = lionBoardService.getCommentsByUserId(userId);
+        mav.addObject("user", selectedUser);
+        mav.addObject("posts", posts);
+        mav.addObject("comments", comments);
+        mav.addObject("loginUserId", loginUser.getId());
+        return mav;
     }
 
     @RequestMapping(

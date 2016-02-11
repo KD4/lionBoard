@@ -6,6 +6,7 @@ import com.github.lionboard.error.InvalidUserException;
 import com.github.lionboard.error.UploadFileToTenthException;
 import com.github.lionboard.model.*;
 import com.github.lionboard.security.SecurityUtil;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -382,7 +383,9 @@ public class LionBoardServiceImpl implements LionBoardService {
     public String uploadProfile(int userId, MultipartFile uploadFile) {
         try {
             //프로필 작명 규칙 : lionboard_profile_{userId}.jpg
-            String fileName = "lionboard_profile_"+String.valueOf(userId)+".jpg";
+            DateTime dateTime = DateTime.now();
+            ;
+            String fileName = "lionboard_profile_"+dateTime.getMillis()+"_"+String.valueOf(userId)+".jpg";
 
             return attachmentService.uploadFile(uploadFile.getBytes(), fileName);
         } catch (Exception e) {
@@ -523,6 +526,7 @@ public class LionBoardServiceImpl implements LionBoardService {
     public List<Post> getStickyPosts(int unit) {
         return postService.getStickyPosts(unit);
     }
+
 
 
     @Override

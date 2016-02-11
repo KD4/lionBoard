@@ -133,4 +133,5 @@ public interface LionBoardService {
     Post getParentPost(int postId);
 
     List<Post> getStickyPosts(int unit);
+
 }

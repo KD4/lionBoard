@@ -341,4 +341,15 @@ public class PostServiceImpl implements PostService {
     }
 
 
+    /**
+     * 고정 게시물은 최신순으로 unit 가져옵니다.
+     *
+     * @param unit
+     */
+    @Override
+    public List<Post> getStickyPosts(int unit) {
+        return postRepository.findStickyPosts(unit);
+    }
+
+
 }

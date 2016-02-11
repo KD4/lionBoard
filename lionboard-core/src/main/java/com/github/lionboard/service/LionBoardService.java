@@ -131,4 +131,6 @@ public interface LionBoardService {
     void securityLogin(User user);
 
     Post getParentPost(int postId);
+
+    List<Post> getStickyPosts(int unit);
 }

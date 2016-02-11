@@ -61,8 +61,8 @@ public class PostController {
     public ModelAndView getPosts(@RequestParam(value = "offset", required = false, defaultValue = "0") int offset, @RequestParam(value = "limit", required = false, defaultValue = "15") int limit,@RequestParam(value = "sort", required = false, defaultValue = "posts.postNum") String sort){
 
         ModelAndView mav = new ModelAndView("index");
-
-        List<Post> posts = lionBoardService.getPosts(offset, limit, sort);
+        List<Post> posts = lionBoardService.getStickyPosts(5);
+        posts.addAll(lionBoardService.getPosts(offset, limit, sort));
         List<Pagination> paginations = lionBoardService.getPagination(offset,sort);
         mav.addObject("posts",posts);
         mav.addObject("paginations",paginations);

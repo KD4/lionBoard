@@ -519,6 +519,11 @@ public class LionBoardServiceImpl implements LionBoardService {
         }
     }
 
+    @Override
+    public List<Post> getStickyPosts(int unit) {
+        return postService.getStickyPosts(unit);
+    }
+
 
     @Override
     public void modifyUser(User user) {

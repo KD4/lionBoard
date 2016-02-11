@@ -68,4 +68,6 @@ public interface PostRepository {
     List<Post> findPostsByUserId(int userId);
 
     Post findParentPost(Post tempParent);
+
+    List<Post> findStickyPosts(int unit);
 }

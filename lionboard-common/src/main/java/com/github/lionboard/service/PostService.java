@@ -63,4 +63,6 @@ public interface PostService {
     int subtractViewCount(int postId);
 
     Post getParentPost(int postId);
+
+    List<Post> getStickyPosts(int unit);
 }

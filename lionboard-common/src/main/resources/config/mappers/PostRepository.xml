@@ -152,6 +152,17 @@
         ORDER BY posts.postNum ASC LIMIT 1
     </select>
 
+    <select id="findStickyPosts" resultType="com.github.lionboard.model.Post">
+        SELECT posts.*, users.name username, status.postStatus, 'T' as isSticky
+        FROM STICKY_POST_TB AS stickies
+        LEFT JOIN POST_TB AS posts ON stickies.postId = posts.postId
+        LEFT JOIN USER_TB AS users ON posts.userId = users.id
+        LEFT JOIN POST_STATUS_TB AS status ON posts.postId = status.postId
+        WHERE status.postStatus = 'S'
+        ORDER BY posts.createdAt ASC LIMIT #{unit}
+    </select>
+
+
 
 </mapper>
 

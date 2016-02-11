@@ -31,14 +31,16 @@ public class PostServiceImpl implements PostService {
      *
      * @param offset
      * @param limit
+     * @param sort
      * @return List<Post>
      */
     @Override
-    public List<Post> getPosts(int offset, int limit) {
+    public List<Post> getPosts(int offset, int limit, String sort) {
 
-        Map<String,Integer> pageArgs = new HashMap<>();
+        Map<String, Object> pageArgs = new HashMap<>();
         pageArgs.put("offset", offset);
         pageArgs.put("limit", limit);
+        pageArgs.put("sort", sort);
         return postRepository.findByPage(pageArgs);
     }
 
@@ -317,6 +319,25 @@ public class PostServiceImpl implements PostService {
     @Override
     public int subtractViewCount(int postId) {
         return postRepository.subtractViewCount(postId);
+    }
+
+
+    /**
+     * 특정 Post의 부모글을 찾습니다.
+     *
+     * @param postId
+     */
+    @Override
+    public Post getParentPost(int postId) {
+
+        Post currentPost = postRepository.findPostByPostId(postId);
+        int parentDepth = currentPost.getDepth()-1;
+        Post tempParent = new Post();
+        tempParent.setDepth(parentDepth);
+        tempParent.setPostNum(currentPost.getPostNum());
+        Post parentPost = postRepository.findParentPost(tempParent);
+
+        return parentPost;
     }
 
 

@@ -22,11 +22,15 @@
     <div class="post-header-right">
         <div class="post-header-right-top">
             <h4 id="currentPost" data-postId="$post.postId" >$post.title</h4>
+
         </div>
         <div class="post-header-right-bottom">
             <span><a href="/users/$post.userId"> $post.userName </a></span>
             <span> $dateTool.format("short",$post.createdAt)</span>
             <span> 조회수 : $post.viewCount </span>
+            #if($post.depth > 0)
+                - <a href="#" class="go2Parent">원글보기</a>
+            #end
         </div>
     </div>
     <!-- </div> -->

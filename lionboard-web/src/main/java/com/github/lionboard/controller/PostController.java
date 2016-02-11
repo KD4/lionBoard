@@ -58,12 +58,12 @@ public class PostController {
 
 
     @RequestMapping(method= RequestMethod.GET)
-    public ModelAndView getPosts(@RequestParam(value = "offset", required = false, defaultValue = "0") int offset, @RequestParam(value = "limit", required = false, defaultValue = "15") int limit){
+    public ModelAndView getPosts(@RequestParam(value = "offset", required = false, defaultValue = "0") int offset, @RequestParam(value = "limit", required = false, defaultValue = "15") int limit,@RequestParam(value = "sort", required = false, defaultValue = "posts.postNum") String sort){
 
         ModelAndView mav = new ModelAndView("index");
 
-        List<Post> posts = lionBoardService.getPosts(offset, limit);
-        List<Pagination> paginations = lionBoardService.getPagination(offset);
+        List<Post> posts = lionBoardService.getPosts(offset, limit, sort);
+        List<Pagination> paginations = lionBoardService.getPagination(offset,sort);
         mav.addObject("posts",posts);
         mav.addObject("paginations",paginations);
 
@@ -75,7 +75,6 @@ public class PostController {
             mav.addObject("loginUserId", loginUser.getId());
         }
         return mav;
-
 
     }
 
@@ -211,6 +210,8 @@ public class PostController {
         return true;
     }
 
+
+
     @ResponseBody
     @RequestMapping(method= RequestMethod.GET,
             produces="application/json;charset=utf8",
@@ -230,6 +231,14 @@ public class PostController {
         lionBoardService.changeProcessStatusFromPost(postReport);
         return true;
     }
+
+    @RequestMapping(method= RequestMethod.GET,value = "/{postId}/parent")
+    public String getParentPost(@PathVariable("postId") int postId){
+
+        Post parentPost = lionBoardService.getParentPost(postId);
+        return "redirect:/posts/"+parentPost.getPostId();
+    }
+
 
 
 

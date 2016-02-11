@@ -13,7 +13,7 @@ import java.util.Map;
 
 @Repository
 public interface PostRepository {
-    List<Post> findByPage(Map<String, Integer> pageArgs);
+    List<Post> findByPage(Map<String, Object> pageArgs);
 
     void insertPost(Post post);
 
@@ -67,4 +67,5 @@ public interface PostRepository {
 
     List<Post> findPostsByUserId(int userId);
 
+    Post findParentPost(Post tempParent);
 }

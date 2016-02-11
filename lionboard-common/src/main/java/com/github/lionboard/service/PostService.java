@@ -10,7 +10,7 @@ import java.util.List;
  * Created by Lion.k on 16. 2. 3..
  */
 public interface PostService {
-    List<Post> getPosts(int offset, int limit);
+    List<Post> getPosts(int offset, int limit, String sort);
 
     void insertRootPost(Post post);
 
@@ -61,4 +61,6 @@ public interface PostService {
     int addViewCount(int postId);
 
     int subtractViewCount(int postId);
+
+    Post getParentPost(int postId);
 }

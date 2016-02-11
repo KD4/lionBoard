@@ -38,10 +38,11 @@ public class LionBoardServiceMock implements LionBoardService {
     UserRepository userRepository;
 
     @Override
-    public List<Post> getPosts(int offset, int limit) {
-        Map<String,Integer> pageArgs = new HashMap<>();
-        pageArgs.put("offset",offset);
-        pageArgs.put("limit",limit);
+    public List<Post> getPosts(int offset, int limit, String sort) {
+        Map<String, Object> pageArgs = new HashMap<>();
+        pageArgs.put("offset", offset);
+        pageArgs.put("limit", limit);
+        pageArgs.put("sort",sort);
         List<Post> posts = postRepository.findByPage(pageArgs);
 
         //ToDo: Post 객체에 이름을 어떻게 넣을 것인가 ? 일단은 SQL 문으로 !
@@ -109,6 +110,11 @@ public class LionBoardServiceMock implements LionBoardService {
     @Override
     public void securityLogin(User user) {
 
+    }
+
+    @Override
+    public Post getParentPost(int postId) {
+        return null;
     }
 
     @Override
@@ -411,9 +417,10 @@ public class LionBoardServiceMock implements LionBoardService {
     }
 
     @Override
-    public List<Pagination> getPagination(int offset) {
+    public List<Pagination> getPagination(int offset, String sort) {
         return null;
     }
+
 
     @Override
     public List<Post> getPostsByUserId(int userId) {

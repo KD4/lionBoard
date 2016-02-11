@@ -9,7 +9,7 @@ import java.util.List;
  * Created by lion.k on 16. 1. 20..
  */
 public interface LionBoardService {
-    List<Post> getPosts(int offset, int limit);
+    List<Post> getPosts(int offset, int limit, String sort);
 
     void addPost(Post post);
 
@@ -100,7 +100,7 @@ public interface LionBoardService {
 
     void changeProcessStatusFromCmt(CommentReport commentReport);
 
-    List<Pagination> getPagination(int offset);
+    List<Pagination> getPagination(int offset,String sort);
 
     List<Post> getPostsByUserId(int userId);
 
@@ -129,4 +129,6 @@ public interface LionBoardService {
     User existUserByIdentity(String identity);
 
     void securityLogin(User user);
+
+    Post getParentPost(int postId);
 }

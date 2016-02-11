@@ -7,30 +7,18 @@ import com.github.lionboard.model.Comment;
 import com.github.lionboard.model.Post;
 import com.github.lionboard.model.PostFile;
 import com.github.lionboard.model.User;
-import com.github.lionboard.repository.PostRepository;
-import com.sun.source.tree.AssertTree;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.*;
-import org.mockito.runners.MockitoJUnitRunner;
-import org.mockito.stubbing.OngoingStubbing;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import static junit.framework.TestCase.fail;
 import static org.hamcrest.CoreMatchers.is;
-import static org.mockito.Mockito.*;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.runners.MockitoJUnitRunner;
-import org.mockito.stubbing.Answer;
 
 /**
  * Created by lion.k on 16. 1. 20..
@@ -77,7 +65,7 @@ public class LionBoardServiceTest {
 
     @Test
     public void getPosts(){
-        List<Post> posts = lionBoardService.getPosts(0, 20);
+        List<Post> posts = lionBoardService.getPosts(0, 20, "postNum");
         Assert.assertNotNull(posts);
     }
 
@@ -94,12 +82,12 @@ public class LionBoardServiceTest {
     @Test
     public void addPost() {
 //        lionBoardService = mock(LionBoardService.class);
-        List<Post> beforePosts = lionBoardService.getPosts(0, 20);
+        List<Post> beforePosts = lionBoardService.getPosts(0, 20, "postNum");
         Assert.assertEquals(beforePosts.size(), 0);
         lionBoardService.addPost(firstPost);
         lionBoardService.addPost(secondPost);
 
-        List<Post> afterPosts = lionBoardService.getPosts(0, 20);
+        List<Post> afterPosts = lionBoardService.getPosts(0, 20, "postNum");
         Assert.assertEquals(afterPosts.size(), 2);
 
 //      get list order by DESC.
@@ -129,7 +117,7 @@ public class LionBoardServiceTest {
 
     @Test
     public void addReplyPost() {
-        List<Post> beforePosts = lionBoardService.getPosts(0, 20);
+        List<Post> beforePosts = lionBoardService.getPosts(0, 20, "postNum");
         Assert.assertEquals(beforePosts.size(), 0);
         lionBoardService.addPost(firstPost);
         lionBoardService.addPost(secondPost);
@@ -137,7 +125,7 @@ public class LionBoardServiceTest {
         lionBoardService.addPost(replyOfSecondPost);
         lionBoardService.addPost(replyOfSecondReply);
 
-        List<Post> afterPosts = lionBoardService.getPosts(0, 20);
+        List<Post> afterPosts = lionBoardService.getPosts(0, 20, "postNum");
         Assert.assertEquals(afterPosts.size(), 5);
 
 
@@ -201,12 +189,12 @@ public class LionBoardServiceTest {
     @Test
     public void deleteAllPosts() {
         lionBoardService.deleteAllPosts();
-        List<Post> beforePosts = lionBoardService.getPosts(0,20);
+        List<Post> beforePosts = lionBoardService.getPosts(0,20, "postNum");
         Assert.assertEquals(beforePosts.size(), 0);
         lionBoardService.addPost(firstPost);
         lionBoardService.addPost(secondPost);
         lionBoardService.deleteAllPosts();
-        List<Post> afterPosts = lionBoardService.getPosts(0, 20);
+        List<Post> afterPosts = lionBoardService.getPosts(0, 20, "postNum");
         Assert.assertEquals(afterPosts.size(), 0);
     }
 

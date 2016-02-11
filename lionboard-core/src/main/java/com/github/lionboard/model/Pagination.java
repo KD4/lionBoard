@@ -7,6 +7,7 @@ public class Pagination {
     private int page;
     private int offset;
     private boolean isCurrent;
+    private String sort;
 
     public int getPage() {
         return page;
@@ -30,5 +31,13 @@ public class Pagination {
 
     public void setIsCurrent(boolean isCurrent) {
         this.isCurrent = isCurrent;
+    }
+
+    public String getSort() {
+        return sort;
+    }
+
+    public void setSort(String sort) {
+        this.sort = sort;
     }
 }

@@ -301,7 +301,7 @@
         var comment = {
             userId:$loginUserId,
             postId:$currentPostId,
-            depth:depth,
+            depth1:depth,
             cmtNum:cmtNum,
             contents:contents
         };
@@ -324,6 +324,13 @@
         });
 
         return false;
+    });
+
+
+    $(".go2Parent").click(function(){
+
+        window.location.replace("/posts/"+$currentPostId+"/parent");
+
     });
 
 })(jQuery);

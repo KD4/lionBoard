@@ -271,9 +271,9 @@ public class LionBoardServiceImpl implements LionBoardService {
     }
 
     @Override
-    public List<Comment> getCommentsByPostId(int postId) {
+    public List<Comment> getCommentsByPostId(int postId, String sort) {
         try {
-            return commentService.getCommentsByPostId(postId);
+            return commentService.getCommentsByPostId(postId,sort);
         }catch (RuntimeException re){
             re.printStackTrace();
             throw new InvalidCmtException("덧글 목록을 반환할 수 없습니다. 서버 로그를 확인해주세요.");

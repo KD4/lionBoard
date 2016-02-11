@@ -5,13 +5,13 @@
 
 <mapper namespace="com.github.lionboard.repository.CommentRepository">
 
-    <select id="findCommentsByPostId" resultType="com.github.lionboard.model.Comment">
+    <select id="findCommentsByPostId" parameterType="java.util.Map" resultType="com.github.lionboard.model.Comment">
         SELECT *, users.name username, users.profileUrl profileUrl, status.cmtStatus
         FROM CMT_TB cmts
         LEFT JOIN USER_TB users ON cmts.userId = users.id
         LEFT JOIN CMT_STATUS_TB status ON cmts.cmtId = status.cmtId
         WHERE cmts.postId = #{postId}
-        ORDER BY cmts.cmtNum DESC
+        ORDER BY ${sort} DESC
     </select>
 
     <select id="findComments" resultType="com.github.lionboard.model.Comment">

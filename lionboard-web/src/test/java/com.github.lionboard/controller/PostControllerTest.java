@@ -2,11 +2,9 @@ package com.github.lionboard.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.lionboard.error.InvalidPostException;
-import com.github.lionboard.error.InvalidUserException;
 import com.github.lionboard.model.Comment;
 import com.github.lionboard.model.Post;
 import com.github.lionboard.model.PostReport;
-import com.github.lionboard.model.User;
 import com.github.lionboard.service.LionBoardService;
 import org.junit.Assert;
 import org.junit.Before;
@@ -21,7 +19,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static junit.framework.TestCase.fail;
@@ -228,7 +225,7 @@ public class PostControllerTest {
                 .content(json))
                 .andExpect(status().is3xxRedirection());
 
-        List<Comment> comments = lionBoardService.getCommentsByPostId(firstPost.getPostId());
+        List<Comment> comments = lionBoardService.getCommentsByPostId(firstPost.getPostId(), "cmtNum");
 
         Assert.assertThat(comments.size(),is(1));
 

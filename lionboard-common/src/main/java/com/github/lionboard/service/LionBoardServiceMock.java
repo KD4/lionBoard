@@ -137,8 +137,8 @@ public class LionBoardServiceMock implements LionBoardService {
     }
 
     @Override
-    public List<Comment> getCommentsByPostId(int postId) {
-        return commentRepository.findCommentsByPostId(postId);
+    public List<Comment> getCommentsByPostId(int postId, String sort) {
+        return null;
     }
 
 

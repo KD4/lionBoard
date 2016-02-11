@@ -282,7 +282,7 @@ public class LionBoardServiceTest {
     @Test
     public void getCommentsByPostId(){
         lionBoardService.addPost(firstPost);
-        List<Comment> comments = lionBoardService.getCommentsByPostId(firstPost.getPostId());
+        List<Comment> comments = lionBoardService.getCommentsByPostId(firstPost.getPostId(), "cmtNum");
         Assert.assertNotNull(comments);
     }
 
@@ -296,7 +296,7 @@ public class LionBoardServiceTest {
         lionBoardService.addComment(secondCmt);
 
 
-        List<Comment> comments = lionBoardService.getCommentsByPostId(firstPost.getPostId());
+        List<Comment> comments = lionBoardService.getCommentsByPostId(firstPost.getPostId(), "cmtNum");
         //      get list order by DESC.
         Assert.assertEquals(comments.get(0).getCmtNum(), 2000);
         Assert.assertThat(comments.get(0).getContents(), is("second comment"));
@@ -322,7 +322,7 @@ public class LionBoardServiceTest {
         lionBoardService.addComment(replyOfFirstCmt);
         lionBoardService.addComment(replyOfSecondCmt);
 
-        List<Comment> comments = lionBoardService.getCommentsByPostId(firstPost.getPostId());
+        List<Comment> comments = lionBoardService.getCommentsByPostId(firstPost.getPostId(), "cmtNum");
         //      get list order by DESC.
         Assert.assertEquals(comments.get(0).getCmtNum(), 2000);
         Assert.assertThat(comments.get(0).getContents(), is("second comment"));
@@ -355,7 +355,7 @@ public class LionBoardServiceTest {
         lionBoardService.addPost(firstPost);
         firstCmt.setPostId(firstPost.getPostId());
         lionBoardService.addComment(firstCmt);
-        List<Comment> comments = lionBoardService.getCommentsByPostId(firstPost.getPostId());
+        List<Comment> comments = lionBoardService.getCommentsByPostId(firstPost.getPostId(), "cmtNum");
         Assert.assertThat(comments.get(0).getCmtStatus(), is("S"));
 
 //      Change post status.

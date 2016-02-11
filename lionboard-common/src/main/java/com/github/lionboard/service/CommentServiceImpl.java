@@ -97,11 +97,15 @@ public class CommentServiceImpl implements CommentService {
      * 특정 Post의 Comment 목록을 반환합니다.
      *
      * @param postId
+     * @param sort
      * @return List<Comment>
      */
     @Override
-    public List<Comment> getCommentsByPostId(int postId) {
-        return commentRepository.findCommentsByPostId(postId);
+    public List<Comment> getCommentsByPostId(int postId, String sort) {
+        Map<String,Object> cmtParam = new HashMap<>();
+        cmtParam.put("postId",postId);
+        cmtParam.put("sort",sort);
+        return commentRepository.findCommentsByPostId(cmtParam);
     }
 
     /**

@@ -2,7 +2,6 @@ package com.github.lionboard.controller;
 
 import com.github.lionboard.error.IncorrectAccessException;
 import com.github.lionboard.error.InvalidPostException;
-import com.github.lionboard.error.InvalidUserException;
 import com.github.lionboard.model.*;
 import com.github.lionboard.service.LionBoardService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -58,12 +54,12 @@ public class PostController {
 
 
     @RequestMapping(method= RequestMethod.GET)
-    public ModelAndView getPosts(@RequestParam(value = "offset", required = false, defaultValue = "0") int offset, @RequestParam(value = "limit", required = false, defaultValue = "15") int limit){
+    public ModelAndView getPosts(@RequestParam(value = "offset", required = false, defaultValue = "0") int offset, @RequestParam(value = "limit", required = false, defaultValue = "15") int limit,@RequestParam(value = "sort", required = false, defaultValue = "posts.postNum") String sort){
 
         ModelAndView mav = new ModelAndView("index");
-
-        List<Post> posts = lionBoardService.getPosts(offset, limit);
-        List<Pagination> paginations = lionBoardService.getPagination(offset);
+        List<Post> posts = lionBoardService.getStickyPosts(5);
+        posts.addAll(lionBoardService.getPosts(offset, limit, sort));
+        List<Pagination> paginations = lionBoardService.getPagination(offset,sort);
         mav.addObject("posts",posts);
         mav.addObject("paginations",paginations);
 
@@ -76,15 +72,14 @@ public class PostController {
         }
         return mav;
 
-
     }
 
     @RequestMapping(method= RequestMethod.GET,value = "/{postId}")
-    public ModelAndView getPost(@PathVariable("postId") int postId,HttpSession session){
+    public ModelAndView getPost(@PathVariable("postId") int postId,@RequestParam(value = "sort", required = false, defaultValue = "cmtNum") String sort){
         lionBoardService.addPostView(postId);
         ModelAndView mav = new ModelAndView("posts");
         Post post = lionBoardService.getPostByPostId(postId);
-        List<Comment> comments = lionBoardService.getCommentsByPostId(postId);
+        List<Comment> comments = lionBoardService.getCommentsByPostId(postId,sort);
         List<PostFile> postFiles = lionBoardService.getPostFilesByPostId(postId);
         mav.addObject("post", post);
         mav.addObject("comments", comments);
@@ -197,8 +192,8 @@ public class PostController {
     @RequestMapping(method= RequestMethod.GET,
             produces="application/json;charset=utf8",
             value = "/{postId}/comments")
-    public List<Comment> getCommentsByPost(@PathVariable("postId") int postId){
-        return lionBoardService.getCommentsByPostId(postId);
+    public List<Comment> getCommentsByPost(@PathVariable("postId") int postId,@RequestParam(value = "sort", required = false, defaultValue = "cmtNum") String sort){
+        return lionBoardService.getCommentsByPostId(postId, sort);
     }
 
     @ResponseBody
@@ -210,6 +205,8 @@ public class PostController {
 
         return true;
     }
+
+
 
     @ResponseBody
     @RequestMapping(method= RequestMethod.GET,
@@ -230,6 +227,14 @@ public class PostController {
         lionBoardService.changeProcessStatusFromPost(postReport);
         return true;
     }
+
+    @RequestMapping(method= RequestMethod.GET,value = "/{postId}/parent")
+    public String getParentPost(@PathVariable("postId") int postId){
+
+        Post parentPost = lionBoardService.getParentPost(postId);
+        return "redirect:/posts/"+parentPost.getPostId();
+    }
+
 
 
 

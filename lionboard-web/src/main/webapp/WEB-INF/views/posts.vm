@@ -58,6 +58,13 @@
         #end
     </span>
     <span class="post-btn-group">
+        <!-- Button trigger modal -->
+        ## if login info exist, show the button for report.
+        #if($!loginUserId)
+            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#reportModal">
+                신고
+            </button>
+        #end
         #if($post.userId == $loginUserId)
         <a href="#" id="edit-post" class="btn btn-default" data-postId="$postId" aria-expanded="false">
             수정
@@ -150,5 +157,30 @@
                 #end
             #end
         </div>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="reportModal" tabindex="-1" role="dialog" aria-labelledby="reportModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="reportModalLabel">포스트 신고하기</h4>
+            </div>
+            <form id="report-post">
+                <div class="modal-body">
+                    <input type="hidden" name="postId" readonly value="$post.postId"/>
+                    <input type="hidden" name="reporterId" readonly value="$loginUserId"/>
+                    <label for="reportReason">이 게시물의 어떤 점이 불쾌하셨나요?</label>
+                    <textarea name="reason" id="reportReason" cols="78" rows="10"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+                    <button type="submit" class="btn btn-primary">신고하기</button>
+                </div>
+            </form>
         </div>
-        </div>
+    </div>
+</div>

@@ -333,4 +333,36 @@
 
     });
 
+
+    $("#report-post").submit(function(){
+
+        var formData = new FormData();
+        formData.append("postId",$currentPostId);
+        formData.append("reporterId",$loginUserId);
+        //첨부된 파일이 있을때만 formdata객체에 파일 속성을 생성함.
+        formData.append("reason", $("textarea[name=reason]").val());
+        $.ajax({
+            url: '/posts/'+$currentPostId+"/reports",
+            type: 'post',
+            data: formData,
+            cache: false,
+            processData: false, // Don't process the files
+            contentType: false, // Set content type to false as jQuery will tell the server its a query string request,
+            dataType:'text',
+            success:function(responsedData){
+                if(responsedData=="success"){
+                    alert("이 게시물을 신고하였습니다.");
+                    $('#myModal').modal('toggle');
+                }else{
+                    alert(responsedData);
+                }
+            },
+            error:function(responsedData){
+                alert(responsedData);
+            }
+        });
+
+        return false;
+    });
+
 })(jQuery);

@@ -14,7 +14,7 @@
             <label for="postTitle">제목</label>
             <input type="text" class="form-control" id="postTitle" name="title" value="$post.title">
         </div>
-        <textarea name="contents" class="ckeditor" rows="12" cols="50">$post.contents</textarea>
+        <div id="summernote">$post.contents</div>
         <ul>
             <li>첨부파일</li>
             #if($postFiles.size() > 0)

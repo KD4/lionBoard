@@ -4,7 +4,7 @@
         var formData = new FormData();
         formData.append("userId",$("input[name=userId]").val());
         formData.append("title",$("input[name=title]").val());
-        formData.append("contents",CKEDITOR.instances.contents.getData());
+        formData.append("contents", $('#summernote').summernote('code'));
         formData.append("depth","0");
 
         //첨부된 파일이 있을때만 formdata객체에 파일 속성을 생성함.
@@ -29,4 +29,15 @@
 
         return false;
     });
+
+
 })(jQuery);
+
+$(document).ready(function() {
+    $('#summernote').summernote({
+        height: 400,                 // set editor height
+        minHeight: null,             // set minimum height of editor
+        maxHeight: null,             // set maximum height of editor
+        focus: true                  // set focus to editable area after initializing summernote
+    });
+});

@@ -6,7 +6,7 @@
         formData.append("depth",$("input[name=depth]").val());
         formData.append("postNum",$("input[name=postNum]").val());
         formData.append("title",$("input[name=title]").val());
-        formData.append("contents",CKEDITOR.instances.contents.getData());
+        formData.append("contents",$('#summernote').summernote('code'));
 
         //첨부된 파일이 있을때만 formdata객체에 파일 속성을 생성함.
         if($("input[name=uploadFile]")[0].files[0] != null){

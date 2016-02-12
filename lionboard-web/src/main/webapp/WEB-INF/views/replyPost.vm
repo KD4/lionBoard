@@ -15,7 +15,7 @@
             <label for="postTitle">제목</label>
             <input type="text" class="form-control" id="postTitle" name="title" value="$basePost.title 의 답글">
         </div>
-        <textarea id="contents" name="contents" class="ckeditor" rows="12" cols="50"></textarea>
+        <div id="summernote"></div>
         <div class="form-group">
             <label for="postFile">파일 업로드</label>
             <input type="file" id="postFile" name="uploadFile">

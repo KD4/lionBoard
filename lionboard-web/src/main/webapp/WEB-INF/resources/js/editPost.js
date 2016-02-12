@@ -51,7 +51,7 @@
                         //var postId =$("input[name=postId]").val();
                         var postInfo = {
                             title:$("input[name=title]").val(),
-                            contents:CKEDITOR.instances.contents.getData(),
+                            contents:$('#summernote').summernote('code'),
                             postId:postId,
                             userId:$("input[name=userId]").val(),
                             existFiles:'T'
@@ -75,7 +75,7 @@
             //var postId =$("input[name=postId]").val();
             var postInfo = {
                 title:$("input[name=title]").val(),
-                contents:CKEDITOR.instances.contents.getData(),
+                contents:$('#summernote').summernote('code'),
                 postId:postId,
                 userId:$("input[name=userId]").val(),
                 existFiles:'F'

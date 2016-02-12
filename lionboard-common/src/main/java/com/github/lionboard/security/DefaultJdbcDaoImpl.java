@@ -4,6 +4,8 @@ package com.github.lionboard.security;
 import com.github.lionboard.error.InvalidUserException;
 import com.github.lionboard.repository.UserRepository;
 import org.apache.ibatis.session.SqlSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -25,6 +27,9 @@ import java.util.List;
  */
 public class DefaultJdbcDaoImpl implements UserDetailsService {
 
+    private static final Logger logger =
+            LoggerFactory.getLogger(DefaultJdbcDaoImpl.class);
+
     private SqlSession sqlSession;
     public void setSqlSession(SqlSession sqlSession){
         this.sqlSession=sqlSession;
@@ -42,6 +47,8 @@ public class DefaultJdbcDaoImpl implements UserDetailsService {
         Collection<SimpleGrantedAuthority> roles = new ArrayList<SimpleGrantedAuthority>();
         roles.add(new SimpleGrantedAuthority(user.getRoles()));
         UserDetails userDetail = new User(identity, password, roles);
+
+        logger.debug(identity+" sign in...");
         return userDetail;
     }
 }

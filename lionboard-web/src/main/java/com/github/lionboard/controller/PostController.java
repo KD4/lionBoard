@@ -4,6 +4,8 @@ import com.github.lionboard.error.IncorrectAccessException;
 import com.github.lionboard.error.InvalidPostException;
 import com.github.lionboard.model.*;
 import com.github.lionboard.service.LionBoardService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,6 +26,9 @@ import java.util.List;
 @RequestMapping("/posts")
 public class PostController {
 
+    private static final Logger logger =
+            LoggerFactory.getLogger(PostController.class);
+
     @Autowired
     LionBoardService lionBoardService;
 
@@ -32,6 +37,7 @@ public class PostController {
             method= RequestMethod.POST)
     public String writePost(Post post){
         try {
+
             if (post.getUploadFile() != null) {
                 post.setExistFiles("T");
                //ToDo 여러 개의 파일 업로드
@@ -41,6 +47,9 @@ public class PostController {
                 lionBoardService.addPost(post);
             }
             Post insertedPost = lionBoardService.getPostByPostId(post.getPostId());
+
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            logger.debug(auth.getName()+" write the post. post's id is "+insertedPost.getPostId());
 
             //올라간 게시글의 아이디를 클라이언트로 보냄.
             return String.valueOf(insertedPost.getPostId());
@@ -99,6 +108,8 @@ public class PostController {
             value = "/{postId}")
     public String editPost(@PathVariable("postId") int postId,@RequestBody Post post){
         lionBoardService.modifyPost(post);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        logger.debug(auth.getName() + " modify the post. post's id is "+postId);
         return String.valueOf(postId);
     }
 
@@ -108,6 +119,10 @@ public class PostController {
     public String removePost(@PathVariable("postId") int postId){
         try {
             lionBoardService.changePostStatusToDelete(postId);
+
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            logger.debug(auth.getName() + " remove the post. post's id is " + postId);
+
             return "success";
         }catch (RuntimeException e){
             return e.getMessage();
@@ -142,6 +157,9 @@ public class PostController {
                 throw new InvalidPostException("Invalid action code, please check action.");
             }
 
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            logger.debug(auth.getName() + " give the like to the post. post's id is " + postId);
+
     //      if update logic fail, throw the exception.
             return "success";
         }catch (RuntimeException e){
@@ -162,6 +180,8 @@ public class PostController {
                 throw new InvalidPostException("Invalid action code, please check action.");
             }
 
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            logger.debug(auth.getName() + " give the hate to the post. post's id is " + postId);
 //      if update logic fail, throw the exception.
             return "success";
         } catch (RuntimeException e){
@@ -184,6 +204,9 @@ public class PostController {
     public String insertComment(@PathVariable("postId") int postId, Comment comment){
 
         lionBoardService.addComment(comment);
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        logger.debug(auth.getName() + " add the comment to the post. post's id is " + postId);
 
         return "success";
     }

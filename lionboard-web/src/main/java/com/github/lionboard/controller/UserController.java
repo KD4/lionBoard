@@ -8,6 +8,8 @@ import com.github.lionboard.model.Post;
 import com.github.lionboard.model.User;
 import com.github.lionboard.service.LionBoardService;
 import com.sun.org.apache.xpath.internal.operations.Mod;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -31,6 +33,9 @@ import java.util.List;
 @Controller
 @RequestMapping("/users")
 public class UserController {
+
+    private static final Logger logger =
+            LoggerFactory.getLogger(UserController.class);
 
     @Autowired
     LionBoardService lionBoardService;
@@ -63,6 +68,9 @@ public class UserController {
         //results 값으로 프론트에서 Tenth2 업로드 요청을 함. - img 업로드 API 와 회원등록 API 분리.
         results.add("success");
         results.add(String.valueOf(user.getId()));
+
+
+        logger.debug(user.getId() + " sign up ! hello "+ user.getName());
 
         return results;
     }
@@ -99,6 +107,7 @@ public class UserController {
     public String updateUser(@PathVariable("userId") int userId,@RequestBody User user){
         user.setId(userId);
         lionBoardService.modifyUser(user);
+        logger.debug(userId + " update the information..:");
         return String.valueOf(user.getId());
     }
 
@@ -108,6 +117,8 @@ public class UserController {
     public ModelAndView leaveUser(@PathVariable("userId") int userId){
         ModelAndView mav = new ModelAndView("/users");
         lionBoardService.changeUserStatusToLeave(userId);
+
+        logger.debug(userId + " leave the service..! goodbye " + userId);
         return mav;
     }
 
@@ -130,6 +141,8 @@ public class UserController {
             //tenth2 서버로 이미지 업로드를 요청함.
             String uploadedUrl = lionBoardService.uploadProfile(userId, mpf);
             lionBoardService.updateProfileInfoOnUser(userId,uploadedUrl);
+
+            logger.debug(userId + " upload the profile..:" + uploadedUrl);
             return "success";
         } catch (InvalidUserException e) {
             return e.getMessage();

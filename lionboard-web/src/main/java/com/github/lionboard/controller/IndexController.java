@@ -8,6 +8,8 @@ import com.github.lionboard.model.Post;
 import com.github.lionboard.model.PostFile;
 import com.github.lionboard.model.User;
 import com.github.lionboard.service.LionBoardService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -37,11 +39,16 @@ import java.util.List;
 @RequestMapping("/")
 public class IndexController {
 
+    private static final Logger logger =
+            LoggerFactory.getLogger(IndexController.class);
+
     @Autowired
     LionBoardService lionBoardService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public String root() {
+    public String root(HttpServletRequest request) {
+        logger.debug("a user access the server : " + request.getRemoteHost());
+
         return "redirect:/index";
     }
 
@@ -49,6 +56,7 @@ public class IndexController {
             value = "index",
             method = RequestMethod.GET)
     public String index(ModelMap modelMap) {
+
 
         //postsController에서 넘어온 로직인지 확인함.
         if (modelMap.containsAttribute("posts")) {
@@ -165,6 +173,7 @@ public class IndexController {
     public String processSignOut (HttpServletRequest request, HttpServletResponse response) {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        logger.debug(auth.getName()+" sign out.");
         if (auth != null){
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }

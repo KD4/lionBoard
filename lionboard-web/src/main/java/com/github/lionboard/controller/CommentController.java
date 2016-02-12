@@ -8,7 +8,11 @@ import com.github.lionboard.model.CommentReport;
 import com.github.lionboard.model.Post;
 import com.github.lionboard.model.PostReport;
 import com.github.lionboard.service.LionBoardService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -23,6 +27,10 @@ import java.util.List;
 @Controller
 @RequestMapping("/comments")
 public class CommentController {
+
+    private static final Logger logger =
+            LoggerFactory.getLogger(CommentController.class);
+
     @Autowired
     LionBoardService lionBoardService;
 
@@ -41,6 +49,11 @@ public class CommentController {
     public String editComment(@PathVariable("cmtId") int cmtId,@RequestBody Comment comment){
         comment.setCmtId(cmtId);
         lionBoardService.modifyComment(comment);
+
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        logger.debug(auth.getName() + " edit the comment. comment's id is " + cmtId);
+
         return "redirect:posts/"+comment.getPostId();
     }
 
@@ -56,6 +69,10 @@ public class CommentController {
         }else{
             throw new InvalidCmtException("Invalid action code, please check action.");
         }
+
+
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            logger.debug(auth.getName() + " give the like to hhe comment. comment's id is " + cmtId);
         return "success";
 //      if update logic fail, throw the exception.
         }catch (RuntimeException e){
@@ -75,6 +92,9 @@ public class CommentController {
             throw new InvalidCmtException("Invalid action code, please check action.");
         }
 
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        logger.debug(auth.getName() + " give the hate to hhe comment. comment's id is " + cmtId);
 //      if update logic fail, throw the exception.
             return "success";
 //      if update logic fail, throw the exception.

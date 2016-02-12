@@ -119,12 +119,12 @@ public class CommentController {
 
     @ResponseBody
     @RequestMapping(method= RequestMethod.POST,value = "/{cmtId}/reports")
-    public boolean reportComment(@PathVariable("cmtId") int cmtId, @RequestBody CommentReport commentReport){
+    public String reportComment(@PathVariable("cmtId") int cmtId,CommentReport commentReport){
 
         commentReport.setCmtId(cmtId);
         lionBoardService.reportComment(commentReport);
 
-        return true;
+        return "success";
     }
 
     @ResponseBody

@@ -333,4 +333,73 @@
 
     });
 
+    <!-- 게시글 신고하기 기능에 대한 스크립트 -->
+    $("#report-post-form").submit(function(){
+
+        var formData = new FormData();
+        formData.append("postId",$currentPostId);
+        formData.append("reporterId",$loginUserId);
+        //첨부된 파일이 있을때만 formdata객체에 파일 속성을 생성함.
+        formData.append("reason", $("#postReason").val());
+        $.ajax({
+            url: '/posts/'+$currentPostId+"/reports",
+            type: 'post',
+            data: formData,
+            cache: false,
+            processData: false, // Don't process the files
+            contentType: false, // Set content type to false as jQuery will tell the server its a query string request,
+            dataType:'text',
+            success:function(responsedData){
+                if(responsedData=="success"){
+                    alert("이 게시물을 신고하였습니다.");
+                    $('#reportPostModal').modal('toggle');
+                }else{
+                    alert(responsedData);
+                }
+            },
+            error:function(responsedData){
+                alert(responsedData);
+            }
+        });
+
+        return false;
+    });
+
+    <!-- 댓글 신고하기 기능에 대한 스크립트 -->
+    $(".comment-report").click(function(){
+        $("#report-cmtId").val($(this).data('cmtid'));
+        $("#reportCmtModal").modal('toggle');
+    });
+
+    $("#report-cmt-form").submit(function(){
+
+        var formData = new FormData();
+        formData.append("cmtId",$("input[name=cmtId]").val());
+        formData.append("reporterId",$loginUserId);
+        //첨부된 파일이 있을때만 formdata객체에 파일 속성을 생성함.
+        formData.append("reason", $("#cmtReason").val());
+        $.ajax({
+            url: '/comments/'+$("input[name=cmtId]").val()+"/reports",
+            type: 'post',
+            data: formData,
+            cache: false,
+            processData: false, // Don't process the files
+            contentType: false, // Set content type to false as jQuery will tell the server its a query string request,
+            dataType:'text',
+            success:function(responsedData){
+                if(responsedData=="success"){
+                    alert("해당 댓글을 신고하였습니다.");
+                    $('#reportCmtModal').modal('toggle');
+                }else{
+                    alert(responsedData);
+                }
+            },
+            error:function(responsedData){
+                alert(responsedData);
+            }
+        });
+
+        return false;
+    });
+
 })(jQuery);

@@ -221,12 +221,12 @@ public class PostController {
 
     @ResponseBody
     @RequestMapping(method= RequestMethod.POST,value = "/{postId}/reports")
-    public boolean reportPost(@PathVariable("postId") int postId, @RequestBody PostReport postReport){
+    public String reportPost(@PathVariable("postId") int postId, PostReport postReport){
 
         postReport.setPostId(postId);
         lionBoardService.reportPost(postReport);
 
-        return true;
+        return "success";
     }
 
 

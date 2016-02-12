@@ -23,7 +23,7 @@ public interface CommentService {
 
     List<Comment> getComments();
 
-    List<Comment> getCommentsByPostId(int postId);
+    List<Comment> getCommentsByPostId(int postId, String sort);
 
     void insertRootComment(Comment comment);
 

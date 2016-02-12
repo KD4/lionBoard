@@ -12,51 +12,6 @@
 	  'useAJAX': true,
   };
 
-	// Login Form
-	//----------------------------------------------
-	// Validation
-  //$("#login-form").validate({
-  //	rules: {
-  //    lg_username: "required",
-  //	  lg_password: "required",
-  //  },
-  //	errorClass: "form-invalid"
-  //});
-  
-	// Form Submission
-  //$("#login-form").submit(function() {
-	//  remove_loading($(this));
-  //
-	//  var account = {
-	//	  email:$("input[name=email]").val(),
-	//	  password:$("input[name=password]").val()
-	//  };
-  //
-  //
-	//  $.ajax({
-	//	  url: '/login',
-	//	  type: 'post',
-	//	  data: account,
-	//	  dataType: 'text',
-	//	  success: function (data) {
-	//		  console.log(data);
-  //
-	//		  if(data == "ok") {
-	//			  window.location.replace("/index");
-	//		  }else{
-	//			  alert(data);
-	//			  return false;
-	//		  }
-	//	  },
-	//	  error: function(data) {
-	//		  console.log(data);
-	//	  }
-	//  });
-  //
-	//  return false;
-  //
-  //});
-	
 	// Register Form
 	//----------------------------------------------
 	// Validation
@@ -134,14 +89,14 @@
 						  dataType:'text',
 						  success:function(responsedData){
 							  if(responsedData==="success"){
-								  window.location.replace("/login");
+								  window.location.replace("/signIn");
 							  }else{
 								  alert(responsedData);
 							  }
 						  }
 					  })
 				  }else{
-				  	window.location.replace("/login");
+				  	window.location.replace("/signIn");
 				  }
 			  }else{
 				  alert(responsedData);
@@ -183,21 +138,5 @@
   	$form.find('.login-form-main-message').addClass('show error').html(options['msg-error']);
   }
 
-	// Dummy Submit Form (Remove this)
-	//----------------------------------------------
-	// This is just a dummy form submission. You should use your AJAX function or remove this function if you are not using AJAX.
-  function dummy_submit_form($form)
-  {
-
-
-  	if($form.valid())
-  	{
-  		form_loading($form);
-  		
-  		setTimeout(function() {
-  			form_success($form);
-  		}, 2000);
-  	}
-  }
 	
 })(jQuery);

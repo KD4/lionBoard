@@ -6,6 +6,7 @@ import com.github.lionboard.error.InvalidUserException;
 import com.github.lionboard.error.UploadFileToTenthException;
 import com.github.lionboard.model.*;
 import com.github.lionboard.security.SecurityUtil;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,8 +36,8 @@ public class LionBoardServiceImpl implements LionBoardService {
     CommentService commentService;
 
     @Override
-    public List<Post> getPosts(int offset, int limit) {
-        List<Post> posts = postService.getPosts(offset, limit);
+    public List<Post> getPosts(int offset, int limit, String sort) {
+        List<Post> posts = postService.getPosts(offset, limit, sort);
         return posts;
     }
 
@@ -211,7 +212,7 @@ public class LionBoardServiceImpl implements LionBoardService {
     }
 
     @Override
-    public List<Pagination> getPagination(int offset) {
+    public List<Pagination> getPagination(int offset,String sort) {
 //        offset param을 이용해서 현재 페이지 넘버를 계산합니다.
         int currentPage = offset/15 + 1;
 
@@ -239,7 +240,8 @@ public class LionBoardServiceImpl implements LionBoardService {
         for(int i = previousPage;i<=olderPage;i++){
             Pagination pagination = new Pagination();
             pagination.setPage(i);
-            pagination.setOffset((i-1)*15);
+            pagination.setOffset((i - 1) * 15);
+            pagination.setSort(sort);
             if(i==currentPage){
                 pagination.setIsCurrent(true);
             }else{
@@ -270,9 +272,9 @@ public class LionBoardServiceImpl implements LionBoardService {
     }
 
     @Override
-    public List<Comment> getCommentsByPostId(int postId) {
+    public List<Comment> getCommentsByPostId(int postId, String sort) {
         try {
-            return commentService.getCommentsByPostId(postId);
+            return commentService.getCommentsByPostId(postId,sort);
         }catch (RuntimeException re){
             re.printStackTrace();
             throw new InvalidCmtException("덧글 목록을 반환할 수 없습니다. 서버 로그를 확인해주세요.");
@@ -381,7 +383,9 @@ public class LionBoardServiceImpl implements LionBoardService {
     public String uploadProfile(int userId, MultipartFile uploadFile) {
         try {
             //프로필 작명 규칙 : lionboard_profile_{userId}.jpg
-            String fileName = "lionboard_profile_"+String.valueOf(userId)+".jpg";
+            DateTime dateTime = DateTime.now();
+            ;
+            String fileName = "lionboard_profile_"+dateTime.getMillis()+"_"+String.valueOf(userId)+".jpg";
 
             return attachmentService.uploadFile(uploadFile.getBytes(), fileName);
         } catch (Exception e) {
@@ -504,6 +508,25 @@ public class LionBoardServiceImpl implements LionBoardService {
     public void securityLogin(User user) {
         SecurityUtil.logInUser(user);
     }
+
+    @Override
+    public Post getParentPost(int postId) {
+        try {
+            Post parentPost = postService.getParentPost(postId);
+            if(!parentPost.getPostStatus().equals("S")){
+                throw new InvalidPostException("부모글은 삭제되었거나 숨김 처리되었습니다.");
+            }
+            return postService.getParentPost(postId);
+        }catch (RuntimeException re){
+            throw new InvalidPostException("부모글을 찾을 수 없습니다.");
+        }
+    }
+
+    @Override
+    public List<Post> getStickyPosts(int unit) {
+        return postService.getStickyPosts(unit);
+    }
+
 
 
     @Override

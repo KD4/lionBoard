@@ -13,7 +13,8 @@
             <label for="postTitle">제목</label>
             <input type="text" class="form-control" id="postTitle" name="title" placeholder="제목을 입력하세요.">
         </div>
-        <textarea id="contents" name="contents" class="ckeditor" rows="12" cols="50"></textarea>
+        <div id="summernote">Hello Summernote</div>
+    ##        <textarea id="contents" name="contents" class="ckeditor" rows="12" cols="50"></textarea>
         <div class="form-group">
             <label for="postFile">파일 업로드</label>
             <input type="file" id="postFile" name="uploadFile">
@@ -21,3 +22,4 @@
         <button type="submit" class="btn btn-default">저장</button>
     </form>
 </div>
+

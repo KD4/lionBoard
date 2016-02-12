@@ -26,6 +26,7 @@ public class Post {
     private Date createdAt;
     private String postStatus;
     private MultipartFile uploadFile;
+    private String isSticky;
 
 
     public int getUserId() {
@@ -156,5 +157,13 @@ public class Post {
 
     public void setUploadFile(MultipartFile uploadFile) {
         this.uploadFile = uploadFile;
+    }
+
+    public String getIsSticky() {
+        return isSticky;
+    }
+
+    public void setIsSticky(String isSticky) {
+        this.isSticky = isSticky;
     }
 }

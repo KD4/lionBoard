@@ -13,7 +13,7 @@ import java.util.Map;
 
 @Repository
 public interface CommentRepository {
-    List<Comment> findCommentsByPostId(int postId);
+    List<Comment> findCommentsByPostId(Map<String, Object> cmtParam);
 
     void insertComment(Comment comment);
 

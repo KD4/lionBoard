@@ -23,13 +23,16 @@
     <script type="text/javascript" src="/js/jquery.min.js"></script>
     <script type="text/javascript" src="http://cdn.jsdelivr.net/jquery.validation/1.14.0/jquery.validate.min.js"></script>
     <script type="text/javascript" src="/js/bootstrap.min.js"></script>
-    <!-- Text editor -->
-    <script type="text/javascript" src="/ckeditor/ckeditor.js"></script>
+
+    <!-- include summernote css/js-->
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.0/summernote.css" rel="stylesheet">
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.0/summernote.js"></script>
 </head>
 <body>
 
 
     <div class="container">
+
         <!-- View abc.vm is inserted here -->
         <!-- Noi dung View abc.vm se duoc tren tai day -->
         $screen_content
@@ -40,10 +43,14 @@
     </div>
 
 
+
     <script type="text/javascript" src="/js/posts.js"></script>
     <script type="text/javascript" src="/js/loginAndRegist.js"></script>
     <script type="text/javascript" src="/js/addPost.js"></script>
     <script type="text/javascript" src="/js/editPost.js"></script>
     <script type="text/javascript" src="/js/replyPost.js"></script>
+    <script type="text/javascript" src="/js/user.js"></script>
+
+
 </body>
 </html>

@@ -45,7 +45,7 @@
     </delete>
 
     <update id="updateUser" parameterType="com.github.lionboard.model.User">
-        UPDATE User_TB SET isOAuth=#{isOAuth},roles=#{roles},name=#{name},email=#{email},profileUrl=#{profileUrl},password=#{password} WHERE id=#{id}
+        UPDATE User_TB SET name=#{name},email=#{email} WHERE id=#{id}
     </update>
 
     <delete id = "deleteUserByid" >

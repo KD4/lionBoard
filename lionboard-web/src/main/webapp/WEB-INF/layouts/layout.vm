@@ -23,6 +23,7 @@
     <script type="text/javascript" src="/js/jquery.min.js"></script>
     <script type="text/javascript" src="http://cdn.jsdelivr.net/jquery.validation/1.14.0/jquery.validate.min.js"></script>
     <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+
     <!-- Text editor -->
     <script type="text/javascript" src="/ckeditor/ckeditor.js"></script>
 </head>
@@ -30,6 +31,7 @@
 
 
     <div class="container">
+
         <!-- View abc.vm is inserted here -->
         <!-- Noi dung View abc.vm se duoc tren tai day -->
         $screen_content

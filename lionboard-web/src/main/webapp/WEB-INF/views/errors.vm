@@ -1,0 +1,15 @@
+<div class="header">
+    <a href="/index"><h3 class="text-muted">LIONBOARD</h3></a>
+</div>
+<div>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <p style="text-align: center"><img src="/img/error-ryan-image.jpg" alt="에러입니다."/></p>
+            <h4>정상적이지 않은 접근이예요. 혹시 모르니 로그를 보여드릴게요.</h4>
+            <p></p>
+            <p>에러 메시지 : </p>
+            <p>$errorlog</p>
+        </div>
+
+    </div>
+</div>

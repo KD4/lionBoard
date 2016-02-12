@@ -19,7 +19,18 @@
         </div>
         <div class="user-info">
         <div class="user-name"><h3>$user.name</h3></div>
-        <div class="user-email"><h4>$user.email</h4></div>
+        <div class="user-email"><h4>
+
+        ##check the email format. if email value isn't email format, the user would be OAuth user as twitter,kakao and daum. but not facebook.
+
+        #if($user.email.matches("^([A-Z|a-z|0-9](\.|_){0,1})+[A-Z|a-z|0-9]\@([A-Z|a-z|0-9])+((\.){0,1}[A-Z|a-z|0-9]){2}\.[a-z]{2,3}$"))
+            $user.email
+        #else
+            등록된 이메일이 없습니다.
+        #end
+
+
+        </h4></div>
         <div class="user-registeredAt"><h5>가입날짜:$dateTool.format("yyyy-M-d",$user.registeredAt)</h5></div>
         #if($loginUserId eq $user.id)
             <div><a href="/view/editUser/$user.id"><span class="glyphicon glyphicon-cog"></span>수정</a></div>

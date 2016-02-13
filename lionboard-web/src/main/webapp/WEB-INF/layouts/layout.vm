@@ -27,6 +27,17 @@
     <!-- include summernote css/js-->
     <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.0/summernote.css" rel="stylesheet">
     <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.0/summernote.js"></script>
+
+##    css for admin pages
+    <style type="text/css">
+        .admin-btns{
+            margin-right: 10px;
+        }
+
+        #admin-header{
+            border-bottom: 0px;
+        }
+    </style>
 </head>
 <body>
 

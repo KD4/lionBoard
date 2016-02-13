@@ -1,6 +1,10 @@
 package com.github.lionboard.controller;
 
+import com.github.lionboard.error.IncorrectAccessException;
+import com.github.lionboard.error.InvalidUserException;
 import com.github.lionboard.model.Comment;
+import com.github.lionboard.model.Pagination;
+import com.github.lionboard.model.User;
 import com.github.lionboard.service.LionBoardService;
 import com.sun.javafx.sg.prism.NGShape;
 import com.sun.org.apache.xpath.internal.operations.Mod;
@@ -10,11 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 /**
  * Created by Lion.k on 16. 2. 13..
@@ -31,7 +34,7 @@ public class AdminController {
 
     @Autowired
     LionBoardService lionBoardService;
-    
+
     @RequestMapping(method= RequestMethod.GET)
     public String showAdmin(ModelAndView modelAndView){
 
@@ -40,7 +43,11 @@ public class AdminController {
 
     @RequestMapping(method= RequestMethod.GET,
             value = "/users")
-    public ModelAndView showUsersOnAdmin(ModelAndView modelAndView){
+    public ModelAndView showUsersOnAdmin(ModelAndView modelAndView,@RequestParam(value = "offset", required = false, defaultValue = "0") int offset, @RequestParam(value = "limit", required = false, defaultValue = "15") int limit,@RequestParam(value = "sort", required = false, defaultValue = "id") String sort){
+        List<User> users = lionBoardService.getAllUsers(offset,limit,sort);
+        List<Pagination> paginations = lionBoardService.getUserPagination(offset,sort);
+        modelAndView.addObject("paginations",paginations);
+        modelAndView.addObject("users",users);
         return modelAndView;
     }
 
@@ -60,6 +67,11 @@ public class AdminController {
             value = "/reports")
     public ModelAndView showReportsOnAdmin(ModelAndView modelAndView){
         return modelAndView;
+    }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ModelAndView InvalidException(RuntimeException e) {
+        return new ModelAndView("errors").addObject("errorlog", e.getMessage());
     }
 
 }

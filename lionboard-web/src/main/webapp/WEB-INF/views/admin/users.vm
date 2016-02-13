@@ -1,12 +1,17 @@
 <div id="admin-header" class="header">
-    <a href="/index"><h3 class="text-muted">LIONBOARD</h3></a>
-    <a href="/admin" class="pull-right"><h3 class="text-muted">Admin Page</h3></a>
+    <a href="/index"><h3 class="text-muted">LIONBOARD - Admin Page</h3></a>
 </div>
 <ul class="nav nav-tabs">
     <li role="presentation" class="active"><a href="../admin/users">Users</a></li>
     <li role="presentation"><a href="../admin/posts">Posts</a></li>
     <li role="presentation"><a href="../admin/comments">Comments</a></li>
     <li role="presentation"><a href="../admin/reports">Report</a></li>
+    <form id="admin-nav-search" data-source='users' class="navbar-form navbar-right" role="search">
+        <div class="form-group">
+            <input type="text" class="form-control" name="search-keyword" placeholder="Input Id or Name">
+        </div>
+        <button type="submit" class="btn btn-default">검색</button>
+    </form>
 </ul>
 
 
@@ -14,120 +19,79 @@
 
     <div class="panel panel-default">
         <!-- Table -->
-        <table class="table table-striped">
-            <tr>
-                <th width="20%">ID</th>
-                <th width="20%">이름</th>
-                <th width="20%">가입날짜</th>
-                <th width="20%">상태</th>
+        <table class="table table-striped admin-table">
+            <thead>
+                <th width="10%">ID</th>
+                <th width="50%">이름</th>
+                <th width="11%">가입날짜</th>
+                <th width="10%">상태</th>
                 <th width="20%">권한</th>
-            </tr>
+            </thead>
+            <tbody id="admin-table-tbody">
+            #foreach($user in $users)
             <tr>
-                <td>6</td>
-                <td><a href="/users">강관우</a></td>
-                <td>16/01/20 15:30</td>
+                <td>$user.id</td>
+                <td><a href="/users/$user.id">$user.identity : $user.name</a></td>
+                <td class="admin-users-date">$dateTool.format("short",$user.registeredAt)</td>
                 <td>
                     <div class="dropdown">
                         <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
-                            Service
+                            $user.userStatus
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Block</a></li>
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Leave</a></li>
+                            <li role="presentation">
+                                <a class="user-status-change" data-userId="$user.id" data-username="$user.name" data-status="A" role="menuitem" tabindex="-1" href="#">Active</a>
+                            </li>
+                            <li role="presentation">
+                                <a class="user-status-change" data-userId="$user.id" data-username="$user.name" data-status="B" role="menuitem" tabindex="-1" href="#">Block</a>
+                            </li>
                         </ul>
                     </div>
                 </td>
                 <td>
                     <div class="dropdown">
                         <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
-                            ROLE_USER
+                            $user.roles
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">ROLE_ADMIN</a></li>
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">ROLE_MANAGER</a></li>
-                        </ul>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>6</td>
-                <td><a href="/users">강관우</a></td>
-                <td>16/01/20 15:30</td>
-                <td>
-                    <div class="dropdown">
-                        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
-                            Service
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Block</a></li>
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Leave</a></li>
-                        </ul>
-                    </div>
-                </td>
-                <td>
-                    <div class="dropdown">
-                        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
-                            ROLE_USER
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">ROLE_ADMIN</a></li>
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">ROLE_MANAGER</a></li>
+                            <li role="presentation"><a class="user-role-change" data-userId="$user.id" data-username="$user.name" data-roles="ROLE_USER" role="menuitem" tabindex="-1" href="#">사용자</a></li>
+                            <li role="presentation"><a class="user-role-change" data-userId="$user.id" data-username="$user.name" data-roles="ROLE_MANAGER" role="menuitem" tabindex="-1" href="#">관리자</a></li>
+                            <li role="presentation"><a class="user-role-change" data-userId="$user.id" data-username="$user.name" data-roles="ROLE_ADMIN" role="menuitem" tabindex="-1" href="#">마스터</a></li>
                         </ul>
                     </div>
                 </td>
             </tr>
-            <tr>
-                <td>6</td>
-                <td><a href="/users">강관우</a></td>
-                <td>16/01/20 15:30</td>
-                <td>
-                    <div class="dropdown">
-                        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
-                            Service
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Block</a></li>
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Leave</a></li>
-                        </ul>
-                    </div>
-                </td>
-                <td>
-                    <div class="dropdown">
-                        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
-                            ROLE_USER
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">ROLE_ADMIN</a></li>
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">ROLE_MANAGER</a></li>
-                        </ul>
-                    </div>
-                </td>
-            </tr>
+            #end
+            </tbody>
         </table>
     </div>
     <nav>
         <ul class="pagination">
-            <li>
-                <a href="#" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
-            <li><a href="#">1</a></li>
-            <li><a href="#">2</a></li>
-            <li><a href="#">3</a></li>
-            <li><a href="#">4</a></li>
-            <li><a href="#">5</a></li>
-            <li>
-                <a href="#" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
+            #set($sort = $paginations.get(0).sort)
+            #if($paginations.size() > 4)
+                #set( $previousPage = $paginations.get(0).offset-20)
+                <li>
+                    <a href="/admin/users?offset=$previousPage&sort=$sort" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            #end
+
+            #foreach($pagination in $paginations)
+                <li><a href="/admin/users?offset=$pagination.offset&sort=$sort">$pagination.page</a></li>
+            #end
+
+            #if($paginations.size() > 4)
+                #set( $nextOffset = $paginations.get(4).offset+20)
+                <li>
+                    <a href="/admin/users?offset=$nextOffset&sort=$sort" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            #end
         </ul>
     </nav>
+
 </div>

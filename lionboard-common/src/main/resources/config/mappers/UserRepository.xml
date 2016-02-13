@@ -5,32 +5,35 @@
 
 <mapper namespace="com.github.lionboard.repository.UserRepository">
 
-    <!--<select id="findByPage" parameterType="java.util.Map" resultType="com.github.lionboard.model.User">-->
-        <!--SELECT *, users.name username-->
-        <!--FROM POST_TB posts-->
-        <!--LEFT JOIN USER_TB users ON posts.userId = users.id-->
-        <!--LEFT JOIN POST_STATUS_TB status ON posts.postId = status.postId-->
-        <!--WHERE status.postStatus = 'S'-->
-        <!--ORDER BY posts.postNum DESC-->
-        <!--LIMIT #{limit} OFFSET #{offset}-->
-    <!--</select>-->
+
+    <select id="countAll" resultType="int">
+        SELECT count(*)
+        FROM USER_TB
+    </select>
+
+    <select id="findAll" parameterType="java.util.Map" resultType="com.github.lionboard.model.User">
+        SELECT *
+        FROM USER_TB
+        ORDER BY ${sort} DESC
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
 
     <select id="findUserByUserId" parameterType="int" resultType="com.github.lionboard.model.User">
         SELECT *
         FROM USER_TB
-        WHERE id = #{userId} AND userStatus = 'S'
+        WHERE id = #{userId} AND userStatus = 'A'
     </select>
 
     <select id="findUserByIdentity" parameterType="String" resultType="com.github.lionboard.model.User">
         SELECT *
         FROM USER_TB
-        WHERE identity = #{identity} AND userStatus = 'S'
+        WHERE identity = #{identity} AND userStatus = 'A'
     </select>
 
     <select id="findUserByName" parameterType="String" resultType="com.github.lionboard.model.User">
         SELECT *
         FROM USER_TB
-        WHERE name = #{name} AND userStatus = 'S'
+        WHERE name = #{name} AND userStatus = 'A'
     </select>
 
     <insert id="insertUser" parameterType="com.github.lionboard.model.User">
@@ -62,5 +65,15 @@
     <!--<update id="addCmtCount">-->
         <!--UPDATE POST_TB SET cmtCount = cmtCount+1 WHERE postId=#{postId}-->
     <!--</update>-->
+
+    <update id="updateUserRole">
+        UPDATE USER_TB SET roles = #{roles} WHERE id=#{id}
+    </update>
+
+    <select id="getUserByQuery" resultType="com.github.lionboard.model.User">
+        SELECT *
+        FROM USER_TB
+        WHERE id = #{query} OR name = #{query}
+    </select>
 </mapper>
 

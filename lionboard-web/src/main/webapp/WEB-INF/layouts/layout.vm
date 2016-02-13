@@ -18,6 +18,7 @@
 
     <link href="/css/posts.css" rel="stylesheet">
     <link href="/css/users.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/admin.css"/>
 
     <!-- java script Lib -->
     <script type="text/javascript" src="/js/jquery.min.js"></script>
@@ -28,16 +29,6 @@
     <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.0/summernote.css" rel="stylesheet">
     <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.0/summernote.js"></script>
 
-##    css for admin pages
-    <style type="text/css">
-        .admin-btns{
-            margin-right: 10px;
-        }
-
-        #admin-header{
-            border-bottom: 0px;
-        }
-    </style>
 </head>
 <body>
 
@@ -61,6 +52,7 @@
     <script type="text/javascript" src="/js/editPost.js"></script>
     <script type="text/javascript" src="/js/replyPost.js"></script>
     <script type="text/javascript" src="/js/user.js"></script>
+    <script type="text/javascript" src="/js/admin.js"></script>
 
 
 </body>

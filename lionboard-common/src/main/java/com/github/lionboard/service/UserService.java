@@ -2,6 +2,8 @@ package com.github.lionboard.service;
 
 import com.github.lionboard.model.User;
 
+import java.util.List;
+
 /**
  * Created by Lion.k on 16. 2. 3..
  */
@@ -28,4 +30,11 @@ public interface UserService {
 
     void insertOAuthUser(User user);
 
+    List<User> getAllUsers(int offset, int limit, String sort);
+
+    int countUser();
+
+    void updateUserRole(User user);
+
+    List<User> searchUserWithQuery(String query);
 }

@@ -134,4 +134,13 @@ public interface LionBoardService {
 
     List<Post> getStickyPosts(int unit);
 
+    List<User> getAllUsers(int offset, int limit, String sort);
+
+    List<Pagination> getUserPagination(int offset, String sort);
+
+    void modifyUserStatus(User user);
+
+    void modifyUserRole(User user);
+
+    List<User> searchUserWithQuery(String query);
 }

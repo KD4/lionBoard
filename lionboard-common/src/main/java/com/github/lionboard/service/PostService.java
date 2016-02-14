@@ -71,4 +71,10 @@ public interface PostService {
     int countAllPosts();
 
     List<Post> searchPostWithQuery(String query);
+
+    List<PostReport> getAllReports(int offset, int limit, String sort);
+
+    int countReports();
+
+    List<PostReport> searchPostReportsWithQuery(String query);
 }

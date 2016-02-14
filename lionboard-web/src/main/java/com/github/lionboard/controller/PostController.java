@@ -245,12 +245,15 @@ public class PostController {
     @RequestMapping(method= RequestMethod.PUT,
             produces="application/json;charset=utf8",
             value = "/{postId}/reports")
-    public boolean updateReportStatus(@RequestParam(value = "processStatus",required = true) String processStatus,@RequestParam(value = "reportId",required = true) int reportId){
-        PostReport postReport = new PostReport();
-        postReport.setId(reportId);
-        postReport.setProcessStatus(processStatus);
-        lionBoardService.changeProcessStatusFromPost(postReport);
-        return true;
+    public String updateReportStatus(@PathVariable("postId") int postId, @RequestBody PostReport postReport){
+        if(postReport.getProcessStatus().equals("C")){
+            lionBoardService.changePostStatusByPostId(postReport.getPostId(),"T");
+            lionBoardService.changeProcessStatusFromPost(postReport);
+        }else{
+            lionBoardService.changePostStatusByPostId(postReport.getPostId(),"S");
+            lionBoardService.changeProcessStatusFromPost(postReport);
+        }
+        return "success";
     }
 
     @RequestMapping(method= RequestMethod.GET,value = "/{postId}/parent")
@@ -270,6 +273,17 @@ public class PostController {
             throw new IncorrectAccessException();
         }
         return lionBoardService.searchPostWithQuery(query);
+    }
+
+    @ResponseBody
+    @RequestMapping(
+            method= RequestMethod.GET,
+            value="/reports/search")
+    public List<PostReport> searchPostReports(@RequestParam(value = "query" , required = false) String query){
+        if(query == null){
+            throw new IncorrectAccessException();
+        }
+        return lionBoardService.searchPostReportsWithQuery(query);
     }
 
 

@@ -77,4 +77,10 @@ public interface PostRepository {
     int countAllPosts();
 
     List<Post> getPostsByQuery(String query);
+
+    List<PostReport> findAllReports(HashMap<String, Object> params);
+
+    int countReports();
+
+    List<PostReport> findReportByQuery(String query);
 }

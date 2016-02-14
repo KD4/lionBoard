@@ -54,4 +54,8 @@ public interface CommentService {
     int countAllComments();
 
     List<Comment> searchCmtWithQuery(String query);
+
+    List<CommentReport> getAllReports(int offset, int limit, String sort);
+
+    List<CommentReport> searchReportWithQuery(String query);
 }

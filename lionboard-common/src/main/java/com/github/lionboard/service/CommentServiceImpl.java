@@ -266,13 +266,45 @@ public class CommentServiceImpl implements CommentService {
 
     }
 
+
+    /**
+     * 모든 댓글 개수를 반환합니다.
+     *
+     */
     @Override
     public int countAllComments() {
         return commentRepository.countAll();
     }
 
+    /**
+     * 쿼리를 이용해서 검색 후 댓글 목록을 반환합니다.
+     *
+     * @param query
+     */
     @Override
     public List<Comment> searchCmtWithQuery(String query) {
         return commentRepository.findCommentsByQuery(query);
+    }
+
+    /**
+     * 모든 댓글 목록을 반환합니다.
+     *
+     * @param offset
+     * @param limit
+     * @param sort
+     */
+    @Override
+    public List<CommentReport> getAllReports(int offset, int limit, String sort) {
+        HashMap<String,Object> params = new HashMap<>();
+        params.put("offset",offset);
+        params.put("limit",limit);
+        params.put("sort", sort);
+
+        return commentRepository.findAllReports(params);
+    }
+
+    @Override
+    public List<CommentReport> searchReportWithQuery(String query) {
+        return commentRepository.findReportByQuery(query);
     }
 }

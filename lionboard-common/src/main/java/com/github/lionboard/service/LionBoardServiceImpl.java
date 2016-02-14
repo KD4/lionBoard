@@ -239,7 +239,10 @@ public class LionBoardServiceImpl implements LionBoardService {
             maxPage = postService.countAllPosts() / 15 + 1;
         }else if(source.equals("adminComments")){
             maxPage = commentService.countAllComments() / 15 + 1;
+        }else if(source.equals("adminPostReports")){
+            maxPage = postService.countReports() / 15 + 1;
         }
+
 
         if(maxPage<olderPage){
             olderPage = maxPage;
@@ -539,7 +542,7 @@ public class LionBoardServiceImpl implements LionBoardService {
 
     @Override
     public List<User> getAllUsers(int offset, int limit, String sort) {
-        return userService.getAllUsers(offset,limit,sort);
+        return userService.getAllUsers(offset, limit, sort);
     }
 
     @Override
@@ -559,7 +562,7 @@ public class LionBoardServiceImpl implements LionBoardService {
 
     @Override
     public List<Post> getAllPosts(int offset, int limit, String sort) {
-        return postService.getAllPosts(offset,limit,sort);
+        return postService.getAllPosts(offset, limit, sort);
     }
 
     @Override
@@ -570,12 +573,32 @@ public class LionBoardServiceImpl implements LionBoardService {
     @Override
     public List<Comment> getAllComments(int offset, int limit, String sort) {
 
-        return commentService.getAllComments(offset,limit,sort);
+        return commentService.getAllComments(offset, limit, sort);
     }
 
     @Override
     public List<Comment> searchCmtWithQuery(String query) {
         return commentService.searchCmtWithQuery(query);
+    }
+
+    @Override
+    public List<PostReport> getAllPostReports(int offset, int limit, String sort) {
+        return postService.getAllReports(offset, limit, sort);
+    }
+
+    @Override
+    public List<PostReport> searchPostReportsWithQuery(String query) {
+        return postService.searchPostReportsWithQuery(query);
+    }
+
+    @Override
+    public List<CommentReport> getAllCmtReports(int offset, int limit, String sort) {
+        return commentService.getAllReports(offset,limit,sort);
+    }
+
+    @Override
+    public List<CommentReport> searchCmtReportsWithQuery(String query) {
+        return commentService.searchReportWithQuery(query);
     }
 
 

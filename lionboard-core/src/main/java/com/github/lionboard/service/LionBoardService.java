@@ -149,4 +149,12 @@ public interface LionBoardService {
     List<Comment> getAllComments(int offset, int limit, String sort);
 
     List<Comment> searchCmtWithQuery(String query);
+
+    List<PostReport> getAllPostReports(int offset, int limit, String sort);
+
+    List<PostReport> searchPostReportsWithQuery(String query);
+
+    List<CommentReport> getAllCmtReports(int offset, int limit, String sort);
+
+    List<CommentReport> searchCmtReportsWithQuery(String query);
 }

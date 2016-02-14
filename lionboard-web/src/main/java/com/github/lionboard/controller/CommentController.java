@@ -134,16 +134,20 @@ public class CommentController {
         return lionBoardService.getCommentReports(cmtId);
     }
 
+
     @ResponseBody
     @RequestMapping(method= RequestMethod.PUT,
             produces="application/json;charset=utf8",
             value = "/{cmtId}/reports")
-    public boolean updateReportStatus(@RequestParam(value = "processStatus",required = true) String processStatus,@RequestParam(value = "reportId",required = true) int reportId){
-        CommentReport commentReport = new CommentReport();
-        commentReport.setId(reportId);
-        commentReport.setProcessStatus(processStatus);
-        lionBoardService.changeProcessStatusFromCmt(commentReport);
-        return true;
+    public String updateReportStatus(@PathVariable("cmtId") int cmtId, @RequestBody CommentReport commentReport){
+        if(commentReport.getProcessStatus().equals("C")){
+            lionBoardService.changeCmtStatusByCmtId(commentReport.getCmtId(), "T");
+            lionBoardService.changeProcessStatusFromCmt(commentReport);
+        }else{
+            lionBoardService.changeCmtStatusByCmtId(commentReport.getCmtId(), "S");
+            lionBoardService.changeProcessStatusFromCmt(commentReport);
+        }
+        return "success";
     }
 
 
@@ -157,6 +161,17 @@ public class CommentController {
             throw new IncorrectAccessException();
         }
         return lionBoardService.searchCmtWithQuery(query);
+    }
+
+    @ResponseBody
+    @RequestMapping(
+            method= RequestMethod.GET,
+            value="/reports/search")
+    public List<CommentReport> searchPostReports(@RequestParam(value = "query" , required = false) String query){
+        if(query == null){
+            throw new IncorrectAccessException();
+        }
+        return lionBoardService.searchCmtReportsWithQuery(query);
     }
 
     @ExceptionHandler(IncorrectAccessException.class)

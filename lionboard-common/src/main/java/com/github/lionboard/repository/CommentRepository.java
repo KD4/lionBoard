@@ -61,4 +61,8 @@ public interface CommentRepository {
     int countAll();
 
     List<Comment> findCommentsByQuery(String query);
+
+    List<CommentReport> findReportByQuery(String query);
+
+    List<CommentReport> findAllReports(HashMap<String, Object> params);
 }

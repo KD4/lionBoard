@@ -5,7 +5,8 @@
     <li role="presentation"><a href="../admin/users">Users</a></li>
     <li role="presentation"><a href="../admin/posts">Posts</a></li>
     <li role="presentation" class="active"><a href="../admin/comments">Comments</a></li>
-    <li role="presentation"><a href="../admin/reports">Report</a></li>
+    <li role="presentation"><a href="../admin/postReports">PostReports</a></li>
+    <li role="presentation"><a href="../admin/cmtReports">CmtReports</a></li>
     <form id="admin-nav-search" data-source='comments' class="navbar-form navbar-right" role="search">
         <div class="form-group">
             <input type="text" class="form-control" name="search-keyword" placeholder="id or author">

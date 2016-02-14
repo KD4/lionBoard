@@ -142,5 +142,18 @@
         WHERE cmts.cmtId = #{query} OR cmts.contents LIKE #{query} OR users.name LIKE #{query}
         ORDER BY cmts.cmtId DESC
     </select>
+
+    <select id="findAllReports" resultType="com.github.lionboard.model.CommentReport">
+        SELECT reports.*, cmts.postId as postId
+        FROM CMT_REPORT_TB reports
+        LEFT JOIN CMT_TB cmts ON cmts.cmtId = reports.cmtId
+    </select>
+
+    <select id="findReportByQuery" resultType="com.github.lionboard.model.CommentReport">
+        SELECT reports.*, cmts.postId as postId
+        FROM CMT_REPORT_TB reports
+        LEFT JOIN CMT_TB cmts ON cmts.cmtId = reports.cmtId
+        WHERE reports.cmtId = #{query} OR reports.reporterId = #{query}
+    </select>
 </mapper>
 

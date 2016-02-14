@@ -392,4 +392,40 @@ public class PostServiceImpl implements PostService {
     }
 
 
+    /**
+     * 모든 신고글 목록을 반환합니다.
+     *
+     * @param offset
+     * @param limit
+     * @param sort
+     */
+    @Override
+    public List<PostReport> getAllReports(int offset, int limit, String sort) {
+        HashMap<String,Object> params = new HashMap<>();
+        params.put("offset",offset);
+        params.put("limit",limit);
+        params.put("sort", sort);
+        return postRepository.findAllReports(params);
+    }
+
+
+    /**
+     * 모든 신고 횟수를 반환합니다.
+     *
+     */
+    @Override
+    public int countReports() {
+        return postRepository.countReports();
+    }
+
+    /**
+     * 쿼리값을 이용해서 신고글을 검색합니다.
+     *
+     */
+    @Override
+    public List<PostReport> searchPostReportsWithQuery(String query) {
+        return postRepository.findReportByQuery(query);
+    }
+
+
 }

@@ -2,10 +2,7 @@ package com.github.lionboard.controller;
 
 import com.github.lionboard.error.IncorrectAccessException;
 import com.github.lionboard.error.InvalidUserException;
-import com.github.lionboard.model.Comment;
-import com.github.lionboard.model.Pagination;
-import com.github.lionboard.model.Post;
-import com.github.lionboard.model.User;
+import com.github.lionboard.model.*;
 import com.github.lionboard.service.LionBoardService;
 import com.sun.javafx.sg.prism.NGShape;
 import com.sun.org.apache.xpath.internal.operations.Mod;
@@ -77,8 +74,26 @@ public class AdminController {
     }
 
     @RequestMapping(method= RequestMethod.GET,
-            value = "/reports")
-    public ModelAndView showReportsOnAdmin(ModelAndView modelAndView){
+            value = "/postReports")
+    public ModelAndView showPostReportsOnAdmin(ModelAndView modelAndView,@RequestParam(value = "offset", required = false, defaultValue = "0") int offset, @RequestParam(value = "limit", required = false, defaultValue = "15") int limit,@RequestParam(value = "sort", required = false, defaultValue = "id") String sort){
+
+        List<PostReport> postReports = lionBoardService.getAllPostReports(offset, limit, sort);
+        List<Pagination> paginations = lionBoardService.getPagination(offset, sort,"adminPostReports");
+        modelAndView.addObject("paginations",paginations);
+        modelAndView.addObject("postReports",postReports);
+
+        return modelAndView;
+    }
+
+    @RequestMapping(method= RequestMethod.GET,
+            value = "/cmtReports")
+    public ModelAndView showCmtReportsOnAdmin(ModelAndView modelAndView,@RequestParam(value = "offset", required = false, defaultValue = "0") int offset, @RequestParam(value = "limit", required = false, defaultValue = "15") int limit,@RequestParam(value = "sort", required = false, defaultValue = "id") String sort){
+
+        List<CommentReport> cmtReports = lionBoardService.getAllCmtReports(offset, limit, sort);
+        List<Pagination> paginations = lionBoardService.getPagination(offset, sort,"adminPostReports");
+        modelAndView.addObject("paginations",paginations);
+        modelAndView.addObject("cmtReports",cmtReports);
+
         return modelAndView;
     }
 

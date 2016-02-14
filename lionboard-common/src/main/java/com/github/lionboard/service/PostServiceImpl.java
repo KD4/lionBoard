@@ -352,4 +352,44 @@ public class PostServiceImpl implements PostService {
     }
 
 
+
+    /**
+     * 모든 게시글 목록을 반환합니다.
+     *
+     * @param offset
+     * @param limit
+     * @param sort
+     */
+    @Override
+    public List<Post> getAllPosts(int offset, int limit, String sort) {
+        HashMap<String,Object> params = new HashMap<>();
+        params.put("offset",offset);
+        params.put("limit",limit);
+        params.put("sort", sort);
+
+        return postRepository.findAll(params);
+    }
+
+
+    /**
+     * 모든 게시글 갯수를 반환합니다.
+     *
+     */
+    @Override
+    public int countAllPost() {
+        return postRepository.countAllPosts();
+    }
+
+
+    /**
+     * query를 이용해서 게시글를 검색합니다.
+     *
+     * @param query
+     */
+    @Override
+    public List<Post> searchPostWithQuery(String query) {
+        return postRepository.getPostsByQuery(query);
+    }
+
+
 }

@@ -128,11 +128,6 @@ public class LionBoardServiceMock implements LionBoardService {
     }
 
     @Override
-    public List<Pagination> getUserPagination(int offset, String sort) {
-        return null;
-    }
-
-    @Override
     public void modifyUserStatus(User user) {
 
     }
@@ -144,6 +139,16 @@ public class LionBoardServiceMock implements LionBoardService {
 
     @Override
     public List<User> searchUserWithQuery(String query) {
+        return null;
+    }
+
+    @Override
+    public List<Post> getAllPosts(int offset, int limit, String sort) {
+        return null;
+    }
+
+    @Override
+    public List<Post> searchPostWithQuery(String query) {
         return null;
     }
 
@@ -447,9 +452,10 @@ public class LionBoardServiceMock implements LionBoardService {
     }
 
     @Override
-    public List<Pagination> getPagination(int offset, String sort) {
+    public List<Pagination> getPagination(int offset, String sort, String source) {
         return null;
     }
+
 
 
     @Override

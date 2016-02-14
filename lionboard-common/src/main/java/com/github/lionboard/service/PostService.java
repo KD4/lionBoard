@@ -65,4 +65,10 @@ public interface PostService {
     Post getParentPost(int postId);
 
     List<Post> getStickyPosts(int unit);
+
+    List<Post> getAllPosts(int offset, int limit, String sort);
+
+    int countAllPost();
+
+    List<Post> searchPostWithQuery(String query);
 }

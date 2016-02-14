@@ -100,7 +100,7 @@ public interface LionBoardService {
 
     void changeProcessStatusFromCmt(CommentReport commentReport);
 
-    List<Pagination> getPagination(int offset,String sort);
+    List<Pagination> getPagination(int offset,String sort,String source);
 
     List<Post> getPostsByUserId(int userId);
 
@@ -136,11 +136,13 @@ public interface LionBoardService {
 
     List<User> getAllUsers(int offset, int limit, String sort);
 
-    List<Pagination> getUserPagination(int offset, String sort);
-
     void modifyUserStatus(User user);
 
     void modifyUserRole(User user);
 
     List<User> searchUserWithQuery(String query);
+
+    List<Post> getAllPosts(int offset, int limit, String sort);
+
+    List<Post> searchPostWithQuery(String query);
 }

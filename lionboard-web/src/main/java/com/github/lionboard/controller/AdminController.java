@@ -4,6 +4,7 @@ import com.github.lionboard.error.IncorrectAccessException;
 import com.github.lionboard.error.InvalidUserException;
 import com.github.lionboard.model.Comment;
 import com.github.lionboard.model.Pagination;
+import com.github.lionboard.model.Post;
 import com.github.lionboard.model.User;
 import com.github.lionboard.service.LionBoardService;
 import com.sun.javafx.sg.prism.NGShape;
@@ -45,7 +46,7 @@ public class AdminController {
             value = "/users")
     public ModelAndView showUsersOnAdmin(ModelAndView modelAndView,@RequestParam(value = "offset", required = false, defaultValue = "0") int offset, @RequestParam(value = "limit", required = false, defaultValue = "15") int limit,@RequestParam(value = "sort", required = false, defaultValue = "id") String sort){
         List<User> users = lionBoardService.getAllUsers(offset,limit,sort);
-        List<Pagination> paginations = lionBoardService.getUserPagination(offset,sort);
+        List<Pagination> paginations = lionBoardService.getPagination(offset,sort,"adminUsers");
         modelAndView.addObject("paginations",paginations);
         modelAndView.addObject("users",users);
         return modelAndView;
@@ -53,7 +54,13 @@ public class AdminController {
 
     @RequestMapping(method= RequestMethod.GET,
             value = "/posts")
-    public ModelAndView showPostsOnAdmin(ModelAndView modelAndView){
+    public ModelAndView showPostsOnAdmin(ModelAndView modelAndView,@RequestParam(value = "offset", required = false, defaultValue = "0") int offset, @RequestParam(value = "limit", required = false, defaultValue = "15") int limit,@RequestParam(value = "sort", required = false, defaultValue = "id") String sort){
+
+        List<Post> posts = lionBoardService.getAllPosts(offset, limit, sort);
+        List<Pagination> paginations = lionBoardService.getPagination(offset, sort,"adminPosts");
+        modelAndView.addObject("paginations",paginations);
+        modelAndView.addObject("posts",posts);
+
         return modelAndView;
     }
 

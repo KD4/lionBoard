@@ -68,7 +68,7 @@ public class PostController {
         ModelAndView mav = new ModelAndView("index");
         List<Post> posts = lionBoardService.getStickyPosts(5);
         posts.addAll(lionBoardService.getPosts(offset, limit, sort));
-        List<Pagination> paginations = lionBoardService.getPagination(offset,sort);
+        List<Pagination> paginations = lionBoardService.getPagination(offset,sort,"posts");
         mav.addObject("posts",posts);
         mav.addObject("paginations",paginations);
 
@@ -88,7 +88,7 @@ public class PostController {
         lionBoardService.addPostView(postId);
         ModelAndView mav = new ModelAndView("posts");
         Post post = lionBoardService.getPostByPostId(postId);
-        List<Comment> comments = lionBoardService.getCommentsByPostId(postId,sort);
+        List<Comment> comments = lionBoardService.getCommentsByPostId(postId, sort);
         List<PostFile> postFiles = lionBoardService.getPostFilesByPostId(postId);
         mav.addObject("post", post);
         mav.addObject("comments", comments);
@@ -191,12 +191,14 @@ public class PostController {
 
     @ResponseBody
     @RequestMapping(method= RequestMethod.PUT,value = "/{postId}/status")
-    public boolean updateStatus(@PathVariable("postId") int postId, @RequestParam(value = "statusCode",required = true) String statusCode){
-
-        lionBoardService.changePostStatusByPostId(postId,statusCode);
-
+    public String updateStatus(@PathVariable("postId") int postId, @RequestBody Post post){
+        try {
+            lionBoardService.changePostStatusByPostId(postId, post.getPostStatus());
 //      if update logic fail, throw the exception.
-        return true;
+            return "success";
+        }catch (RuntimeException re){
+            return re.getMessage();
+        }
     }
 
     @ResponseBody
@@ -259,6 +261,16 @@ public class PostController {
     }
 
 
+    @ResponseBody
+    @RequestMapping(
+            method= RequestMethod.GET,
+            value="/search")
+    public List<Post> searchPostList(@RequestParam(value = "query" , required = false) String query){
+        if(query == null){
+            throw new IncorrectAccessException();
+        }
+        return lionBoardService.searchPostWithQuery(query);
+    }
 
 
     @ExceptionHandler(InvalidPostException.class)

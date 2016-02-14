@@ -246,4 +246,33 @@ public class CommentServiceImpl implements CommentService {
     public int subtractHateCount(int cmtId) {
         return commentRepository.subtractHateCount(cmtId);
     }
+
+
+    /**
+     * 모든 댓글 목록을 반환합니다.
+     *
+     * @param offset
+     * @param limit
+     * @param sort
+     */
+    @Override
+    public List<Comment> getAllComments(int offset, int limit, String sort) {
+        HashMap<String,Object> params = new HashMap<>();
+        params.put("offset",offset);
+        params.put("limit",limit);
+        params.put("sort", sort);
+
+        return commentRepository.findAll(params);
+
+    }
+
+    @Override
+    public int countAllComments() {
+        return commentRepository.countAll();
+    }
+
+    @Override
+    public List<Comment> searchCmtWithQuery(String query) {
+        return commentRepository.findCommentsByQuery(query);
+    }
 }

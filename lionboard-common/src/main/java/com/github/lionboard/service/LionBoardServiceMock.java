@@ -153,6 +153,16 @@ public class LionBoardServiceMock implements LionBoardService {
     }
 
     @Override
+    public List<Comment> getAllComments(int offset, int limit, String sort) {
+        return null;
+    }
+
+    @Override
+    public List<Comment> searchCmtWithQuery(String query) {
+        return null;
+    }
+
+    @Override
     public List<PostFile> getPostFilesByPostId(int postId) {
         List<PostFile> postFiles = postFileRepository.findFilesByPostId(postId);
         if(postFiles == null){

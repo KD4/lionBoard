@@ -38,7 +38,7 @@ public interface PostService {
 
     List<Post> getPostsByUserId(int userId);
 
-    int countPost();
+    int countPosts();
 
     void addCmtCount(int postId);
 
@@ -68,7 +68,7 @@ public interface PostService {
 
     List<Post> getAllPosts(int offset, int limit, String sort);
 
-    int countAllPost();
+    int countAllPosts();
 
     List<Post> searchPostWithQuery(String query);
 }

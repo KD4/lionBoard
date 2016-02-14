@@ -243,12 +243,15 @@
 
     $(".comment-delete").click(function () {
         var cmtId = $(this).data('cmtid');
-        var data = {
-            statusCode:'D'
-        }
+        var cmtInfo = {
+            cmtId : cmtId,
+            cmtStatus:'D'
+        };
         $.ajax({
-            url: '/comments/'+cmtId+"/status?statusCode=D",
+            url: '/comments/'+cmtId+"/status",
             type: 'put',
+            data: JSON.stringify(cmtInfo),
+            contentType:"application/json; charset=UTF-8",
             dataType: 'text',
             success: function (data) {
                 if(data==="success"){

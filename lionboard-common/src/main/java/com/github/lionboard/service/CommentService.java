@@ -48,4 +48,10 @@ public interface CommentService {
     int addHateCount(int cmtId);
 
     int subtractHateCount(int cmtId);
+
+    List<Comment> getAllComments(int offset, int limit, String sort);
+
+    int countAllComments();
+
+    List<Comment> searchCmtWithQuery(String query);
 }

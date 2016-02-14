@@ -232,11 +232,13 @@ public class LionBoardServiceImpl implements LionBoardService {
         // 현재 게시물을 표시하는 페이지가 총 5개가 안된다면, maxPage가 최종페이지가 됩니다.
         int maxPage = 0;
         if(source.equals("posts")){
-            maxPage = postService.countPost() / 15 + 1;
+            maxPage = postService.countPosts() / 15 + 1;
         }else if(source.equals("adminUsers")){
-            maxPage = userService.countUser() / 15 + 1;
+            maxPage = userService.countUsers() / 15 + 1;
         }else if(source.equals("adminPosts")){
-            maxPage = postService.countAllPost() / 15 + 1;
+            maxPage = postService.countAllPosts() / 15 + 1;
+        }else if(source.equals("adminComments")){
+            maxPage = commentService.countAllComments() / 15 + 1;
         }
 
         if(maxPage<olderPage){
@@ -563,6 +565,17 @@ public class LionBoardServiceImpl implements LionBoardService {
     @Override
     public List<Post> searchPostWithQuery(String query) {
         return postService.searchPostWithQuery(query);
+    }
+
+    @Override
+    public List<Comment> getAllComments(int offset, int limit, String sort) {
+
+        return commentService.getAllComments(offset,limit,sort);
+    }
+
+    @Override
+    public List<Comment> searchCmtWithQuery(String query) {
+        return commentService.searchCmtWithQuery(query);
     }
 
 

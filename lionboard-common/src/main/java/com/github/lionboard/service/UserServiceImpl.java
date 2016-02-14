@@ -165,7 +165,7 @@ public class UserServiceImpl implements UserService{
      *
      */
     @Override
-    public int countUser() {
+    public int countUsers() {
         return userRepository.countAll();
     }
 

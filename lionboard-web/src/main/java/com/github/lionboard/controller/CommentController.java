@@ -105,10 +105,9 @@ public class CommentController {
 
     @ResponseBody
     @RequestMapping(method= RequestMethod.PUT,value = "/{cmtId}/status")
-    public String updateStatus(@PathVariable("cmtId") int cmtId, @RequestParam(value = "statusCode",required = true) String statusCode){
-
+    public String updateStatus(@PathVariable("cmtId") int cmtId, @RequestBody Comment comment){
         try {
-            lionBoardService.changeCmtStatusByCmtId(cmtId, statusCode);
+            lionBoardService.changeCmtStatusByCmtId(cmtId, comment.getCmtStatus());
             return "success";
 
 //      if update logic fail, throw the exception.
@@ -148,15 +147,26 @@ public class CommentController {
     }
 
 
-//
-//    @ExceptionHandler(RuntimeException.class)
-//    public ModelAndView InvalidException(RuntimeException e) {
-//        return new ModelAndView("/errors").addObject("errorlog", e.getMessage());
-//    }
 
+    @ResponseBody
+    @RequestMapping(
+            method= RequestMethod.GET,
+            value="/search")
+    public List<Comment> searchCommentList(@RequestParam(value = "query" , required = false) String query){
+        if(query == null){
+            throw new IncorrectAccessException();
+        }
+        return lionBoardService.searchCmtWithQuery(query);
+    }
 
     @ExceptionHandler(IncorrectAccessException.class)
     public ModelAndView IncorrectAccessException(Exception e) {
+        return new ModelAndView("/errors").addObject("errorlog", e.getMessage());
+    }
+
+
+    @ExceptionHandler(RuntimeException.class)
+    public ModelAndView InvalidException(RuntimeException e) {
         return new ModelAndView("/errors").addObject("errorlog", e.getMessage());
     }
 

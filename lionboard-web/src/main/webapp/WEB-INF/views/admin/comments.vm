@@ -1,11 +1,17 @@
 <div id="admin-header" class="header">
-    <a href="/index"><h3 class="text-muted">LIONBOARD</h3></a>
+    <a href="/index"><h3 class="text-muted">LIONBOARD - Admin Page</h3></a>
 </div>
 <ul class="nav nav-tabs">
     <li role="presentation"><a href="../admin/users">Users</a></li>
-    <li role="presentation" ><a href="../admin/posts">Posts</a></li>
+    <li role="presentation"><a href="../admin/posts">Posts</a></li>
     <li role="presentation" class="active"><a href="../admin/comments">Comments</a></li>
     <li role="presentation"><a href="../admin/reports">Report</a></li>
+    <form id="admin-nav-search" data-source='comments' class="navbar-form navbar-right" role="search">
+        <div class="form-group">
+            <input type="text" class="form-control" name="search-keyword" placeholder="id or author">
+        </div>
+        <button type="submit" class="btn btn-default">검색</button>
+    </form>
 </ul>
 
 
@@ -14,103 +20,72 @@
     <div class="panel panel-default">
         <!-- Table -->
         <table class="table table-striped">
-            <tr>
-                <th width="10%">Post</th>
-                <th width="30%">댓글</th>
-                <th width="20%">작성자</th>
-                <th width="20%">작성일</th>
-                <th width="20%">상태</th>
-            </tr>
-            <tr>
-                <td><a href="/posts/$postId">6</td>
-                <td>안녕하세요~~ 큰 도움 되었습니다 감사합니다.</td>
-                <td><a href="/users/$userId"></a></td>
-                <td>16/01/20 15:30</td>
-                <td>
-                    <div class="dropdown">
-                        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
-                            Service
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Block</a></li>
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Leave</a></li>
-                        </ul>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td><a href="/posts/$postId">6</td>
-                <td>안녕하세요~~ 큰 도움 되었습니다 감사합니다.</td>
-                <td><a href="/users/$userId"></a></td>
-                <td>16/01/20 15:30</td>
-                <td>
-                    <div class="dropdown">
-                        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
-                            Service
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Block</a></li>
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Leave</a></li>
-                        </ul>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td><a href="/posts/$postId">6</td>
-                <td>안녕하세요~~ 큰 도움 되었습니다 감사합니다.</td>
-                <td><a href="/users/$userId"></a></td>
-                <td>16/01/20 15:30</td>
-                <td>
-                    <div class="dropdown">
-                        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
-                            Service
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Block</a></li>
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Leave</a></li>
-                        </ul>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td><a href="/posts/$postId">6</td>
-                <td>안녕하세요~~ 큰 도움 되었습니다 감사합니다.</td>
-                <td><a href="/users/$userId"></a></td>
-                <td>16/01/20 15:30</td>
-                <td>
-                    <div class="dropdown">
-                        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
-                            Service
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Block</a></li>
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Leave</a></li>
-                        </ul>
-                    </div>
-                </td>
-            </tr>
+            <thead>
+            <th width="9%">ID</th>
+            <th width="50%">댓글 내용</th>
+            <th width="20%">게시자</th>
+            <th width="11%">게시날짜</th>
+            <th width="10%">상태</th>
+            </thead>
+            <tbody id="admin-table-tbody">
+                #foreach($comment in $comments)
+                <tr>
+                    <td>$comment.cmtId</td>
+                    <td><a href="/comments/$comment.cmtId">$comment.contents</a></td>
+                    <td><a href="/users/$comment.userId">$comment.userName</a></td>
+                    <td class="admin-tbody-date">$dateTool.format("short",$comment.createdAt)</td>
+                    <td>
+                        <div class="dropdown">
+                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+                                $comment.cmtStatus
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                                <li role="presentation">
+                                    <a class="change-comment-status" data-commentId="$comment.cmtId" data-status="S" role="menuitem" tabindex="-1" href="#">Service</a>
+                                </li>
+                                <li role="presentation">
+                                    <a class="change-comment-status" data-commentId="$comment.cmtId" data-status="T" role="menuitem" tabindex="-1" href="#">Temp</a>
+                                </li>
+                                <li role="presentation">
+                                    <a class="change-comment-status" data-commentId="$comment.cmtId" data-status="D" role="menuitem" tabindex="-1" href="#">Delete</a>
+                                </li>
+                                <li role="presentation">
+                                    <a class="change-comment-status" data-commentId="$comment.cmtId" data-status="A" role="menuitem" tabindex="-1" href="#">Admin Delete</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+                #end
+            </tbody>
         </table>
     </div>
     <nav>
         <ul class="pagination">
-            <li>
-                <a href="#" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
-            <li><a href="#">1</a></li>
-            <li><a href="#">2</a></li>
-            <li><a href="#">3</a></li>
-            <li><a href="#">4</a></li>
-            <li><a href="#">5</a></li>
-            <li>
-                <a href="#" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
+            #set($sort = $paginations.get(0).sort)
+            #if($paginations.size() > 4)
+                #set( $previousPage = $paginations.get(0).offset-20)
+                <li>
+                    <a href="/admin/comments?offset=$previousPage&sort=$sort" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            #end
+
+            #foreach($pagination in $paginations)
+                <li><a href="/admin/comments?offset=$pagination.offset&sort=$sort">$pagination.page</a></li>
+            #end
+
+            #if($paginations.size() > 4)
+                #set( $nextOffset = $paginations.get(4).offset+20)
+                <li>
+                    <a href="/admin/comments?offset=$nextOffset&sort=$sort" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            #end
         </ul>
     </nav>
+
+</div>

@@ -32,7 +32,7 @@ public interface UserService {
 
     List<User> getAllUsers(int offset, int limit, String sort);
 
-    int countUser();
+    int countUsers();
 
     void updateUserRole(User user);
 

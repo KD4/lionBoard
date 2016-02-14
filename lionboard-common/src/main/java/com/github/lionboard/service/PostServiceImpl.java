@@ -202,7 +202,7 @@ public class PostServiceImpl implements PostService {
      * 'S'상태의 게시글 숫자를 반환합니다.
      */
     @Override
-    public int countPost() {
+    public int countPosts() {
         return postRepository.countPost();
     }
 
@@ -376,7 +376,7 @@ public class PostServiceImpl implements PostService {
      *
      */
     @Override
-    public int countAllPost() {
+    public int countAllPosts() {
         return postRepository.countAllPosts();
     }
 

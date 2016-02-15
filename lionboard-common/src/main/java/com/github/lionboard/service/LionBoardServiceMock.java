@@ -183,6 +183,26 @@ public class LionBoardServiceMock implements LionBoardService {
     }
 
     @Override
+    public Post getPostByPostIdForAdmin(int postId) {
+        return null;
+    }
+
+    @Override
+    public Post getStickyPost(int postId) {
+        return null;
+    }
+
+    @Override
+    public void setStickyPost(int postId) {
+
+    }
+
+    @Override
+    public void setOffStickyPost(int postId) {
+
+    }
+
+    @Override
     public List<PostFile> getPostFilesByPostId(int postId) {
         List<PostFile> postFiles = postFileRepository.findFilesByPostId(postId);
         if(postFiles == null){

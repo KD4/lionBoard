@@ -5,8 +5,15 @@
     <li role="presentation"><a href="../admin/users">Users</a></li>
     <li role="presentation"><a href="../admin/posts">Posts</a></li>
     <li role="presentation"><a href="../admin/comments">Comments</a></li>
-    <li role="presentation"><a href="../admin/postReports">PostReports</a></li>
-    <li role="presentation" class="active"><a href="../admin/cmtReports">CmtReports</a></li>
+    <li role="presentation" class="dropdown active">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
+            (cmt)Report<span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+            <li role="presentation"><a href="../admin/postReport">PostReport</a></li>
+            <li role="presentation"><a href="../admin/cmtReport">CmtReport</a></li>
+        </ul>
+    </li>
     <form id="admin-nav-search" data-source='comments/reports' class="navbar-form navbar-right" role="search">
         <div class="form-group">
             <input type="text" class="form-control" name="search-keyword" placeholder="cmtId or Reporter">

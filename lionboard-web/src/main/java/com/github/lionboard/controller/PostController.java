@@ -287,6 +287,26 @@ public class PostController {
     }
 
 
+    @ResponseBody
+    @RequestMapping(method= RequestMethod.POST,value = "/{postId}/sticky")
+    public String setStickyPost(@PathVariable("postId") int postId,@RequestParam(value = "isSticky", required = false, defaultValue = "false") String isSticky){
+
+        try {
+            if(isSticky.equals("true")) {
+                Post post = lionBoardService.getStickyPost(postId);
+                if (post == null) {
+                    lionBoardService.setStickyPost(postId);
+                }
+            }else{
+                lionBoardService.setOffStickyPost(postId);
+            }
+            return "success";
+        }catch (Exception e){
+            logger.debug("returning Post Object fail.  : " + e.getMessage());
+            throw new InvalidPostException(e.getMessage());
+        }
+    }
+
     @ExceptionHandler(InvalidPostException.class)
     public ModelAndView InvalidException(Exception e) {
         return new ModelAndView("errors").addObject("errorlog", e.getMessage());

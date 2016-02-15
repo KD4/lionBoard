@@ -601,6 +601,26 @@ public class LionBoardServiceImpl implements LionBoardService {
         return commentService.searchReportWithQuery(query);
     }
 
+    @Override
+    public Post getPostByPostIdForAdmin(int postId) {
+        return postService.getPostByPostIdForAdmin(postId);
+    }
+
+    @Override
+    public Post getStickyPost(int postId) {
+        return postService.getStickyPost(postId);
+    }
+
+    @Override
+    public void setStickyPost(int postId) {
+        postService.setSticky(postId);
+    }
+
+    @Override
+    public void setOffStickyPost(int postId) {
+        postService.setOffStickyPost(postId);
+    }
+
 
     @Override
     public void modifyUser(User user) {

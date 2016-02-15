@@ -241,7 +241,81 @@
 
     });
 
+    //admin post page에서 각 row를 클릭하면 해당 row의 정보를 가지고 모달창을 띄우는 로직
+    $("#admin-table-tbody").on('click','.modal-up-post',function(){
+       var postId = $(this).data('postid');
+        $.ajax({
+            url: "/restful/posts/"+postId,
+            type: 'get',
+            dataType:'json',
+            success:function(data) {
 
+                $("input[name=sticky]").prop('checked',false);
+
+                $.ajax({
+                    url: "/restful/stickyPosts/"+postId,
+                    type: 'get',
+                    dataType:'text',
+                    success:function(isSticky) {
+                        console.log(isSticky);
+                        if(isSticky == "true"){
+                            $("input[name=sticky]").prop('checked',true);
+                        }
+                    }
+                });
+                $('.modal-postId').val(data['postId']);
+                $('.modal-postTitle').val(data['title']);
+                $('.modal-existFiles').val(data['existFiles']);
+                $('#summernote').summernote('code',data['contents']);
+                $('#postModal').modal('toggle');
+            }
+        });
+    });
+
+
+    //어드민 Post 페이지의 모달창 Save change 버튼
+    $('#modal-post-form').submit(function(){
+
+        var postInfo = {
+            title:$('.modal-postTitle').val(),
+            contents:$('#summernote').summernote('code'),
+            postId:$('.modal-postId').val(),
+            existFiles:$('.modal-existFiles').val()
+        };
+
+
+        var isSticky = "fasle"; // 고정 게시물인가 ? 디폴트는 false;
+        if($("input[name=sticky]").is(':checked') == true){
+            isSticky = "true"; // sticky 체크박스값이 true이면 isSticky 변수도 true;
+        }
+
+        //고정값 디비에 반영
+        $.ajax({
+            url: '/posts/'+$('.modal-postId').val()+'/sticky',
+            data: {
+                isSticky : isSticky
+            },//true or false string 값
+            type: 'post',
+            dataType: 'text',
+            success: function (data) {
+                //폼에 있는 내용 디비에 반영
+                $.ajax({
+                    url: '/posts/'+$('.modal-postId').val(),
+                    type: 'put',
+                    data: JSON.stringify(postInfo),
+                    contentType:"application/json; charset=UTF-8",
+                    dataType: 'text',
+                    success: function (postId) {
+                        alert(postId+"값을 변경하였습니다.");
+                        $('#postModal').modal('toggle');
+                    }
+                });
+            }
+        });
+
+
+        return false;
+    });
 
     function searchUsers(source){
         var targetUrl = '/'+source+'/search?query='+$("input[name=search-keyword]").val();

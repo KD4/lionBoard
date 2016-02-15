@@ -77,4 +77,12 @@ public interface PostService {
     int countReports();
 
     List<PostReport> searchPostReportsWithQuery(String query);
+
+    Post getPostByPostIdForAdmin(int postId);
+
+    Post getStickyPost(int postId);
+
+    void setSticky(int postId);
+
+    void setOffStickyPost(int postId);
 }

@@ -157,4 +157,12 @@ public interface LionBoardService {
     List<CommentReport> getAllCmtReports(int offset, int limit, String sort);
 
     List<CommentReport> searchCmtReportsWithQuery(String query);
+
+    Post getPostByPostIdForAdmin(int postId);
+
+    Post  getStickyPost(int postId);
+
+    void setStickyPost(int postId);
+
+    void setOffStickyPost(int postId);
 }

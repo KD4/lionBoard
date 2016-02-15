@@ -428,4 +428,50 @@ public class PostServiceImpl implements PostService {
     }
 
 
+    /**
+     * 상태 값의 상관없이 게시글 객체를 가져옵니다.
+     *
+     * @param postId
+     *
+     */
+    @Override
+    public Post getPostByPostIdForAdmin(int postId) {
+        return postRepository.findPostForAdmin(postId);
+    }
+
+
+    /**
+     * 특정 게시글이 고정 게시물인지 확인합니다.
+     *
+     * @param postId
+     *
+     */
+    @Override
+    public Post getStickyPost(int postId) {
+        return postRepository.findStickyPost(postId);
+    }
+
+    /**
+     * 특정 게시물을 고정 게시물로 추가합니다.
+     *
+     * @param postId
+     *
+     */
+    @Override
+    public void setSticky(int postId) {
+        postRepository.insertStickyPost(postId);
+    }
+
+    /**
+     * 고정 게시물 목록에서 특정 게시물을 삭제합니다.
+     *
+     * @param postId
+     *
+     */
+    @Override
+    public void setOffStickyPost(int postId) {
+        postRepository.deleteStickyPost(postId);
+    }
+
+
 }

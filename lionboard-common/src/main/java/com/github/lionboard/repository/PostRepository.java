@@ -83,4 +83,12 @@ public interface PostRepository {
     int countReports();
 
     List<PostReport> findReportByQuery(String query);
+
+    Post findPostForAdmin(int postId);
+
+    Post findStickyPost(int postId);
+
+    void insertStickyPost(int postId);
+
+    void deleteStickyPost(int postId);
 }

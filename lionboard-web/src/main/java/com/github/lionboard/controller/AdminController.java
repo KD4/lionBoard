@@ -74,7 +74,7 @@ public class AdminController {
     }
 
     @RequestMapping(method= RequestMethod.GET,
-            value = "/postReports")
+            value = "/postReport")
     public ModelAndView showPostReportsOnAdmin(ModelAndView modelAndView,@RequestParam(value = "offset", required = false, defaultValue = "0") int offset, @RequestParam(value = "limit", required = false, defaultValue = "15") int limit,@RequestParam(value = "sort", required = false, defaultValue = "id") String sort){
 
         List<PostReport> postReports = lionBoardService.getAllPostReports(offset, limit, sort);
@@ -86,7 +86,7 @@ public class AdminController {
     }
 
     @RequestMapping(method= RequestMethod.GET,
-            value = "/cmtReports")
+            value = "/cmtReport")
     public ModelAndView showCmtReportsOnAdmin(ModelAndView modelAndView,@RequestParam(value = "offset", required = false, defaultValue = "0") int offset, @RequestParam(value = "limit", required = false, defaultValue = "15") int limit,@RequestParam(value = "sort", required = false, defaultValue = "id") String sort){
 
         List<CommentReport> cmtReports = lionBoardService.getAllCmtReports(offset, limit, sort);

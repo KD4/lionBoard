@@ -287,7 +287,7 @@ public class LionBoardServiceImpl implements LionBoardService {
     @Override
     public List<Comment> getCommentsByPostId(int postId, String sort) {
         try {
-            return commentService.getCommentsByPostId(postId,sort);
+            return commentService.getCommentsByPostId(postId, sort);
         }catch (RuntimeException re){
             re.printStackTrace();
             throw new InvalidCmtException("덧글 목록을 반환할 수 없습니다. 서버 로그를 확인해주세요.");
@@ -490,7 +490,7 @@ public class LionBoardServiceImpl implements LionBoardService {
             throw new InvalidPostException();
         }
         //답글은 부모글의 depth + 1에 해당하는 depth를 가짐.
-        selectedPost.setDepth(selectedPost.getDepth()+1);
+        selectedPost.setDepth(selectedPost.getDepth() + 1);
         //답글은 부모글의 PostNum - 1에 해당하는 PostNum를 가짐.
         selectedPost.setPostNum(selectedPost.getPostNum() - 1);
 
@@ -557,7 +557,14 @@ public class LionBoardServiceImpl implements LionBoardService {
 
     @Override
     public List<User> searchUserWithQuery(String query) {
-        return userService.searchUserWithQuery(query);
+
+        if(isInteger(query)){
+            return userService.searchUserWithQuery(query);
+        }else{
+            query = "%"+query+"%";
+            return userService.searchUserWithQuery(query);
+        }
+
     }
 
     @Override
@@ -567,7 +574,14 @@ public class LionBoardServiceImpl implements LionBoardService {
 
     @Override
     public List<Post> searchPostWithQuery(String query) {
-        return postService.searchPostWithQuery(query);
+
+        if(isInteger(query)){
+            return postService.searchPostWithQuery(query);
+        }else{
+            query = "%"+query+"%";
+            return postService.searchPostWithQuery(query);
+        }
+
     }
 
     @Override
@@ -578,7 +592,13 @@ public class LionBoardServiceImpl implements LionBoardService {
 
     @Override
     public List<Comment> searchCmtWithQuery(String query) {
-        return commentService.searchCmtWithQuery(query);
+        if(isInteger(query)){
+            return commentService.searchCmtWithQuery(query);
+        }else{
+            query = "%"+query+"%";
+            return commentService.searchCmtWithQuery(query);
+        }
+
     }
 
     @Override
@@ -588,7 +608,12 @@ public class LionBoardServiceImpl implements LionBoardService {
 
     @Override
     public List<PostReport> searchPostReportsWithQuery(String query) {
-        return postService.searchPostReportsWithQuery(query);
+        if(isInteger(query)){
+            return postService.searchPostReportsWithQuery(query);
+        }else{
+            query = "%"+query+"%";
+            return postService.searchPostReportsWithQuery(query);
+        }
     }
 
     @Override
@@ -598,7 +623,13 @@ public class LionBoardServiceImpl implements LionBoardService {
 
     @Override
     public List<CommentReport> searchCmtReportsWithQuery(String query) {
-        return commentService.searchReportWithQuery(query);
+        if(isInteger(query)){
+            return commentService.searchReportWithQuery(query);
+        }else{
+            query = "%"+query+"%";
+            return commentService.searchReportWithQuery(query);
+        }
+
     }
 
     @Override
@@ -776,4 +807,20 @@ public class LionBoardServiceImpl implements LionBoardService {
         }
     }
 
+
+    public static boolean isInteger(String s) {
+        return isInteger(s,10);
+    }
+
+    public static boolean isInteger(String s, int radix) {
+        if(s.isEmpty()) return false;
+        for(int i = 0; i < s.length(); i++) {
+            if(i == 0 && s.charAt(i) == '-') {
+                if(s.length() == 1) return false;
+                else continue;
+            }
+            if(Character.digit(s.charAt(i),radix) < 0) return false;
+        }
+        return true;
+    }
 }

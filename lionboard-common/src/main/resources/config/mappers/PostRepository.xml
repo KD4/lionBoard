@@ -181,7 +181,7 @@
         FROM POST_TB posts
         LEFT JOIN USER_TB users ON posts.userId = users.id
         LEFT JOIN POST_STATUS_TB status ON posts.postId = status.postId
-        WHERE posts.postId = #{query} OR posts.title = #{query}
+        WHERE posts.postId = #{query} OR posts.title LIKE #{query}
     </select>
 
     <select id="findAllReports" resultType="com.github.lionboard.model.PostReport">

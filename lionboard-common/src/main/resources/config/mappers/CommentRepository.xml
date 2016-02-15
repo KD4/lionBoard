@@ -139,7 +139,7 @@
         FROM CMT_TB cmts
         LEFT JOIN USER_TB users ON cmts.userId = users.id
         LEFT JOIN CMT_STATUS_TB status ON cmts.cmtId = status.cmtId
-        WHERE cmts.cmtId = #{query} OR cmts.contents LIKE #{query} OR users.name LIKE #{query}
+        WHERE cmts.cmtId = #{query} OR cmts.contents LIKE #{query} OR users.name = #{query}
         ORDER BY cmts.cmtId DESC
     </select>
 

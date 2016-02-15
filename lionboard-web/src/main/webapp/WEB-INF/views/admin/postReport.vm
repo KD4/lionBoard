@@ -14,7 +14,7 @@
             <li role="presentation"><a href="../admin/cmtReport">CmtReport</a></li>
         </ul>
     </li>
-    <form id="admin-nav-search" data-source='comments/reports' class="navbar-form navbar-right" role="search">
+    <form id="admin-nav-search" data-source='posts/reports' class="navbar-form navbar-right" role="search">
         <div class="form-group">
             <input type="text" class="form-control" name="search-keyword" placeholder="cmtId or Reporter">
         </div>

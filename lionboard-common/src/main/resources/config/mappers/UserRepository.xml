@@ -73,7 +73,7 @@
     <select id="getUserByQuery" resultType="com.github.lionboard.model.User">
         SELECT *
         FROM USER_TB
-        WHERE id = #{query} OR name = #{query}
+        WHERE id = #{query} OR name LIKE #{query}
     </select>
 </mapper>
 

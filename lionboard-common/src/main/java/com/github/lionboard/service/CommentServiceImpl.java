@@ -103,8 +103,8 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public List<Comment> getCommentsByPostId(int postId, String sort) {
         Map<String,Object> cmtParam = new HashMap<>();
-        cmtParam.put("postId",postId);
-        cmtParam.put("sort",sort);
+        cmtParam.put("postId", postId);
+        cmtParam.put("sort", sort);
         return commentRepository.findCommentsByPostId(cmtParam);
     }
 
@@ -283,8 +283,11 @@ public class CommentServiceImpl implements CommentService {
      */
     @Override
     public List<Comment> searchCmtWithQuery(String query) {
+
         return commentRepository.findCommentsByQuery(query);
+
     }
+
 
     /**
      * 모든 댓글 목록을 반환합니다.

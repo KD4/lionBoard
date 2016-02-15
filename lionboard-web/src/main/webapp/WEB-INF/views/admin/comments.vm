@@ -14,7 +14,7 @@
             <li role="presentation"><a href="../admin/cmtReport">CmtReport</a></li>
         </ul>
     </li>
-    <form id="admin-nav-search" data-source='comments/reports' class="navbar-form navbar-right" role="search">
+    <form id="admin-nav-search" data-source='comments' class="navbar-form navbar-right" role="search">
         <div class="form-group">
             <input type="text" class="form-control" name="search-keyword" placeholder="cmtId or Reporter">
         </div>
@@ -38,7 +38,7 @@
                 #foreach($comment in $comments)
                 <tr>
                     <td>$comment.cmtId</td>
-                    <td><a href="/comments/$comment.cmtId">$comment.contents</a></td>
+                    <td><a href="/posts/$comment.postId">$comment.contents</a></td>
                     <td><a href="/users/$comment.userId">$comment.userName</a></td>
                     <td class="admin-tbody-date">$dateTool.format("short",$comment.createdAt)</td>
                     <td>
@@ -96,3 +96,4 @@
     </nav>
 
 </div>
+

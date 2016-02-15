@@ -407,9 +407,9 @@
                     var createdAt = day + "/" + month + "/" + year;
 
 
-                    $tr = "<tr>" +
-                        "<td>" + data[i]['postId'] + "</td>" +
-                        "<td><a href='/posts/" + data[i]['postId'] + "'>" + data[i]['title'] + "</a></td>" +
+                    $tr = "<tr class='post-tr'>" +
+                        "<td class='modal-up-post' data-postId='"+data[i]['postId']+"'>" + data[i]['postId'] + "</td>" +
+                        "<td class='modal-up-post' data-postId='"+data[i]['postId']+"'>" + data[i]['title'] + "</a></td>" +
                         "<td><a href='/users/" + data[i]['userId'] + "'>" + data[i]['userName'] + "</a></td>" +
                         "<td class='admin-tbody-date'>" + createdAt + "</td>" +
                         "<td>" +

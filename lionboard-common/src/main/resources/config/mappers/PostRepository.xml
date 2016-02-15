@@ -15,6 +15,15 @@
         LIMIT #{limit} OFFSET #{offset}
     </select>
 
+    <select id="findAll" parameterType="java.util.Map" resultType="com.github.lionboard.model.Post">
+        SELECT *, users.name username, users.profileUrl profileUrl
+        FROM POST_TB posts
+        LEFT JOIN USER_TB users ON posts.userId = users.id
+        LEFT JOIN POST_STATUS_TB status ON posts.postId = status.postId
+        ORDER BY ${sort} DESC
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
+
     <select id="findPostByPostId" parameterType="int" resultType="com.github.lionboard.model.Post">
         SELECT posts.*, users.name username, users.profileUrl profileUrl, status.postStatus
         FROM POST_TB AS posts
@@ -162,7 +171,58 @@
         ORDER BY posts.createdAt ASC LIMIT #{unit}
     </select>
 
+    <select id="countAllPosts" resultType="int">
+        SELECT count(*)
+        FROM POST_TB
+    </select>
 
+    <select id="getPostsByQuery" resultType="com.github.lionboard.model.Post">
+        SELECT *, users.name username, users.profileUrl profileUrl
+        FROM POST_TB posts
+        LEFT JOIN USER_TB users ON posts.userId = users.id
+        LEFT JOIN POST_STATUS_TB status ON posts.postId = status.postId
+        WHERE posts.postId = #{query} OR posts.title LIKE #{query}
+    </select>
+
+    <select id="findAllReports" resultType="com.github.lionboard.model.PostReport">
+        SELECT *
+        FROM POST_REPORT_TB
+        ORDER BY ${sort} DESC
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
+
+    <select id="countReports" resultType="int">
+        SELECT count(*)
+        FROM POST_REPORT_TB
+    </select>
+
+    <select id="findReportByQuery" resultType="com.github.lionboard.model.PostReport">
+        SELECT *
+        FROM POST_REPORT_TB
+        WHERE postId=#{query} OR reporterId=#{query}
+    </select>
+
+    <select id="findPostForAdmin" resultType="com.github.lionboard.model.Post">
+        SELECT posts.*, users.name username, users.profileUrl profileUrl, status.postStatus
+        FROM POST_TB AS posts
+        LEFT JOIN USER_TB AS users ON posts.userId = users.id
+        LEFT JOIN POST_STATUS_TB AS status ON posts.postId = status.postId
+        WHERE posts.postId = #{postId}
+    </select>
+
+    <select id="findStickyPost" resultType="com.github.lionboard.model.Post">
+        SELECT postId
+        FROM STICKY_POST_TB
+        WHERE postId = #{postId};
+    </select>
+
+    <insert id="insertStickyPost">
+        INSERT INTO STICKY_POST_TB(postId) VALUES (#{postId});
+    </insert>
+
+    <delete id="deleteStickyPost">
+        DELETE FROM STICKY_POST_TB WHERE postId=#{postId}
+    </delete>
 
 </mapper>
 

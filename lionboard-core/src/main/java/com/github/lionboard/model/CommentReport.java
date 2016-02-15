@@ -9,6 +9,7 @@ import java.util.Date;
  */
 public class CommentReport {
     private int id;
+    private int postId;
     private int cmtId;
     private int reporterId;
     private String reason;
@@ -63,5 +64,13 @@ public class CommentReport {
 
     public void setReportedAt(Date reportedAt) {
         this.reportedAt = reportedAt;
+    }
+
+    public int getPostId() {
+        return postId;
+    }
+
+    public void setPostId(int postId) {
+        this.postId = postId;
     }
 }

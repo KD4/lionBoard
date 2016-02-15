@@ -5,6 +5,8 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Repository;
 
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by Lion.k on 16. 1. 21..
@@ -29,4 +31,12 @@ public interface UserRepository {
     void updateProfileInfo(User user);
 
     void updateUserStatus(User user);
+
+    List<User> findAll(HashMap<String, Object> params);
+
+    int countAll();
+
+    void updateUserRole(User user);
+
+    List<User> getUserByQuery(String query);
 }

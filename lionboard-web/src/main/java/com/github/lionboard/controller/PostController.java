@@ -68,7 +68,7 @@ public class PostController {
         ModelAndView mav = new ModelAndView("index");
         List<Post> posts = lionBoardService.getStickyPosts(5);
         posts.addAll(lionBoardService.getPosts(offset, limit, sort));
-        List<Pagination> paginations = lionBoardService.getPagination(offset,sort);
+        List<Pagination> paginations = lionBoardService.getPagination(offset,sort,"posts");
         mav.addObject("posts",posts);
         mav.addObject("paginations",paginations);
 
@@ -88,7 +88,7 @@ public class PostController {
         lionBoardService.addPostView(postId);
         ModelAndView mav = new ModelAndView("posts");
         Post post = lionBoardService.getPostByPostId(postId);
-        List<Comment> comments = lionBoardService.getCommentsByPostId(postId,sort);
+        List<Comment> comments = lionBoardService.getCommentsByPostId(postId, sort);
         List<PostFile> postFiles = lionBoardService.getPostFilesByPostId(postId);
         mav.addObject("post", post);
         mav.addObject("comments", comments);
@@ -191,12 +191,14 @@ public class PostController {
 
     @ResponseBody
     @RequestMapping(method= RequestMethod.PUT,value = "/{postId}/status")
-    public boolean updateStatus(@PathVariable("postId") int postId, @RequestParam(value = "statusCode",required = true) String statusCode){
-
-        lionBoardService.changePostStatusByPostId(postId,statusCode);
-
+    public String updateStatus(@PathVariable("postId") int postId, @RequestBody Post post){
+        try {
+            lionBoardService.changePostStatusByPostId(postId, post.getPostStatus());
 //      if update logic fail, throw the exception.
-        return true;
+            return "success";
+        }catch (RuntimeException re){
+            return re.getMessage();
+        }
     }
 
     @ResponseBody
@@ -243,12 +245,15 @@ public class PostController {
     @RequestMapping(method= RequestMethod.PUT,
             produces="application/json;charset=utf8",
             value = "/{postId}/reports")
-    public boolean updateReportStatus(@RequestParam(value = "processStatus",required = true) String processStatus,@RequestParam(value = "reportId",required = true) int reportId){
-        PostReport postReport = new PostReport();
-        postReport.setId(reportId);
-        postReport.setProcessStatus(processStatus);
-        lionBoardService.changeProcessStatusFromPost(postReport);
-        return true;
+    public String updateReportStatus(@PathVariable("postId") int postId, @RequestBody PostReport postReport){
+        if(postReport.getProcessStatus().equals("C")){
+            lionBoardService.changePostStatusByPostId(postReport.getPostId(),"T");
+            lionBoardService.changeProcessStatusFromPost(postReport);
+        }else{
+            lionBoardService.changePostStatusByPostId(postReport.getPostId(),"S");
+            lionBoardService.changeProcessStatusFromPost(postReport);
+        }
+        return "success";
     }
 
     @RequestMapping(method= RequestMethod.GET,value = "/{postId}/parent")
@@ -259,7 +264,48 @@ public class PostController {
     }
 
 
+    @ResponseBody
+    @RequestMapping(
+            method= RequestMethod.GET,
+            value="/search")
+    public List<Post> searchPostList(@RequestParam(value = "query" , required = false) String query){
+        if(query == null){
+            throw new IncorrectAccessException();
+        }
+        return lionBoardService.searchPostWithQuery(query);
+    }
 
+    @ResponseBody
+    @RequestMapping(
+            method= RequestMethod.GET,
+            value="/reports/search")
+    public List<PostReport> searchPostReports(@RequestParam(value = "query" , required = false) String query){
+        if(query == null){
+            throw new IncorrectAccessException();
+        }
+        return lionBoardService.searchPostReportsWithQuery(query);
+    }
+
+
+    @ResponseBody
+    @RequestMapping(method= RequestMethod.POST,value = "/{postId}/sticky")
+    public String setStickyPost(@PathVariable("postId") int postId,@RequestParam(value = "isSticky", required = false, defaultValue = "false") String isSticky){
+
+        try {
+            if(isSticky.equals("true")) {
+                Post post = lionBoardService.getStickyPost(postId);
+                if (post == null) {
+                    lionBoardService.setStickyPost(postId);
+                }
+            }else{
+                lionBoardService.setOffStickyPost(postId);
+            }
+            return "success";
+        }catch (Exception e){
+            logger.debug("returning Post Object fail.  : " + e.getMessage());
+            throw new InvalidPostException(e.getMessage());
+        }
+    }
 
     @ExceptionHandler(InvalidPostException.class)
     public ModelAndView InvalidException(Exception e) {

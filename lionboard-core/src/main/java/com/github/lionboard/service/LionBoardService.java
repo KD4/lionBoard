@@ -100,7 +100,7 @@ public interface LionBoardService {
 
     void changeProcessStatusFromCmt(CommentReport commentReport);
 
-    List<Pagination> getPagination(int offset,String sort);
+    List<Pagination> getPagination(int offset,String sort,String source);
 
     List<Post> getPostsByUserId(int userId);
 
@@ -134,4 +134,35 @@ public interface LionBoardService {
 
     List<Post> getStickyPosts(int unit);
 
+    List<User> getAllUsers(int offset, int limit, String sort);
+
+    void modifyUserStatus(User user);
+
+    void modifyUserRole(User user);
+
+    List<User> searchUserWithQuery(String query);
+
+    List<Post> getAllPosts(int offset, int limit, String sort);
+
+    List<Post> searchPostWithQuery(String query);
+
+    List<Comment> getAllComments(int offset, int limit, String sort);
+
+    List<Comment> searchCmtWithQuery(String query);
+
+    List<PostReport> getAllPostReports(int offset, int limit, String sort);
+
+    List<PostReport> searchPostReportsWithQuery(String query);
+
+    List<CommentReport> getAllCmtReports(int offset, int limit, String sort);
+
+    List<CommentReport> searchCmtReportsWithQuery(String query);
+
+    Post getPostByPostIdForAdmin(int postId);
+
+    Post  getStickyPost(int postId);
+
+    void setStickyPost(int postId);
+
+    void setOffStickyPost(int postId);
 }

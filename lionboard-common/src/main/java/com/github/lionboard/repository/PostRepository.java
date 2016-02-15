@@ -4,6 +4,7 @@ import com.github.lionboard.model.Post;
 import com.github.lionboard.model.PostReport;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -70,4 +71,24 @@ public interface PostRepository {
     Post findParentPost(Post tempParent);
 
     List<Post> findStickyPosts(int unit);
+
+    List<Post> findAll(HashMap<String, Object> params);
+
+    int countAllPosts();
+
+    List<Post> getPostsByQuery(String query);
+
+    List<PostReport> findAllReports(HashMap<String, Object> params);
+
+    int countReports();
+
+    List<PostReport> findReportByQuery(String query);
+
+    Post findPostForAdmin(int postId);
+
+    Post findStickyPost(int postId);
+
+    void insertStickyPost(int postId);
+
+    void deleteStickyPost(int postId);
 }

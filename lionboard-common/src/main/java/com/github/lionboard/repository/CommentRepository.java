@@ -4,6 +4,7 @@ import com.github.lionboard.model.Comment;
 import com.github.lionboard.model.CommentReport;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -54,4 +55,14 @@ public interface CommentRepository {
     List<Comment> findCommentsByUserId(int userId);
 
     void updateCmtStatusByPostId(Comment comment);
+
+    List<Comment> findAll(HashMap<String, Object> params);
+
+    int countAll();
+
+    List<Comment> findCommentsByQuery(String query);
+
+    List<CommentReport> findReportByQuery(String query);
+
+    List<CommentReport> findAllReports(HashMap<String, Object> params);
 }

@@ -105,10 +105,9 @@ public class CommentController {
 
     @ResponseBody
     @RequestMapping(method= RequestMethod.PUT,value = "/{cmtId}/status")
-    public String updateStatus(@PathVariable("cmtId") int cmtId, @RequestParam(value = "statusCode",required = true) String statusCode){
-
+    public String updateStatus(@PathVariable("cmtId") int cmtId, @RequestBody Comment comment){
         try {
-            lionBoardService.changeCmtStatusByCmtId(cmtId, statusCode);
+            lionBoardService.changeCmtStatusByCmtId(cmtId, comment.getCmtStatus());
             return "success";
 
 //      if update logic fail, throw the exception.
@@ -135,28 +134,54 @@ public class CommentController {
         return lionBoardService.getCommentReports(cmtId);
     }
 
+
     @ResponseBody
     @RequestMapping(method= RequestMethod.PUT,
             produces="application/json;charset=utf8",
             value = "/{cmtId}/reports")
-    public boolean updateReportStatus(@RequestParam(value = "processStatus",required = true) String processStatus,@RequestParam(value = "reportId",required = true) int reportId){
-        CommentReport commentReport = new CommentReport();
-        commentReport.setId(reportId);
-        commentReport.setProcessStatus(processStatus);
-        lionBoardService.changeProcessStatusFromCmt(commentReport);
-        return true;
+    public String updateReportStatus(@PathVariable("cmtId") int cmtId, @RequestBody CommentReport commentReport){
+        if(commentReport.getProcessStatus().equals("C")){
+            lionBoardService.changeCmtStatusByCmtId(commentReport.getCmtId(), "T");
+            lionBoardService.changeProcessStatusFromCmt(commentReport);
+        }else{
+            lionBoardService.changeCmtStatusByCmtId(commentReport.getCmtId(), "S");
+            lionBoardService.changeProcessStatusFromCmt(commentReport);
+        }
+        return "success";
     }
 
 
-//
-//    @ExceptionHandler(RuntimeException.class)
-//    public ModelAndView InvalidException(RuntimeException e) {
-//        return new ModelAndView("/errors").addObject("errorlog", e.getMessage());
-//    }
 
+    @ResponseBody
+    @RequestMapping(
+            method= RequestMethod.GET,
+            value="/search")
+    public List<Comment> searchCommentList(@RequestParam(value = "query" , required = false) String query){
+        if(query == null){
+            throw new IncorrectAccessException();
+        }
+        return lionBoardService.searchCmtWithQuery(query);
+    }
+
+    @ResponseBody
+    @RequestMapping(
+            method= RequestMethod.GET,
+            value="/reports/search")
+    public List<CommentReport> searchPostReports(@RequestParam(value = "query" , required = false) String query){
+        if(query == null){
+            throw new IncorrectAccessException();
+        }
+        return lionBoardService.searchCmtReportsWithQuery(query);
+    }
 
     @ExceptionHandler(IncorrectAccessException.class)
     public ModelAndView IncorrectAccessException(Exception e) {
+        return new ModelAndView("/errors").addObject("errorlog", e.getMessage());
+    }
+
+
+    @ExceptionHandler(RuntimeException.class)
+    public ModelAndView InvalidException(RuntimeException e) {
         return new ModelAndView("/errors").addObject("errorlog", e.getMessage());
     }
 

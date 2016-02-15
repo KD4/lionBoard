@@ -38,7 +38,7 @@ public interface PostService {
 
     List<Post> getPostsByUserId(int userId);
 
-    int countPost();
+    int countPosts();
 
     void addCmtCount(int postId);
 
@@ -65,4 +65,24 @@ public interface PostService {
     Post getParentPost(int postId);
 
     List<Post> getStickyPosts(int unit);
+
+    List<Post> getAllPosts(int offset, int limit, String sort);
+
+    int countAllPosts();
+
+    List<Post> searchPostWithQuery(String query);
+
+    List<PostReport> getAllReports(int offset, int limit, String sort);
+
+    int countReports();
+
+    List<PostReport> searchPostReportsWithQuery(String query);
+
+    Post getPostByPostIdForAdmin(int postId);
+
+    Post getStickyPost(int postId);
+
+    void setSticky(int postId);
+
+    void setOffStickyPost(int postId);
 }

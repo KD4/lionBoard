@@ -9,6 +9,8 @@
 
     <http auto-config="true" use-expressions="true">
         <intercept-url pattern="/view/**" access="hasRole('ROLE_USER')"/>
+        <intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>
+        <access-denied-handler error-page="/errors/denied" />
         <csrf disabled="true"/>
         <form-login login-page="/signIn" username-parameter="email"
                     password-parameter="password" login-processing-url="/signInProcess"

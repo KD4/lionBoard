@@ -212,7 +212,7 @@ public class LionBoardServiceImpl implements LionBoardService {
     }
 
     @Override
-    public List<Pagination> getPagination(int offset,String sort) {
+    public List<Pagination> getPagination(int offset,String sort, String source) {
 //        offset param을 이용해서 현재 페이지 넘버를 계산합니다.
         int currentPage = offset/15 + 1;
 
@@ -230,7 +230,20 @@ public class LionBoardServiceImpl implements LionBoardService {
         int olderPage = previousPage + 5;
 
         // 현재 게시물을 표시하는 페이지가 총 5개가 안된다면, maxPage가 최종페이지가 됩니다.
-        int maxPage = postService.countPost() / 15 + 1;
+        int maxPage = 0;
+        if(source.equals("posts")){
+            maxPage = postService.countPosts() / 15 + 1;
+        }else if(source.equals("adminUsers")){
+            maxPage = userService.countUsers() / 15 + 1;
+        }else if(source.equals("adminPosts")){
+            maxPage = postService.countAllPosts() / 15 + 1;
+        }else if(source.equals("adminComments")){
+            maxPage = commentService.countAllComments() / 15 + 1;
+        }else if(source.equals("adminPostReports")){
+            maxPage = postService.countReports() / 15 + 1;
+        }
+
+
         if(maxPage<olderPage){
             olderPage = maxPage;
         }
@@ -274,7 +287,7 @@ public class LionBoardServiceImpl implements LionBoardService {
     @Override
     public List<Comment> getCommentsByPostId(int postId, String sort) {
         try {
-            return commentService.getCommentsByPostId(postId,sort);
+            return commentService.getCommentsByPostId(postId, sort);
         }catch (RuntimeException re){
             re.printStackTrace();
             throw new InvalidCmtException("덧글 목록을 반환할 수 없습니다. 서버 로그를 확인해주세요.");
@@ -402,7 +415,7 @@ public class LionBoardServiceImpl implements LionBoardService {
     public void updateProfileInfoOnUser(int userId, String uploadedUrl) {
         try {
             userService.updateUserProfile(userId, uploadedUrl);
-        }catch (RuntimeException e){
+        }catch (RuntimeException e) {
             System.out.println(e.getStackTrace());
             throw new InvalidUserException("등록된 User가 아니거나, 해당 User의 Profile을 업데이트할 수 없습니다.");
         }
@@ -477,7 +490,7 @@ public class LionBoardServiceImpl implements LionBoardService {
             throw new InvalidPostException();
         }
         //답글은 부모글의 depth + 1에 해당하는 depth를 가짐.
-        selectedPost.setDepth(selectedPost.getDepth()+1);
+        selectedPost.setDepth(selectedPost.getDepth() + 1);
         //답글은 부모글의 PostNum - 1에 해당하는 PostNum를 가짐.
         selectedPost.setPostNum(selectedPost.getPostNum() - 1);
 
@@ -527,6 +540,117 @@ public class LionBoardServiceImpl implements LionBoardService {
         return postService.getStickyPosts(unit);
     }
 
+    @Override
+    public List<User> getAllUsers(int offset, int limit, String sort) {
+        return userService.getAllUsers(offset, limit, sort);
+    }
+
+    @Override
+    public void modifyUserStatus(User user) {
+        userService.updateUserStatusByUserId(user.getId(),user.getUserStatus());
+    }
+
+    @Override
+    public void modifyUserRole(User user) {
+        userService.updateUserRole(user);
+    }
+
+    @Override
+    public List<User> searchUserWithQuery(String query) {
+
+        if(isInteger(query)){
+            return userService.searchUserWithQuery(query);
+        }else{
+            query = "%"+query+"%";
+            return userService.searchUserWithQuery(query);
+        }
+
+    }
+
+    @Override
+    public List<Post> getAllPosts(int offset, int limit, String sort) {
+        return postService.getAllPosts(offset, limit, sort);
+    }
+
+    @Override
+    public List<Post> searchPostWithQuery(String query) {
+
+        if(isInteger(query)){
+            return postService.searchPostWithQuery(query);
+        }else{
+            query = "%"+query+"%";
+            return postService.searchPostWithQuery(query);
+        }
+
+    }
+
+    @Override
+    public List<Comment> getAllComments(int offset, int limit, String sort) {
+
+        return commentService.getAllComments(offset, limit, sort);
+    }
+
+    @Override
+    public List<Comment> searchCmtWithQuery(String query) {
+        if(isInteger(query)){
+            return commentService.searchCmtWithQuery(query);
+        }else{
+            query = "%"+query+"%";
+            return commentService.searchCmtWithQuery(query);
+        }
+
+    }
+
+    @Override
+    public List<PostReport> getAllPostReports(int offset, int limit, String sort) {
+        return postService.getAllReports(offset, limit, sort);
+    }
+
+    @Override
+    public List<PostReport> searchPostReportsWithQuery(String query) {
+        if(isInteger(query)){
+            return postService.searchPostReportsWithQuery(query);
+        }else{
+            query = "%"+query+"%";
+            return postService.searchPostReportsWithQuery(query);
+        }
+    }
+
+    @Override
+    public List<CommentReport> getAllCmtReports(int offset, int limit, String sort) {
+        return commentService.getAllReports(offset,limit,sort);
+    }
+
+    @Override
+    public List<CommentReport> searchCmtReportsWithQuery(String query) {
+        if(isInteger(query)){
+            return commentService.searchReportWithQuery(query);
+        }else{
+            query = "%"+query+"%";
+            return commentService.searchReportWithQuery(query);
+        }
+
+    }
+
+    @Override
+    public Post getPostByPostIdForAdmin(int postId) {
+        return postService.getPostByPostIdForAdmin(postId);
+    }
+
+    @Override
+    public Post getStickyPost(int postId) {
+        return postService.getStickyPost(postId);
+    }
+
+    @Override
+    public void setStickyPost(int postId) {
+        postService.setSticky(postId);
+    }
+
+    @Override
+    public void setOffStickyPost(int postId) {
+        postService.setOffStickyPost(postId);
+    }
 
 
     @Override
@@ -683,4 +807,20 @@ public class LionBoardServiceImpl implements LionBoardService {
         }
     }
 
+
+    public static boolean isInteger(String s) {
+        return isInteger(s,10);
+    }
+
+    public static boolean isInteger(String s, int radix) {
+        if(s.isEmpty()) return false;
+        for(int i = 0; i < s.length(); i++) {
+            if(i == 0 && s.charAt(i) == '-') {
+                if(s.length() == 1) return false;
+                else continue;
+            }
+            if(Character.digit(s.charAt(i),radix) < 0) return false;
+        }
+        return true;
+    }
 }

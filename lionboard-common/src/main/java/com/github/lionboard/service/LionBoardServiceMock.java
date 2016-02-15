@@ -123,6 +123,86 @@ public class LionBoardServiceMock implements LionBoardService {
     }
 
     @Override
+    public List<User> getAllUsers(int offset, int limit, String sort) {
+        return null;
+    }
+
+    @Override
+    public void modifyUserStatus(User user) {
+
+    }
+
+    @Override
+    public void modifyUserRole(User user) {
+
+    }
+
+    @Override
+    public List<User> searchUserWithQuery(String query) {
+        return null;
+    }
+
+    @Override
+    public List<Post> getAllPosts(int offset, int limit, String sort) {
+        return null;
+    }
+
+    @Override
+    public List<Post> searchPostWithQuery(String query) {
+        return null;
+    }
+
+    @Override
+    public List<Comment> getAllComments(int offset, int limit, String sort) {
+        return null;
+    }
+
+    @Override
+    public List<Comment> searchCmtWithQuery(String query) {
+        return null;
+    }
+
+    @Override
+    public List<PostReport> getAllPostReports(int offset, int limit, String sort) {
+        return null;
+    }
+
+    @Override
+    public List<PostReport> searchPostReportsWithQuery(String query) {
+        return null;
+    }
+
+    @Override
+    public List<CommentReport> getAllCmtReports(int offset, int limit, String sort) {
+        return null;
+    }
+
+    @Override
+    public List<CommentReport> searchCmtReportsWithQuery(String query) {
+        return null;
+    }
+
+    @Override
+    public Post getPostByPostIdForAdmin(int postId) {
+        return null;
+    }
+
+    @Override
+    public Post getStickyPost(int postId) {
+        return null;
+    }
+
+    @Override
+    public void setStickyPost(int postId) {
+
+    }
+
+    @Override
+    public void setOffStickyPost(int postId) {
+
+    }
+
+    @Override
     public List<PostFile> getPostFilesByPostId(int postId) {
         List<PostFile> postFiles = postFileRepository.findFilesByPostId(postId);
         if(postFiles == null){
@@ -422,9 +502,10 @@ public class LionBoardServiceMock implements LionBoardService {
     }
 
     @Override
-    public List<Pagination> getPagination(int offset, String sort) {
+    public List<Pagination> getPagination(int offset, String sort, String source) {
         return null;
     }
+
 
 
     @Override

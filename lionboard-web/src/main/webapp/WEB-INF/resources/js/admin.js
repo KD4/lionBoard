@@ -370,7 +370,6 @@
                         "</button>"+
                         "<ul class='dropdown-menu' role='menu' aria-labelledby='dropdownMenu2'>"+
                         "<li role='presentation'><a class='change-user-role' data-userId='"+data[i]['id']+"' data-username='"+data[i]['name']+"' data-roles='ROLE_USER' role='menuitem' tabindex='-1' href='#'>사용자</a></li>"+
-                        "<li role='presentation'><a class='change-user-role' data-userId='"+data[i]['id']+"' data-username='"+data[i]['name']+"' data-roles='ROLE_MANAGER' role='menuitem' tabindex='-1' href='#'>관리자</a></li>"+
                         "<li role='presentation'><a class='change-user-role' data-userId='"+data[i]['id']+"' data-username='"+data[i]['name']+"' data-roles='ROLE_ADMIN' role='menuitem' tabindex='-1' href='#'>마스터</a></li>"+
                         "</ul>"+
                         "</div>"+

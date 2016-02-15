@@ -19,4 +19,12 @@ public class ErrorController {
     public String showErrorPage(){
         return "error";
     }
+
+
+    @RequestMapping(
+            method = RequestMethod.GET,
+    value = "/denied")
+    public String showDenied(){
+        return "denied";
+    }
 }

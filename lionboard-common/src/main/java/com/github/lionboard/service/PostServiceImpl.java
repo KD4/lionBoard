@@ -202,7 +202,7 @@ public class PostServiceImpl implements PostService {
      * 'S'상태의 게시글 숫자를 반환합니다.
      */
     @Override
-    public int countPost() {
+    public int countPosts() {
         return postRepository.countPost();
     }
 
@@ -349,6 +349,128 @@ public class PostServiceImpl implements PostService {
     @Override
     public List<Post> getStickyPosts(int unit) {
         return postRepository.findStickyPosts(unit);
+    }
+
+
+
+    /**
+     * 모든 게시글 목록을 반환합니다.
+     *
+     * @param offset
+     * @param limit
+     * @param sort
+     */
+    @Override
+    public List<Post> getAllPosts(int offset, int limit, String sort) {
+        HashMap<String,Object> params = new HashMap<>();
+        params.put("offset",offset);
+        params.put("limit",limit);
+        params.put("sort", sort);
+
+        return postRepository.findAll(params);
+    }
+
+
+    /**
+     * 모든 게시글 갯수를 반환합니다.
+     *
+     */
+    @Override
+    public int countAllPosts() {
+        return postRepository.countAllPosts();
+    }
+
+
+    /**
+     * query를 이용해서 게시글를 검색합니다.
+     *
+     * @param query
+     */
+    @Override
+    public List<Post> searchPostWithQuery(String query) {
+        return postRepository.getPostsByQuery(query);
+    }
+
+
+    /**
+     * 모든 신고글 목록을 반환합니다.
+     *
+     * @param offset
+     * @param limit
+     * @param sort
+     */
+    @Override
+    public List<PostReport> getAllReports(int offset, int limit, String sort) {
+        HashMap<String,Object> params = new HashMap<>();
+        params.put("offset",offset);
+        params.put("limit",limit);
+        params.put("sort", sort);
+        return postRepository.findAllReports(params);
+    }
+
+
+    /**
+     * 모든 신고 횟수를 반환합니다.
+     *
+     */
+    @Override
+    public int countReports() {
+        return postRepository.countReports();
+    }
+
+    /**
+     * 쿼리값을 이용해서 신고글을 검색합니다.
+     *
+     */
+    @Override
+    public List<PostReport> searchPostReportsWithQuery(String query) {
+        return postRepository.findReportByQuery(query);
+    }
+
+
+    /**
+     * 상태 값의 상관없이 게시글 객체를 가져옵니다.
+     *
+     * @param postId
+     *
+     */
+    @Override
+    public Post getPostByPostIdForAdmin(int postId) {
+        return postRepository.findPostForAdmin(postId);
+    }
+
+
+    /**
+     * 특정 게시글이 고정 게시물인지 확인합니다.
+     *
+     * @param postId
+     *
+     */
+    @Override
+    public Post getStickyPost(int postId) {
+        return postRepository.findStickyPost(postId);
+    }
+
+    /**
+     * 특정 게시물을 고정 게시물로 추가합니다.
+     *
+     * @param postId
+     *
+     */
+    @Override
+    public void setSticky(int postId) {
+        postRepository.insertStickyPost(postId);
+    }
+
+    /**
+     * 고정 게시물 목록에서 특정 게시물을 삭제합니다.
+     *
+     * @param postId
+     *
+     */
+    @Override
+    public void setOffStickyPost(int postId) {
+        postRepository.deleteStickyPost(postId);
     }
 
 

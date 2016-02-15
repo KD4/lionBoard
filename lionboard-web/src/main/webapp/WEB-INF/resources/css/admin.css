@@ -1,0 +1,27 @@
+.admin-btns{
+    margin-right: 10px;
+}
+
+#admin-header{
+    border-bottom: 0px;
+}
+
+.admin-tbody-date{
+    font-size:80%;
+}
+
+#admin-nav-search{
+    padding-bottom: 8px;
+    margin-top: 0px;
+    margin-bottom: -1px;
+}
+
+.post-tr{
+    cursor:pointer;
+}
+
+.post-tr:hover {
+    cursor:pointer;
+    background: #efefef;
+
+}

@@ -1,0 +1,12 @@
+<div class="header">
+    <a href="/index"><h3 class="text-muted">LIONBOARD</h3></a>
+</div>
+<div>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <p style="text-align: center"><img src="/img/denied-image.png" alt="접근 불가."/></p>
+            <h4>접근할 수 없는 페이지예요. 권한이 없습니다.</h4>
+        </div>
+
+    </div>
+</div>

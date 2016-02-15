@@ -5,6 +5,17 @@
 
 <mapper namespace="com.github.lionboard.repository.CommentRepository">
 
+
+    <select id="findAll" parameterType="java.util.Map" resultType="com.github.lionboard.model.Comment">
+        SELECT *, users.name username, users.profileUrl profileUrl, status.cmtStatus
+        FROM CMT_TB cmts
+        LEFT JOIN USER_TB users ON cmts.userId = users.id
+        LEFT JOIN CMT_STATUS_TB status ON cmts.cmtId = status.cmtId
+        ORDER BY ${sort} DESC
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
+
+
     <select id="findCommentsByPostId" parameterType="java.util.Map" resultType="com.github.lionboard.model.Comment">
         SELECT *, users.name username, users.profileUrl profileUrl, status.cmtStatus
         FROM CMT_TB cmts
@@ -115,6 +126,34 @@
         LEFT JOIN CMT_STATUS_TB status ON cmts.cmtId = status.cmtId
         WHERE cmts.userId = #{cmtuserIdId} AND status.cmtStatus = 'S'
         ORDER BY cmts.cmtId DESC
+    </select>
+
+
+    <select id="countAll" resultType="int">
+        SELECT count(*)
+        FROM CMT_TB
+    </select>
+
+    <select id="findCommentsByQuery" resultType="com.github.lionboard.model.Comment">
+        SELECT *,users.name username,status.cmtStatus
+        FROM CMT_TB cmts
+        LEFT JOIN USER_TB users ON cmts.userId = users.id
+        LEFT JOIN CMT_STATUS_TB status ON cmts.cmtId = status.cmtId
+        WHERE cmts.cmtId = #{query} OR cmts.contents LIKE #{query} OR users.name = #{query}
+        ORDER BY cmts.cmtId DESC
+    </select>
+
+    <select id="findAllReports" resultType="com.github.lionboard.model.CommentReport">
+        SELECT reports.*, cmts.postId as postId
+        FROM CMT_REPORT_TB reports
+        LEFT JOIN CMT_TB cmts ON cmts.cmtId = reports.cmtId
+    </select>
+
+    <select id="findReportByQuery" resultType="com.github.lionboard.model.CommentReport">
+        SELECT reports.*, cmts.postId as postId
+        FROM CMT_REPORT_TB reports
+        LEFT JOIN CMT_TB cmts ON cmts.cmtId = reports.cmtId
+        WHERE reports.cmtId = #{query} OR reports.reporterId = #{query}
     </select>
 </mapper>
 

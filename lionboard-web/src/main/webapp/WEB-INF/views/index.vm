@@ -69,7 +69,13 @@
 ##                        <div class="glyphicon glyphicon-thumbs-down">$post.hateCount</div>
                         <div class="glyphicon glyphicon-comment">$post.cmtCount</div>
                     </td>
-                    <td><a href="/users/$post.userId">$!post.userName </a></td>
+                    <td><a href="/users/$post.userId">
+                        #if($post.userName.length() > 4)
+                            $post.userName.substring(0,4)..
+                        #else
+                            $post.userName
+                        #end
+                    </a></td>
                     <td><small>$dateTool.format("short",$post.createdAt)</small></td>
                     <td>$post.viewCount</td>
                 </tr>

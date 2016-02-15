@@ -8,7 +8,9 @@
              http://www.springframework.org/schema/security/spring-security-4.0.xsd">
 
     <http auto-config="true" use-expressions="true">
-        <intercept-url pattern="/view/**" access="hasRole('ROLE_USER')"/>
+        <intercept-url pattern="/view/**" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')"/>
+        <intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>
+        <access-denied-handler error-page="/errors/denied" />
         <csrf disabled="true"/>
         <form-login login-page="/signIn" username-parameter="email"
                     password-parameter="password" login-processing-url="/signInProcess"

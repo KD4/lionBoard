@@ -111,6 +111,34 @@ public class UserController {
         return String.valueOf(user.getId());
     }
 
+    @ResponseBody
+    @RequestMapping(
+            method= RequestMethod.PUT,
+            value="/{userId}/status")
+    public String updateUserStatus(@PathVariable("userId") int userId, @RequestBody User user){
+        user.setId(userId);
+        lionBoardService.modifyUserStatus(user);
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String identity = auth.getName(); //get logged in username
+        logger.debug(userId + " update status to "+user.getUserStatus()+" by "+ identity);
+        return "success";
+    }
+
+    @ResponseBody
+    @RequestMapping(
+            method= RequestMethod.PUT,
+            value="/{userId}/roles")
+    public String updateUserRole(@PathVariable("userId") int userId, @RequestBody User user){
+        user.setId(userId);
+        lionBoardService.modifyUserRole(user);
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String identity = auth.getName(); //get logged in username
+        logger.debug(userId + " update role to "+user.getRoles()+" by "+identity);
+        return "success";
+    }
+
     @RequestMapping(
             method= RequestMethod.DELETE,
             value="/{userId}")
@@ -134,7 +162,7 @@ public class UserController {
         Iterator<String> itr =  request.getFileNames();
 
         MultipartFile mpf = request.getFile(itr.next());
-        System.out.println(mpf.getOriginalFilename() +" uploaded!");
+        System.out.println(mpf.getOriginalFilename() + " uploaded!");
 
         //2. send it back to the client as <result>
         try {
@@ -151,6 +179,16 @@ public class UserController {
 
     }
 
+    @ResponseBody
+    @RequestMapping(
+            method= RequestMethod.GET,
+            value="/search")
+    public List<User> searchUserList(@RequestParam(value = "query" , required = false) String query){
+        if(query == null){
+            throw new IncorrectAccessException();
+        }
+        return lionBoardService.searchUserWithQuery(query);
+    }
 
     @RequestMapping(
             method= RequestMethod.GET)

@@ -156,7 +156,7 @@
                     #end
                     <p class="pull-right"><small>$dateTool.format("short",$comment.createdAt)</small></p>
                     <div class="media-body">
-                        <h4 class="media-heading user_name">Comment not found</h4>
+                        <h4 class="media-heading user_name">Comment was not found</h4>
                         삭제된 댓글입니다.
                     </div>
                 </div>

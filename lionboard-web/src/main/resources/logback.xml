@@ -1,16 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <property-placeholder
-            location="classpath:/config/*.properties"
-            ignore-resource-not-found="true"
-            ignore-unresolvable="true"
-            order ="0" />
 
-    <property-placeholder
-            location="classpath:/config/release.properties"
-            ignore-resource-not-found="true"
-            ignore-unresolvable="true"
-            order="-1"/>
+
+    <property resource="log.properties" />
+    <property resource="release.properties" />
 
     <!-- console로 log 남기기 -->
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
@@ -30,8 +23,7 @@
 
 
     <appender name="fileForLoginInterceptor" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <!--<File>/Users/daum/LionProject/logs/lionboard.log</File>-->
-        <!--<append>false</append>-->
+
 
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${logPath}/lionboard_%d{yyyy-MM-dd-HH}.log</fileNamePattern>

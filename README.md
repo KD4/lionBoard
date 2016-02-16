@@ -14,7 +14,8 @@ lionboard
 ```
 $ git clone git@github.com:KD4/LionBoard.git
 $ cd lionboard
-$ vim lionboard-common/resources/custom.properties // properties 설정
+$ vim lionboard-common/resources/custom.properties // db, oauth properties 설정
+$ vim lionboard-web/resources/log.properties //log path properties 설정
 $ mvn clean package -Dmaven.test.skip=true
 
 ```

@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
+    <property-placeholder
+            location="classpath:/config/*.properties"
+            ignore-resource-not-found="true"
+            ignore-unresolvable="true"
+            order ="0" />
+
+    <property-placeholder
+            location="classpath:/config/release.properties"
+            ignore-resource-not-found="true"
+            ignore-unresolvable="true"
+            order="-1"/>
+
     <!-- console로 log 남기기 -->
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
@@ -22,7 +34,7 @@
         <!--<append>false</append>-->
 
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>/Users/daum/LionProject/logs/lionboard_%d{yyyy-MM-dd-HH}.log</fileNamePattern>
+            <fileNamePattern>${logPath}/lionboard_%d{yyyy-MM-dd-HH}.log</fileNamePattern>
             <!-- keep 30 days' worth of history -->
             <maxHistory>30</maxHistory>
         </rollingPolicy>

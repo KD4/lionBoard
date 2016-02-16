@@ -294,35 +294,33 @@ label:hover:before {
 }
 
 
-
 #daumBtn{
-  background-image: url('/bt/daum_btn.png');
-}
+  background-image: url('http://t1.daumcdn.net/osa/lionboard/resources/bt/daum_btn.png');}
 
 #daumBtn:hover {
-  background-image: url('/bt/daum_hover_btn.png');
+  background-image: url('http://t1.daumcdn.net/osa/lionboard/resources/bt/daum_hover_btn.png');
 }
 
 #kakaoBtn{
-  background-image: url('/bt/kakao_btn.png');
+  background-image: url('http://t1.daumcdn.net/osa/lionboard/resources/bt/kakao_btn.png');
 }
 
 #kakaoBtn:hover{
-  background-image: url('/bt/kakao_hover_btn.png');
+  background-image: url('http://t1.daumcdn.net/osa/lionboard/resources/bt/kakao_hover_btn.png');
 }
 
 #facebookBtn{
-  background-image: url('/bt/facebook_btn.png');
+  background-image: url('http://t1.daumcdn.net/osa/lionboard/resources/bt/facebook_btn.png');
 }
 
 #facebookBtn:hover{
-  background-image: url('/bt/facebook_hover_btn.png');
+  background-image: url('http://t1.daumcdn.net/osa/lionboard/resources/bt/facebook_hover_btn.png');
 }
 
 #twitterBtn{
-  background-image: url('/bt/twitter_btn.png');
+  background-image: url('http://t1.daumcdn.net/osa/lionboard/resources/bt/twitter_btn.png');
 }
 
 #twitterBtn:hover{
-  background-image: url('/bt/twitter_hover_btn.png');
+  background-image: url('http://t1.daumcdn.net/osa/lionboard/resources/bt/twitter_hover_btn.png');
 }

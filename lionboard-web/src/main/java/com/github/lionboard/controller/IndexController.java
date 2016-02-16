@@ -152,7 +152,7 @@ public class IndexController {
     }
 
     @RequestMapping(
-            value = "signup",
+            value = "signUp",
             method = RequestMethod.GET)
     public String viewSignUp() {
         //todo:세션 로그인 확인

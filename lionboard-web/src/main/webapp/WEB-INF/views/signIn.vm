@@ -31,7 +31,7 @@
                 <a href="/auth/twitter"><div id="twitterBtn"></div></a>
                 <a href="/auth/kakao"><div id="kakaoBtn"></div></a>
                 <a href="/auth/daum"><div id="daumBtn"></div></a>
-                <p>new User ?<a href="/signup">create new account.</a></p>
+                <p>new User ?<a href="/signUp">create new account.</a></p>
             </div>
         </form>
     </div>

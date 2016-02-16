@@ -304,7 +304,7 @@
         var comment = {
             userId:$loginUserId,
             postId:$currentPostId,
-            depth1:depth,
+            depth:depth,
             cmtNum:cmtNum,
             contents:contents
         };

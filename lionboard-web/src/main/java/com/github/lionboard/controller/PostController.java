@@ -35,7 +35,7 @@ public class PostController {
     @ResponseBody @RequestMapping(
             headers = "Accept=application/json",
             method= RequestMethod.POST)
-    public String writePost(Post post){
+    public String writePost(Post post) throws Exception {
         try {
 
             if (post.getUploadFile() != null) {

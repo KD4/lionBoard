@@ -3,6 +3,7 @@ package com.github.lionboard.service;
 import com.github.lionboard.model.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -108,13 +109,13 @@ public interface LionBoardService {
 
     User getUserByName(String name);
 
-    String uploadProfile(int userId, MultipartFile mpf);
+    String uploadProfile(int userId, MultipartFile mpf) throws Exception;
 
     void updateProfileInfoOnUser(int userId, String uploadedUrl);
 
-    String addFileToServer(int postId,MultipartFile uploadFiles);
+    String addFileToServer(int postId,MultipartFile uploadFiles) throws IOException, Exception;
 
-    void addPostWithFile(Post post);
+    void addPostWithFile(Post post) throws Exception;
 
     void changeCmtStatusByPostId(int postId, String status);
 
@@ -122,7 +123,7 @@ public interface LionBoardService {
 
     void changeFileStatusToDelete(int fileId);
 
-    void addFileOnPost(Post post);
+    void addFileOnPost(Post post) throws Exception;
 
     void addPostFile(PostFile postFile);
 

@@ -139,7 +139,7 @@
         FROM CMT_TB cmts
         LEFT JOIN USER_TB users ON cmts.userId = users.id
         LEFT JOIN CMT_STATUS_TB status ON cmts.cmtId = status.cmtId
-        WHERE cmts.cmtId = #{query} OR cmts.contents LIKE #{query} OR users.name = #{query}
+        WHERE cmts.cmtId LIKE CONCAT("%", #{query}, "%") OR cmts.contents LIKE CONCAT("%", #{query}, "%") OR users.name LIKE CONCAT("%", #{query}, "%")
         ORDER BY cmts.cmtId DESC
     </select>
 
@@ -153,7 +153,7 @@
         SELECT reports.*, cmts.postId as postId
         FROM CMT_REPORT_TB reports
         LEFT JOIN CMT_TB cmts ON cmts.cmtId = reports.cmtId
-        WHERE reports.cmtId = #{query} OR reports.reporterId = #{query}
+        WHERE reports.cmtId LIKE CONCAT("%", #{query}, "%") OR reports.reporterId LIKE CONCAT("%", #{query}, "%")
     </select>
 </mapper>
 

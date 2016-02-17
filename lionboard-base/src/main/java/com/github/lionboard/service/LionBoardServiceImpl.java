@@ -474,12 +474,7 @@ public class LionBoardServiceImpl implements LionBoardService {
     @Override
     public List<User> searchUserWithQuery(String query) {
 
-        if(isInteger(query)){
-            return userService.searchUserWithQuery(query);
-        }else{
-            query = "%"+query+"%";
-            return userService.searchUserWithQuery(query);
-        }
+        return userService.searchUserWithQuery(query);
 
     }
 
@@ -491,12 +486,7 @@ public class LionBoardServiceImpl implements LionBoardService {
     @Override
     public List<Post> searchPostWithQuery(String query) {
 
-        if(isInteger(query)){
             return postService.searchPostWithQuery(query);
-        }else{
-            query = "%"+query+"%";
-            return postService.searchPostWithQuery(query);
-        }
 
     }
 
@@ -508,12 +498,8 @@ public class LionBoardServiceImpl implements LionBoardService {
 
     @Override
     public List<Comment> searchCmtWithQuery(String query) {
-        if(isInteger(query)){
+
             return commentService.searchCmtWithQuery(query);
-        }else{
-            query = "%"+query+"%";
-            return commentService.searchCmtWithQuery(query);
-        }
 
     }
 
@@ -524,12 +510,9 @@ public class LionBoardServiceImpl implements LionBoardService {
 
     @Override
     public List<PostReport> searchPostReportsWithQuery(String query) {
-        if(isInteger(query)){
+
             return postService.searchPostReportsWithQuery(query);
-        }else{
-            query = "%"+query+"%";
-            return postService.searchPostReportsWithQuery(query);
-        }
+
     }
 
     @Override
@@ -539,12 +522,9 @@ public class LionBoardServiceImpl implements LionBoardService {
 
     @Override
     public List<CommentReport> searchCmtReportsWithQuery(String query) {
-        if(isInteger(query)){
+
+
             return commentService.searchReportWithQuery(query);
-        }else{
-            query = "%"+query+"%";
-            return commentService.searchReportWithQuery(query);
-        }
 
     }
 
@@ -718,20 +698,4 @@ public class LionBoardServiceImpl implements LionBoardService {
         }
     }
 
-
-    public static boolean isInteger(String s) {
-        return isInteger(s,10);
-    }
-
-    public static boolean isInteger(String s, int radix) {
-        if(s.isEmpty()) return false;
-        for(int i = 0; i < s.length(); i++) {
-            if(i == 0 && s.charAt(i) == '-') {
-                if(s.length() == 1) return false;
-                else continue;
-            }
-            if(Character.digit(s.charAt(i),radix) < 0) return false;
-        }
-        return true;
-    }
 }

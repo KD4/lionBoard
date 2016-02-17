@@ -175,13 +175,13 @@ public class CommentController {
     }
 
     @ExceptionHandler(IncorrectAccessException.class)
-    public ModelAndView IncorrectAccessException(IncorrectAccessException e) {
+    public ModelAndView IncorrectAccessException(Exception e) {
         return new ModelAndView("/errors").addObject("errorlog", e.getMessage());
     }
 
 
     @ExceptionHandler(InvalidCmtException.class)
-    public ModelAndView InvalidException(InvalidCmtException e) {
+    public ModelAndView InvalidException(RuntimeException e) {
         return new ModelAndView("/errors").addObject("errorlog", e.getMessage());
     }
 

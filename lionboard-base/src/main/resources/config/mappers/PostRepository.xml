@@ -176,12 +176,12 @@
         FROM POST_TB
     </select>
 
-    <select id="getPostsByQuery" resultType="com.github.lionboard.model.Post">
+    <select id="getPostsByQuery" parameterType="java.lang.String" resultType="com.github.lionboard.model.Post">
         SELECT *, users.name username, users.profileUrl profileUrl
         FROM POST_TB posts
         LEFT JOIN USER_TB users ON posts.userId = users.id
         LEFT JOIN POST_STATUS_TB status ON posts.postId = status.postId
-        WHERE posts.postId = #{query} OR posts.title LIKE #{query}
+        WHERE posts.postId LIKE CONCAT("%", #{query}, "%") OR posts.title LIKE CONCAT("%", #{query}, "%")
     </select>
 
     <select id="findAllReports" resultType="com.github.lionboard.model.PostReport">
@@ -196,10 +196,10 @@
         FROM POST_REPORT_TB
     </select>
 
-    <select id="findReportByQuery" resultType="com.github.lionboard.model.PostReport">
+    <select id="findReportByQuery" parameterType="java.lang.String" resultType="com.github.lionboard.model.PostReport">
         SELECT *
         FROM POST_REPORT_TB
-        WHERE postId=#{query} OR reporterId=#{query}
+        WHERE postId LIKE CONCAT("%", #{query}, "%") OR reporterId LIKE CONCAT("%", #{query}, "%")
     </select>
 
     <select id="findPostForAdmin" resultType="com.github.lionboard.model.Post">

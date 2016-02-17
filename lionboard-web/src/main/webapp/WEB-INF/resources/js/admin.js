@@ -4,14 +4,19 @@
        var source = $(this).data('source');
 
         if(source == 'users'){
+            console.log(source);
             searchUsers(source);
         }else if(source == 'posts'){
+            console.log(source);
             searchPosts(source);
         }else if(source == 'comments'){
+            console.log(source);
             searchCmts(source);
         }else if(source == 'posts/reports'){
+            console.log(source);
             searchPostReports(source);
         }else if(source == 'comments/reports'){
+            console.log(source);
             searchCmtReports(source);
         }
 

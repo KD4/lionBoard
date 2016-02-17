@@ -70,10 +70,10 @@
         UPDATE USER_TB SET roles = #{roles} WHERE id=#{id}
     </update>
 
-    <select id="getUserByQuery" resultType="com.github.lionboard.model.User">
+    <select id="getUserByQuery" parameterType="java.lang.String" resultType="com.github.lionboard.model.User">
         SELECT *
         FROM USER_TB
-        WHERE id = #{query} OR name LIKE #{query}
+        WHERE id LIKE CONCAT("%", #{query}, "%") OR name LIKE CONCAT("%", #{query}, "%")
     </select>
 </mapper>
 

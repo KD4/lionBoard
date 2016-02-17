@@ -400,7 +400,7 @@ public class LionBoardServiceImpl implements LionBoardService {
             ;
             String fileName = "lionboard_profile_"+dateTime.getMillis()+"_"+String.valueOf(userId)+".jpg";
 
-            return attachmentService.uploadFile(uploadFile.getBytes(), fileName);
+            return attachmentService.uploadFile(uploadFile.getInputStream(), fileName);
         } catch (Exception e) {
 
             //todo logging.
@@ -430,7 +430,7 @@ public class LionBoardServiceImpl implements LionBoardService {
 
             //첨부파일 작명 규칙 : lionboard_post_File_{postId}_{originalFileName}
             String fileName = "lionboard_post_File_"+postId+"_"+uploadFile.getOriginalFilename();
-            return attachmentService.uploadFile(uploadFile.getBytes(), fileName);
+            return attachmentService.uploadFile(uploadFile.getInputStream(), fileName);
 
         } catch (Exception e) {
             e.printStackTrace();

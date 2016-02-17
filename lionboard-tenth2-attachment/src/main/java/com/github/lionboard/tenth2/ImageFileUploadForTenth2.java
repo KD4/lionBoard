@@ -5,6 +5,7 @@ import net.daum.tenth2.Tenth2Connector;
 import net.daum.tenth2.Tenth2File;
 import net.daum.tenth2.exceptions.AuthenticationException;
 import net.daum.tenth2.util.Tenth2Util;
+import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -33,11 +34,12 @@ public class ImageFileUploadForTenth2 {
         System.out.println(imageFilePath + " is removed on server.");
     }
 
-    public static String create(byte[] imageFileBytes,String imageFileName) throws Exception {
+    public static String create(InputStream is,String imageFileName) throws Exception {
+
 
         String uploadPath = makeTenth2FileUploadPath(imageFileName);
-
-        put(uploadPath, imageFileBytes);
+        byte[] bytes = IOUtils.toByteArray(is);
+        put(uploadPath, bytes);
 
         return Tenth2ServiceConfig.getServiceHost() + uploadPath;
     }

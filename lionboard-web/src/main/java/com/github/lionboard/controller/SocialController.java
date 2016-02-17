@@ -111,7 +111,7 @@ public class SocialController {
         twitter_api.setConsumer_secret(environment.getProperty("twitter.app.secret"));
 
         // 인증 요청 토큰 생성
-        twitter_api.setRequestToken();
+        twitter_api.setRequestToken(environment.getProperty("callback.host"));
         String requestToken = twitter_api.getRequestToken().getToken();
         String requestTokenSecret = twitter_api.getRequestToken().getTokenSecret();
 

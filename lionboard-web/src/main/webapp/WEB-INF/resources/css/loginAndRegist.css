@@ -295,8 +295,7 @@ label:hover:before {
 
 
 #daumBtn{
-
-  background-image: url('http://t1.daumcdn.net/osa/lionboard/resources/bt/daum_btn.png');}
+  background-image: url('http://t1.daumcdn.net/osa/lionboard/resources/bt/daum_btn.png');
 }
 
 #daumBtn:hover {

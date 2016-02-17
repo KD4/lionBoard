@@ -7,9 +7,9 @@
         <version>0.1</version>
     </parent>
 
-    <artifactId>lionboard-common</artifactId>
+    <artifactId>lionboard-base</artifactId>
     <packaging>jar</packaging>
-    <name>lionboard-common</name>
+    <name>lionboard-base</name>
 
     <dependencies>
         <dependency>

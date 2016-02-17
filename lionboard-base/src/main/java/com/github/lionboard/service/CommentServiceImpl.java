@@ -308,6 +308,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public List<CommentReport> searchReportWithQuery(String query) {
+
         return commentRepository.findReportByQuery(query);
     }
 }

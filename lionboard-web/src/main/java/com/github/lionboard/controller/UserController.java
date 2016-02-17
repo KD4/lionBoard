@@ -157,7 +157,7 @@ public class UserController {
             value="/{userId}/profile",
             produces="application/json;charset=utf8",
             method= RequestMethod.POST)
-    public String uploadProfile(@PathVariable("userId") int userId, MultipartHttpServletRequest request){
+    public String uploadProfile(@PathVariable("userId") int userId, MultipartHttpServletRequest request) throws Exception {
         //1. get the files from the request object
         Iterator<String> itr =  request.getFileNames();
 
@@ -204,6 +204,11 @@ public class UserController {
     @ExceptionHandler(IncorrectAccessException.class)
     public ModelAndView IncorrectAccessException(Exception e) {
         return new ModelAndView("errors").addObject("errorlog", e.getMessage());
+    }
+
+    @ExceptionHandler(Exception.class)
+    public void IOException(Exception e) {
+        logger.debug(e.getMessage());
     }
 
 

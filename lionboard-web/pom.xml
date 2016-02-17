@@ -21,7 +21,7 @@
 
         <dependency>
             <groupId>com.github.kd4.lionboard</groupId>
-            <artifactId>lionboard-common</artifactId>
+            <artifactId>lionboard-base</artifactId>
             <version>${parent.version}</version>
             <scope>runtime</scope>
         </dependency>

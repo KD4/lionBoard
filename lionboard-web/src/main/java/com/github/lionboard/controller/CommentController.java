@@ -180,7 +180,7 @@ public class CommentController {
     }
 
 
-    @ExceptionHandler(RuntimeException.class)
+    @ExceptionHandler(InvalidCmtException.class)
     public ModelAndView InvalidException(RuntimeException e) {
         return new ModelAndView("/errors").addObject("errorlog", e.getMessage());
     }

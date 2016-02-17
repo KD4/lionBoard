@@ -16,7 +16,7 @@
     </li>
     <form id="admin-nav-search" data-source='users' class="navbar-form navbar-right" role="search">
         <div class="form-group">
-            <input type="text" class="form-control" name="search-keyword" placeholder="cmtId or Reporter">
+            <input type="text" class="form-control" name="search-keyword" placeholder="name or id">
         </div>
         <button type="submit" class="btn btn-default">검색</button>
     </form>

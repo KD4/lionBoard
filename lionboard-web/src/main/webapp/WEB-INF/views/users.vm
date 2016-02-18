@@ -23,7 +23,7 @@
 
         ##check the email format. if email value isn't email format, the user would be OAuth user as twitter,kakao and daum. but not facebook.
 
-        #if($user.email.matches("^([A-Z|a-z|0-9](\.|_){0,1})+[A-Z|a-z|0-9]\@([A-Z|a-z|0-9])+((\.){0,1}[A-Z|a-z|0-9]){2}\.[a-z]{2,3}$"))
+        #if($user.email.matches("^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$"))
             $user.email
         #else
             등록된 이메일이 없습니다.

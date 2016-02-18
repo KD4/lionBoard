@@ -16,6 +16,7 @@ import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -45,6 +46,7 @@ public class SocialController {
 
     @Autowired
     LionBoardService lionBoardService;
+
 
 
     @RequestMapping(value = "/facebook")
@@ -100,7 +102,6 @@ public class SocialController {
         return "redirect:/index";
     }
 
-
     @RequestMapping(value = "/twitter")
     public String accessTwitter(HttpSession session) throws Exception{
 
@@ -111,7 +112,7 @@ public class SocialController {
         twitter_api.setConsumer_secret(environment.getProperty("twitter.app.secret"));
 
         // 인증 요청 토큰 생성
-        twitter_api.setRequestToken();
+        twitter_api.setRequestToken(environment.getProperty("callback.host"));
         String requestToken = twitter_api.getRequestToken().getToken();
         String requestTokenSecret = twitter_api.getRequestToken().getTokenSecret();
 

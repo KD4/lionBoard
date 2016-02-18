@@ -1,26 +1,22 @@
 package com.github.lionboard.controller;
 
 import com.github.lionboard.error.IncorrectAccessException;
-import com.github.lionboard.error.InvalidPostException;
 import com.github.lionboard.error.InvalidUserException;
 import com.github.lionboard.model.Comment;
 import com.github.lionboard.model.Post;
 import com.github.lionboard.model.User;
 import com.github.lionboard.service.LionBoardService;
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -135,7 +131,7 @@ public class UserController {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String identity = auth.getName(); //get logged in username
-        logger.debug(userId + " update role to "+user.getRoles()+" by "+identity);
+        logger.debug(userId + " update role to " + user.getRoles() + " by " + identity);
         return "success";
     }
 
@@ -196,21 +192,11 @@ public class UserController {
         throw new IncorrectAccessException();
     }
 
-    @ExceptionHandler(InvalidUserException.class)
-    public ModelAndView InvalidException(Exception e) {
-        return new ModelAndView("errors").addObject("errorlog", e.getMessage());
-    }
 
-    @ExceptionHandler(IncorrectAccessException.class)
-    public ModelAndView IncorrectAccessException(Exception e) {
-        return new ModelAndView("errors").addObject("errorlog", e.getMessage());
+    @ExceptionHandler(RuntimeException.class)
+    public ModelAndView catchRuntimeException(RuntimeException e) {
+        return new ModelAndView("/WEB-INF/views/errors/errors.vm").addObject("errorlog", "파라미터 값이 올바르지 않습니다.");
     }
-
-    @ExceptionHandler(Exception.class)
-    public void IOException(Exception e) {
-        logger.debug(e.getMessage());
-    }
-
 
 
 }

@@ -22,10 +22,10 @@
             order ="0" />
 
     <context:property-placeholder
-            location="classpath:/config/release.properties"
+            location="classpath:/config/local.properties"
             ignore-resource-not-found="true"
             ignore-unresolvable="true"
-            order="-1"/>
+            order="1"/>
 
     <bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource" >
         <property name="driverClass" value="${datasource.driverClassName}" />

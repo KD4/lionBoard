@@ -11,6 +11,11 @@
 		</param-value>
 	</context-param>
 
+	<error-page>
+		<error-code>404</error-code>
+		<location>/errors/404</location>
+	</error-page>
+
 	<listener>
 		<listener-class>
 			org.springframework.web.context.ContextLoaderListener
@@ -65,8 +70,4 @@
 	</servlet-mapping>
 
 
-	<!-- Spring ContextLoaderListener -->
-	<!--<listener>-->
-		<!--<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>-->
-	<!--</listener>-->
 </web-app>

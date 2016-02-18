@@ -97,9 +97,4 @@ public class AdminController {
         return modelAndView;
     }
 
-    @ExceptionHandler(RuntimeException.class)
-    public ModelAndView InvalidException(RuntimeException e) {
-        return new ModelAndView("errors").addObject("errorlog", e.getMessage());
-    }
-
 }

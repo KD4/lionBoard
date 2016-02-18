@@ -54,10 +54,6 @@ public class RestfulController {
         }
     }
 
-    @ExceptionHandler(InvalidPostException.class)
-    public ModelAndView InvalidException(Exception e) {
-        return new ModelAndView("errors").addObject("errorlog", e.getMessage());
-    }
 
 
 }

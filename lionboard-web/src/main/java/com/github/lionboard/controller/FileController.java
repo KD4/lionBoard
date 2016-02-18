@@ -45,8 +45,6 @@ public class FileController {
         }
     }
 
-    @ExceptionHandler(Exception.class)
-    public void IOException(Exception e) {
-        logger.debug(e.getMessage());
-    }
+
+
 }

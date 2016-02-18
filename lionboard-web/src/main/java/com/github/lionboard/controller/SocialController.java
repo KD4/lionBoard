@@ -38,7 +38,7 @@ import java.util.ArrayList;
 
 @Controller
 @RequestMapping("/auth")
-@PropertySource("classpath:/config/release.properties")
+@PropertySource("classpath:/config/local.properties")
 public class SocialController {
 
     @Resource

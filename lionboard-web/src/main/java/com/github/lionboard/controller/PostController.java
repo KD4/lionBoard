@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -307,15 +308,8 @@ public class PostController {
         }
     }
 
-    @ExceptionHandler(InvalidPostException.class)
-    public ModelAndView InvalidException(Exception e) {
-        return new ModelAndView("errors").addObject("errorlog", e.getMessage());
-    }
 
-    @ExceptionHandler(IncorrectAccessException.class)
-    public ModelAndView IncorrectAccessException(Exception e) {
-        return new ModelAndView("errors").addObject("errorlog", e.getMessage());
-    }
+
 
 
 }

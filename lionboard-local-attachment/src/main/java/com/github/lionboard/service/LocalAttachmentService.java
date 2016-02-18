@@ -22,41 +22,20 @@ public class LocalAttachmentService implements AttachmentService {
         //ToDo FileName Encoding
         String filePath =serverPath+fileUploadPath+fileName;
 
-        BufferedOutputStream bos = null;
-        try {
+        try(BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(filePath))) {
+
             byte[] buf = new byte[1024];
             int len = 0;
             while ((len = is.read(buf)) > 0) {
-                bos = new BufferedOutputStream(new FileOutputStream(filePath));
+
                 bos.write(buf);
             }
 
         } catch (IOException e) {
             e.printStackTrace();
             throw new IOException(e);
-        }finally {
-
-            if (bos != null) {
-                try {
-                bos.flush();
-                bos.close();
-                }catch (IOException ie){
-
-                    ie.printStackTrace();
-                }
-            }
-
-            if(is != null){
-                try{
-                    is.close();
-                }catch (IOException ie){
-                    ie.printStackTrace();
-                }
-            }
-
-
         }
-        System.out.println("success upload to "+filePath);
+
         return fileUploadPath+fileName;
 
     }

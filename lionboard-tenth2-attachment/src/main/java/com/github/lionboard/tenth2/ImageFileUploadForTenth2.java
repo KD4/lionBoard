@@ -36,12 +36,11 @@ public class ImageFileUploadForTenth2 {
 
     public static String create(InputStream is,String imageFileName) throws Exception {
 
+            String uploadPath = makeTenth2FileUploadPath(imageFileName);
+            byte[] bytes = IOUtils.toByteArray(is);
+            put(uploadPath, bytes);
 
-        String uploadPath = makeTenth2FileUploadPath(imageFileName);
-        byte[] bytes = IOUtils.toByteArray(is);
-        put(uploadPath, bytes);
-
-        return Tenth2ServiceConfig.getServiceHost() + uploadPath;
+            return Tenth2ServiceConfig.getServiceHost() + uploadPath;
     }
 
     private static void put(String tenthPath, byte[] imageFileBytes) throws IOException {

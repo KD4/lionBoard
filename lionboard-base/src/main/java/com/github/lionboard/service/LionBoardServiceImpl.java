@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 
 /**
@@ -339,13 +340,17 @@ public class LionBoardServiceImpl implements LionBoardService {
 
     @Override
     public String uploadProfile(int userId, MultipartFile uploadFile) throws Exception {
+        try(InputStream is = uploadFile.getInputStream()) {
+            //프로필 작명 규칙 : lionboard_profile_{userId}.jpg
+            DateTime dateTime = DateTime.now();
+            ;
+            String fileName = "lionboard_profile_"+dateTime.getMillis()+"_"+String.valueOf(userId)+".jpg";
 
-        //프로필 작명 규칙 : lionboard_profile_{userId}.jpg
-        DateTime dateTime = DateTime.now();
-        ;
-        String fileName = "lionboard_profile_"+dateTime.getMillis()+"_"+String.valueOf(userId)+".jpg";
+            return attachmentService.uploadFile(is, fileName);
 
-        return attachmentService.uploadFile(uploadFile.getInputStream(), fileName);
+        }catch (Exception e){
+            throw new InvalidUserException("이미지 업로드에 실패하였습니다.");
+        }
 
     }
 
@@ -360,11 +365,13 @@ public class LionBoardServiceImpl implements LionBoardService {
     //첨부파일을 등록하는 로직. insertFileOnTenthServer메소드를 이용함.
     @Override
     public String addFileToServer(int postId, MultipartFile uploadFile) throws Exception {
-
-
+        try(InputStream is = uploadFile.getInputStream()) {
             //첨부파일 작명 규칙 : lionboard_post_File_{postId}_{originalFileName}
-            String fileName = "lionboard_post_File_"+postId+"_"+uploadFile.getOriginalFilename();
-            return attachmentService.uploadFile(uploadFile.getInputStream(), fileName);
+            String fileName = "lionboard_post_File_" + postId + "_" + uploadFile.getOriginalFilename();
+            return attachmentService.uploadFile(is, fileName);
+        }catch (IOException e){
+            throw new InvalidPostException("파일 업로드에 실패하였습니다.");
+        }
 
 
     }

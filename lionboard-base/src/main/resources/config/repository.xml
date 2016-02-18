@@ -25,7 +25,7 @@
             location="classpath:/config/release.properties"
             ignore-resource-not-found="true"
             ignore-unresolvable="true"
-            order="-1"/>
+            order="1"/>
 
     <bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource" >
         <property name="driverClass" value="${datasource.driverClassName}" />

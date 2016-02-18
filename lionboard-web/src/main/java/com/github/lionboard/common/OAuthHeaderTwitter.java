@@ -37,9 +37,9 @@ public class OAuthHeaderTwitter {
     }
 
     // 인증 요청 토큰 생성
-    public void setRequestToken(String callBackHost)  throws TwitterException{
+    public void setRequestToken(String callbackHost)  throws TwitterException{
         twitter.setOAuthConsumer(this.consumer_key, this.consumer_secret);
-        requestToken = twitter.getOAuthRequestToken(callBackHost+"/auth/twitter_success");
+        requestToken = twitter.getOAuthRequestToken(callbackHost+"/auth/twitter_success");
 
     }
     public RequestToken getRequestToken(){

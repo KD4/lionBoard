@@ -16,6 +16,7 @@ import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -37,7 +38,7 @@ import java.util.ArrayList;
 
 @Controller
 @RequestMapping("/auth")
-@PropertySource("classpath:/config/local.properties")
+@PropertySource("classpath:/config/release.properties")
 public class SocialController {
 
     @Resource
@@ -45,6 +46,7 @@ public class SocialController {
 
     @Autowired
     LionBoardService lionBoardService;
+
 
 
     @RequestMapping(value = "/facebook")
@@ -99,7 +101,6 @@ public class SocialController {
 
         return "redirect:/index";
     }
-
 
     @RequestMapping(value = "/twitter")
     public String accessTwitter(HttpSession session) throws Exception{

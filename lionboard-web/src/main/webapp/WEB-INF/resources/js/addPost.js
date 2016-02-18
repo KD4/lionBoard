@@ -1,9 +1,17 @@
 (function($) {
     $("#post-form").submit(function(){
 
+        var postTitle = $("input[name=title]").val();
+        var authorId = $("input[name=userId]").val();
+
+        if(postTitle.trim().length < 1){
+            alert("글 제목을 입력해주세요.");
+            return false;
+        }
+
         var formData = new FormData();
-        formData.append("userId",$("input[name=userId]").val());
-        formData.append("title",$("input[name=title]").val());
+        formData.append("userId",authorId);
+        formData.append("title",postTitle);
         formData.append("contents", $('#summernote').summernote('code'));
         formData.append("depth","0");
 

@@ -193,10 +193,6 @@ public class UserController {
     }
 
 
-    @ExceptionHandler(RuntimeException.class)
-    public ModelAndView catchRuntimeException(RuntimeException e) {
-        return new ModelAndView("/WEB-INF/views/errors/errors.vm").addObject("errorlog", "파라미터 값이 올바르지 않습니다.");
-    }
 
 
 }

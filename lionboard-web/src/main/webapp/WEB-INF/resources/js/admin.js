@@ -192,7 +192,7 @@
                 success:function(returnData){
                     if(returnData=='success'){
                         alert("변경되었습니다.");
-                        window.location.replace("/admin/postReports");
+                        window.location.replace("/admin/postReport");
                     }else{
                         alert(returnData);
                     }
@@ -230,7 +230,7 @@
                 success:function(returnData){
                     if(returnData=='success'){
                         alert("변경되었습니다.");
-                        window.location.replace("/admin/cmtReports");
+                        window.location.replace("/admin/cmtReport");
                     }else{
                         alert(returnData);
                     }

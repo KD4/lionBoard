@@ -1,135 +1,166 @@
 
-.post-header-left{
-  float: left;
-  width: 60px;
-  height: 50px;
+.post-header-left {
+    float: left;
+    width: 60px;
+    height: 50px;
 
-   
-}
-.post-header-left-img img{
-  width: 50px;
-  height: 47px;
 }
 
-.post-header-right-top h4{
-  margin-top:4px;
-  margin-bottom:4px;
+.post-header-left-img img {
+    width: 50px;
+    height: 47px;
 }
 
-.post-header-right-bottom span{
-  margin-right:10px;
+.post-header-right-top h4 {
+    margin-top: 4px;
+    margin-bottom: 4px;
 }
-.post-body-contents{
-  min-height: 300px;
+
+.post-header-right-bottom span {
+    margin-right: 10px;
 }
-.post-body-vote{
-  text-align: center;
+
+.post-body-contents {
+    min-height: 300px;
 }
-.post-footer{
+
+.post-body-vote {
+    text-align: center;
+}
+
+.post-footer {
     margin-top: 20px;
     height: 37px;
 }
 
-.post-btn-group{
-    float:right;
+.post-btn-group {
+    float: right;
 }
-.media form{
-  padding:5px;
+
+.media form {
+    padding: 5px;
 }
-.user_name{
-    font-size:14px;
+
+.user_name {
+    font-size: 14px;
     font-weight: bold;
 }
-.comments-list .media{
+
+.comments-list .media {
     border-bottom: 1px dotted #ccc;
 }
-.posts-list .media{
+
+.posts-list .media {
     border-bottom: 1px dotted #ccc;
 }
-.deleted-media{
+
+.deleted-media {
     background-color: #EEE;
     color: #999;
 }
-.second-comment{
-  margin-left:5%;
+
+.second-comment {
+    margin-left: 5%;
 }
 
-.third-comment{
-  margin-left:15%;
+.third-comment {
+    margin-left: 15%;
 }
-.fourth-comment{
-  margin-left:20%;
+
+.fourth-comment {
+    margin-left: 20%;
 }
-.wasClicked{
+
+.wasClicked {
     font-weight: bold;
 }
 
-ol, ul { list-style: none; }
-ul, li {
-     margin: 0;
-   padding: 0;
-   border: 0;
-   font-size: 100%;
-   font: inherit;
-   vertical-align: baseline;
+ol, ul {
+    list-style: none;
 }
 
+ul, li {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
 
 /* 링크에서 밑줄 없애기 */
-a { text-decoration:none; }
-a:hover { text-decoration:none; !important; }
-a:visited { text-decoration:none; !important; }
-a:active { text-decoration:none; !important; }
+a {
+    text-decoration: none;
+}
 
+a:hover {
+    text-decoration: none;
+!important;
+}
+
+a:visited {
+    text-decoration: none;
+!important;
+}
+
+a:active {
+    text-decoration: none;
+!important;
+}
 
 /* comment profile css */
-.comment-user-profile img{
+.comment-user-profile img {
     width: 40px;
     height: 38px;
 }
 
-
 /* index post list css */
-.th-num{
+.th-num {
     width: 7%;
 }
-.th-title{
+
+.th-title {
     height: 1.5em;
-    width:60%;
-    overflow:hidden;
-}
-.th-figure{
-    width:5%;
-}
-.th-author{
-    width:10%;
-}
-.th-date{
-    width:10%;
-}
-.th-view{
-    width:11%;
+    width: 60%;
+    overflow: hidden;
 }
 
-.reply-margin{
-    margin-left:15px;
+.th-figure {
+    width: 5%;
 }
 
-.post-figures{
+.th-author {
+    width: 10%;
+}
+
+.th-date {
+    width: 10%;
+}
+
+.th-view {
+    width: 11%;
+}
+
+.reply-margin {
+    margin-left: 15px;
+}
+
+.post-figures {
     font-size: 12px;
 }
-.td-num{
+
+.td-num {
     font-size: 14px;
 }
 
-.column-header{
+.column-header {
     font-size: 14px;
 }
 
-.stickyPosts{
+.stickyPosts {
     background: #DDEEDD;
 }
 
-.user-name h3{
-    margin-top:10px;
+.user-name h3 {
+    margin-top: 10px;
 }

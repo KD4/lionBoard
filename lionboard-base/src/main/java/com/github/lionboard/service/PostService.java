@@ -42,7 +42,7 @@ public interface PostService {
 
     void addCmtCount(int postId);
 
-    void updateFileStatusByFileId(int fileId,String fileStatus);
+    void updateFileStatusByFileId(int fileId, String fileStatus);
 
     Integer getLikeCount(int postId);
 

@@ -2,8 +2,6 @@ package com.github.lionboard.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.lionboard.error.InvalidUserException;
-import com.github.lionboard.model.Comment;
-import com.github.lionboard.model.Post;
 import com.github.lionboard.model.User;
 import com.github.lionboard.service.LionBoardService;
 import org.junit.Assert;
@@ -21,9 +19,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 /**
@@ -37,17 +33,14 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 @ContextConfiguration("classpath:/config/mvc-dispatcher-servlet.xml")
 public class UserControllerTest {
 
-    private MockMvc mockMvc;
-
     @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     protected WebApplicationContext wac;
-
     @Autowired
     LionBoardService lionBoardService;
-
     User firstUser;
     User secondUser;
+    private MockMvc mockMvc;
 
     @Before
     public void setup() {
@@ -69,9 +62,9 @@ public class UserControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
         String content2String = result.getResponse().getContentAsString();
-        User user = mapper.readValue(content2String,User.class);
+        User user = mapper.readValue(content2String, User.class);
 
-        Assert.assertThat(user.getName(),is(firstUser.getName()));
+        Assert.assertThat(user.getName(), is(firstUser.getName()));
 
     }
 
@@ -80,7 +73,7 @@ public class UserControllerTest {
 
         lionBoardService.addUser(firstUser);
 
-        mockMvc.perform(get("/users/"+firstUser.getId())
+        mockMvc.perform(get("/users/" + firstUser.getId())
                 .contentType(MediaType.TEXT_HTML))
                 .andExpect(status().isOk())
                 .andExpect(view().name("/users"))
@@ -118,7 +111,7 @@ public class UserControllerTest {
         User tempUser = lionBoardService.getUserByUserId(firstUser.getId());
         Assert.assertThat(tempUser.getUserStatus(), is("S"));
 
-        mockMvc.perform(delete("/users/"+firstUser.getId())
+        mockMvc.perform(delete("/users/" + firstUser.getId())
                 .contentType(MediaType.TEXT_HTML))
                 .andExpect(status().isOk());
 
@@ -126,7 +119,6 @@ public class UserControllerTest {
         User deletedUser = lionBoardService.getUserByUserId(firstUser.getId());
 
     }
-
 
 
     private void setFixtureUsers() {

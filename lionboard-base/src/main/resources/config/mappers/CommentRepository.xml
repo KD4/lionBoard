@@ -43,7 +43,8 @@
     </select>
 
     <insert id="insertComment" parameterType="com.github.lionboard.model.Comment">
-        INSERT INTO CMT_TB(userId,postId,contents,depth,cmtNum) VALUES (#{userId},#{postId},#{contents},#{depth},#{cmtNum});
+        INSERT INTO CMT_TB(userId,postId,contents,depth,cmtNum) VALUES
+        (#{userId},#{postId},#{contents},#{depth},#{cmtNum});
         <selectKey keyProperty="cmtId" resultType="Integer" order="AFTER">
             SELECT LAST_INSERT_ID()
         </selectKey>
@@ -53,7 +54,7 @@
         INSERT INTO CMT_STATUS_TB(cmtId) VALUES (#{cmtId});
     </insert>
 
-    <delete id="deleteAll" >
+    <delete id="deleteAll">
         DELETE FROM CMT_TB;
     </delete>
 
@@ -139,7 +140,8 @@
         FROM CMT_TB cmts
         LEFT JOIN USER_TB users ON cmts.userId = users.id
         LEFT JOIN CMT_STATUS_TB status ON cmts.cmtId = status.cmtId
-        WHERE cmts.cmtId LIKE CONCAT("%", #{query}, "%") OR cmts.contents LIKE CONCAT("%", #{query}, "%") OR users.name LIKE CONCAT("%", #{query}, "%")
+        WHERE cmts.cmtId LIKE CONCAT("%", #{query}, "%") OR cmts.contents LIKE CONCAT("%", #{query}, "%") OR users.name
+        LIKE CONCAT("%", #{query}, "%")
         ORDER BY cmts.cmtId DESC
     </select>
 

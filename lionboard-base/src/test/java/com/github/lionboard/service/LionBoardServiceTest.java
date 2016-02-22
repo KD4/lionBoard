@@ -17,7 +17,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.List;
 
-import static junit.framework.TestCase.fail;
 import static org.hamcrest.CoreMatchers.is;
 
 /**
@@ -38,7 +37,7 @@ public class LionBoardServiceTest {
     @Autowired
 //    LionBoardServiceMock lionBoardServiceMock;
 
-    Post firstPost;
+            Post firstPost;
     Post secondPost;
     Post replyOfFirstPost;
     Post replyOfSecondPost;
@@ -54,7 +53,7 @@ public class LionBoardServiceTest {
     User secondUser;
 
     @Before
-    public void setup(){
+    public void setup() {
         setFixturePosts();
         setFixtureComments();
         setFixtureUsers();
@@ -64,7 +63,7 @@ public class LionBoardServiceTest {
     //ToDo: Post service Test
 
     @Test
-    public void getPosts(){
+    public void getPosts() {
         List<Post> posts = lionBoardService.getPosts(0, 20, "postNum");
         Assert.assertNotNull(posts);
     }
@@ -113,8 +112,6 @@ public class LionBoardServiceTest {
 //    }
 
 
-
-
     @Test
     public void addReplyPost() {
         List<Post> beforePosts = lionBoardService.getPosts(0, 20, "postNum");
@@ -143,12 +140,12 @@ public class LionBoardServiceTest {
         Assert.assertEquals(afterPosts.get(3).getPostNum(), 1997);
         Assert.assertThat(afterPosts.get(3).getTitle(), is("reply1 of second post"));
         Assert.assertEquals(afterPosts.get(4).getPostNum(), 1000);
-        Assert.assertThat(afterPosts.get(4).getTitle(),is("first post"));
+        Assert.assertThat(afterPosts.get(4).getTitle(), is("first post"));
     }
 
 
     @Test(expected = InvalidPostException.class)
-    public void exceedReplyLimit(){
+    public void exceedReplyLimit() {
         firstPost = new Post();
         secondPost = new Post();
         firstPost.setUserId(101);
@@ -189,7 +186,7 @@ public class LionBoardServiceTest {
     @Test
     public void deleteAllPosts() {
         lionBoardService.deleteAllPosts();
-        List<Post> beforePosts = lionBoardService.getPosts(0,20, "postNum");
+        List<Post> beforePosts = lionBoardService.getPosts(0, 20, "postNum");
         Assert.assertEquals(beforePosts.size(), 0);
         lionBoardService.addPost(firstPost);
         lionBoardService.addPost(secondPost);
@@ -199,7 +196,7 @@ public class LionBoardServiceTest {
     }
 
     @Test(expected = InvalidPostException.class)
-    public void changePostStatus(){
+    public void changePostStatus() {
 //      Before change
         lionBoardService.addPost(firstPost);
         lionBoardService.addPost(secondPost);
@@ -218,7 +215,7 @@ public class LionBoardServiceTest {
     }
 
     @Test(expected = InvalidPostException.class)
-    public void upAndDownLikeOnPost(){
+    public void upAndDownLikeOnPost() {
         lionBoardService.addPost(firstPost);
         lionBoardService.addPost(secondPost);
         Assert.assertThat(lionBoardService.getPostLike(firstPost.getPostId()), is(0));
@@ -238,7 +235,7 @@ public class LionBoardServiceTest {
     }
 
     @Test(expected = InvalidPostException.class)
-    public void upAndDownHateOnPost(){
+    public void upAndDownHateOnPost() {
         lionBoardService.addPost(firstPost);
         lionBoardService.addPost(secondPost);
         Assert.assertThat(lionBoardService.getPostHate(firstPost.getPostId()), is(0));
@@ -258,7 +255,7 @@ public class LionBoardServiceTest {
     }
 
     @Test(expected = InvalidPostException.class)
-    public void upAndDownViewOnPost(){
+    public void upAndDownViewOnPost() {
         lionBoardService.addPost(firstPost);
         lionBoardService.addPost(secondPost);
         Assert.assertThat(lionBoardService.getPostView(firstPost.getPostId()), is(0));
@@ -280,14 +277,14 @@ public class LionBoardServiceTest {
     //ToDo: comment service Test
 
     @Test
-    public void getCommentsByPostId(){
+    public void getCommentsByPostId() {
         lionBoardService.addPost(firstPost);
         List<Comment> comments = lionBoardService.getCommentsByPostId(firstPost.getPostId(), "cmtNum");
         Assert.assertNotNull(comments);
     }
 
     @Test(expected = InvalidPostException.class)
-    public void addComment(){
+    public void addComment() {
         lionBoardService.addPost(firstPost);
         firstCmt.setPostId(firstPost.getPostId());
         secondCmt.setPostId(firstPost.getPostId());
@@ -310,7 +307,7 @@ public class LionBoardServiceTest {
 
 
     @Test
-    public void addReplyComment(){
+    public void addReplyComment() {
         lionBoardService.addPost(firstPost);
         firstCmt.setPostId(firstPost.getPostId());
         secondCmt.setPostId(firstPost.getPostId());
@@ -336,8 +333,9 @@ public class LionBoardServiceTest {
         Post insertedPost = lionBoardService.getPostByPostId(firstPost.getPostId());
         Assert.assertThat(insertedPost.getCmtCount(), is(4));
     }
+
     @Test
-    public void deleteAllComments(){
+    public void deleteAllComments() {
         lionBoardService.deleteAllComments();
         List<Comment> beforeComments = lionBoardService.getComments();
         Assert.assertEquals(beforeComments.size(), 0);
@@ -350,7 +348,7 @@ public class LionBoardServiceTest {
     }
 
     @Test(expected = InvalidCmtException.class)
-    public void changeCmtStatus(){
+    public void changeCmtStatus() {
 //      Before change
         lionBoardService.addPost(firstPost);
         firstCmt.setPostId(firstPost.getPostId());
@@ -368,7 +366,7 @@ public class LionBoardServiceTest {
 
 
     @Test(expected = InvalidCmtException.class)
-    public void upAndDownLikeOnCmt(){
+    public void upAndDownLikeOnCmt() {
         lionBoardService.addPost(firstPost);
         firstCmt.setPostId(firstPost.getPostId());
         lionBoardService.addComment(firstCmt);
@@ -384,7 +382,7 @@ public class LionBoardServiceTest {
     }
 
     @Test(expected = InvalidCmtException.class)
-    public void upAndDownHateOnCmt(){
+    public void upAndDownHateOnCmt() {
         lionBoardService.addPost(firstPost);
         firstCmt.setPostId(firstPost.getPostId());
         lionBoardService.addComment(firstCmt);
@@ -402,16 +400,16 @@ public class LionBoardServiceTest {
     //ToDo: User service Test
 
     @Test(expected = InvalidUserException.class)
-    public void addUserWithoutOAuth(){
+    public void addUserWithoutOAuth() {
         lionBoardService.deleteAllUsers();
         lionBoardService.addUser(firstUser);
         lionBoardService.addUser(firstUser);
         User insertedUser = lionBoardService.getUserByUserId(firstUser.getId());
-        Assert.assertThat(insertedUser.getPassword(),is(firstUser.getPassword()));
+        Assert.assertThat(insertedUser.getPassword(), is(firstUser.getPassword()));
     }
 
     @Test(expected = InvalidUserException.class)
-    public void getUserByUserId(){
+    public void getUserByUserId() {
         lionBoardService.deleteAllUsers();
         lionBoardService.addUser(firstUser);
         User insertedUser = lionBoardService.getUserByUserId(firstUser.getId());
@@ -420,15 +418,13 @@ public class LionBoardServiceTest {
     }
 
     @Test(expected = InvalidUserException.class)
-    public void getUserByIdentity(){
+    public void getUserByIdentity() {
         lionBoardService.deleteAllUsers();
         lionBoardService.addUser(firstUser);
         User insertedUser = lionBoardService.getUserByIdentity(firstUser.getIdentity());
         Assert.assertThat(insertedUser.getPassword(), is(firstUser.getPassword()));
         User invalidUser = lionBoardService.getUserByIdentity("none");
     }
-
-
 
 
 //========================= Setup Fixtures ================================
@@ -519,8 +515,6 @@ public class LionBoardServiceTest {
         replyOfSecondReply.setExistFiles("F");
         replyOfSecondReply.setPostNum(1999);
     }
-
-
 
 
 }

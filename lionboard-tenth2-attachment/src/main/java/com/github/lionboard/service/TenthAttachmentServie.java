@@ -11,7 +11,7 @@ import java.io.InputStream;
  */
 
 @Service
-public class TenthAttachmentServie implements AttachmentService{
+public class TenthAttachmentServie implements AttachmentService {
 
     @Autowired
     ImageFileUploadForTenth2 imageFileUploadForTenth2;

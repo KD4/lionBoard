@@ -101,7 +101,7 @@ public interface LionBoardService {
 
     void changeProcessStatusFromCmt(CommentReport commentReport);
 
-    List<Pagination> getPagination(int offset,String sort,String source);
+    List<Pagination> getPagination(int offset, String sort, String source);
 
     List<Post> getPostsByUserId(int userId);
 
@@ -113,7 +113,7 @@ public interface LionBoardService {
 
     void updateProfileInfoOnUser(int userId, String uploadedUrl);
 
-    String addFileToServer(int postId,MultipartFile uploadFiles) throws IOException, Exception;
+    String addFileToServer(int postId, MultipartFile uploadFiles) throws IOException, Exception;
 
     void addPostWithFile(Post post) throws Exception;
 
@@ -161,7 +161,7 @@ public interface LionBoardService {
 
     Post getPostByPostIdForAdmin(int postId);
 
-    Post  getStickyPost(int postId);
+    Post getStickyPost(int postId);
 
     void setStickyPost(int postId);
 

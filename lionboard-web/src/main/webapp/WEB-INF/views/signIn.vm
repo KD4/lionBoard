@@ -1,7 +1,7 @@
 <!-- CSS For Lib -->
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 <link href='http://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 <link href="/css/loginAndRegist.css" rel="stylesheet">
 <!-- REGISTRATION FORM -->
 <a href="/index"><h3 class="text-muted">LIONBOARD</h3></a>
@@ -11,7 +11,7 @@
     <div class="login-form-1">
         <form id="login-form" class="text-left" action="/signInProcess" method="POST">
             #if($error eq 'bad_credentials')
-                    <div class="login-form-main-message show error">Wrong login credentials!</div>
+                <div class="login-form-main-message show error">Wrong login credentials!</div>
             #end
             <div class="main-login-form">
                 <div class="login-group">
@@ -21,16 +21,26 @@
                     </div>
                     <div class="form-group">
                         <label for="lg_password" class="sr-only">Password</label>
-                        <input type="password" class="form-control" id="lg_password" name="password" placeholder="password">
+                        <input type="password" class="form-control" id="lg_password" name="password"
+                               placeholder="password">
                     </div>
                 </div>
                 <button type="submit" class="login-button"><i class="fa fa-chevron-right"></i></button>
             </div>
             <div class="etc-login-form">
-                <a href="/auth/facebook"><div id="facebookBtn"></div></a>
-                <a href="/auth/twitter"><div id="twitterBtn"></div></a>
-                <a href="/auth/kakao"><div id="kakaoBtn"></div></a>
-                <a href="/auth/daum"><div id="daumBtn"></div></a>
+                <a href="/auth/facebook">
+                    <div id="facebookBtn"></div>
+                </a>
+                <a href="/auth/twitter">
+                    <div id="twitterBtn"></div>
+                </a>
+                <a href="/auth/kakao">
+                    <div id="kakaoBtn"></div>
+                </a>
+                <a href="/auth/daum">
+                    <div id="daumBtn"></div>
+                </a>
+
                 <p>new User ?<a href="/signUp">create new account.</a></p>
             </div>
         </form>

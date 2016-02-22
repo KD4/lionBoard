@@ -25,9 +25,7 @@ import static junit.framework.TestCase.fail;
 import static org.hamcrest.CoreMatchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 /**
@@ -41,21 +39,16 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 @ContextConfiguration("classpath:/config/mvc-dispatcher-servlet.xml")
 public class PostControllerTest {
 
-    private MockMvc mockMvc;
-
     @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     protected WebApplicationContext wac;
-
     @Autowired
     LionBoardService lionBoardService;
-
     Post firstPost;
     Post secondPost;
-
     Comment firstCmt;
     Comment secondCmt;
-
+    private MockMvc mockMvc;
 
     @Before
     public void setup() {
@@ -76,23 +69,23 @@ public class PostControllerTest {
         mockMvc.perform(post("/posts")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json))
-            .andExpect(status().isOk())
-            .andExpect(view().name("posts"))
-            .andExpect(model().attributeExists("post"));
+                .andExpect(status().isOk())
+                .andExpect(view().name("posts"))
+                .andExpect(model().attributeExists("post"));
 
     }
 
     @Test
     public void getPosts() throws Exception {
-        for(int i = 0 ;i<40;i++){
-            if(i/10<2) {
+        for (int i = 0; i < 40; i++) {
+            if (i / 10 < 2) {
                 lionBoardService.addPost(firstPost);
-            }else{
+            } else {
                 lionBoardService.addPost(secondPost);
             }
         }
         mockMvc.perform(get("/posts")
-                .param("offset","20")
+                .param("offset", "20")
                 .param("limit", "40"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("index"))
@@ -143,11 +136,11 @@ public class PostControllerTest {
         lionBoardService.addPost(firstPost);
 
         mockMvc.perform(put("/posts/" + firstPost.getPostId() + "/views")
-                .param("action","add"))
+                .param("action", "add"))
                 .andExpect(status().isOk());
 
         mockMvc.perform(put("/posts/" + firstPost.getPostId() + "/likes")
-                .param("action","add"))
+                .param("action", "add"))
                 .andExpect(status().isOk());
         mockMvc.perform(put("/posts/" + firstPost.getPostId() + "/likes")
                 .param("action", "add"))
@@ -164,23 +157,23 @@ public class PostControllerTest {
                 .andExpect(status().isOk());
 
         Post increasedPost = lionBoardService.getPostByPostId(firstPost.getPostId());
-        Assert.assertThat(increasedPost.getViewCount(),is(1));
-        Assert.assertThat(increasedPost.getLikeCount(),is(2));
+        Assert.assertThat(increasedPost.getViewCount(), is(1));
+        Assert.assertThat(increasedPost.getLikeCount(), is(2));
         Assert.assertThat(increasedPost.getHateCount(), is(3));
 
         mockMvc.perform(put("/posts/" + firstPost.getPostId() + "/views")
-                .param("action","sub"))
+                .param("action", "sub"))
                 .andExpect(status().isOk());
 
         mockMvc.perform(put("/posts/" + firstPost.getPostId() + "/likes")
-                .param("action","sub"))
+                .param("action", "sub"))
                 .andExpect(status().isOk());
 
         mockMvc.perform(put("/posts/" + firstPost.getPostId() + "/hates")
                 .param("action", "sub"))
                 .andExpect(status().isOk());
 
-        Post decreasedPost= lionBoardService.getPostByPostId(firstPost.getPostId());
+        Post decreasedPost = lionBoardService.getPostByPostId(firstPost.getPostId());
         Assert.assertThat(decreasedPost.getViewCount(), is(0));
         Assert.assertThat(decreasedPost.getLikeCount(), is(1));
         Assert.assertThat(decreasedPost.getHateCount(), is(2));
@@ -193,7 +186,7 @@ public class PostControllerTest {
         lionBoardService.addPost(firstPost);
 
         mockMvc.perform(put("/posts/" + firstPost.getPostId() + "/status")
-                .param("statusCode","T"))
+                .param("statusCode", "T"))
                 .andExpect(status().isOk());
 
 
@@ -201,12 +194,12 @@ public class PostControllerTest {
         try {
             Post changedPost = lionBoardService.getPostByPostId(firstPost.getPostId());
             fail("Exception not thrown, that's mean is that statusCode was not changed.");
-        }catch (InvalidPostException e){
+        } catch (InvalidPostException e) {
             mockMvc.perform(put("/posts/" + firstPost.getPostId() + "/status")
-                    .param("statusCode","S"))
+                    .param("statusCode", "S"))
                     .andExpect(status().isOk());
             Post changedPost = lionBoardService.getPostByPostId(firstPost.getPostId());
-            Assert.assertThat(changedPost.getPostStatus(),is("S"));
+            Assert.assertThat(changedPost.getPostStatus(), is("S"));
 
         }
     }
@@ -227,9 +220,9 @@ public class PostControllerTest {
 
         List<Comment> comments = lionBoardService.getCommentsByPostId(firstPost.getPostId(), "cmtNum");
 
-        Assert.assertThat(comments.size(),is(1));
+        Assert.assertThat(comments.size(), is(1));
 
-        Assert.assertThat(comments.get(0).getContents(),is(firstCmt.getContents()));
+        Assert.assertThat(comments.get(0).getContents(), is(firstCmt.getContents()));
     }
 
     @Test
@@ -281,7 +274,7 @@ public class PostControllerTest {
         lionBoardService.reportPost(postReport);
 
 
-        MvcResult mvcResult =  mockMvc.perform(get("/posts/" + firstPost.getPostId() + "/reports"))
+        MvcResult mvcResult = mockMvc.perform(get("/posts/" + firstPost.getPostId() + "/reports"))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andReturn();
@@ -300,14 +293,14 @@ public class PostControllerTest {
         postReport.setReason("just");
         lionBoardService.reportPost(postReport);
 
-        MvcResult mvcResult =  mockMvc.perform(put("/posts/" + firstPost.getPostId() + "/reports")
+        MvcResult mvcResult = mockMvc.perform(put("/posts/" + firstPost.getPostId() + "/reports")
                 .param("reportId", String.valueOf(postReport.getId()))
                 .param("processStatus", "C"))
                 .andExpect(status().isOk())
                 .andReturn();
 
         List<PostReport> postReports = lionBoardService.getPostReports(firstPost.getPostId());
-        Assert.assertThat(postReports.get(0).getProcessStatus(),is("C"));
+        Assert.assertThat(postReports.get(0).getProcessStatus(), is("C"));
     }
 
 

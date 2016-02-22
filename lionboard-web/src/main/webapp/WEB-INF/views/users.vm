@@ -1,14 +1,14 @@
 <div class="header">
     <nav>
-    <ul class="nav nav-pills pull-right">
-        #if($!loginUserId)
-            <li role="presentation"><a href="/users/$loginUserId">My Page</a></li>
-            <li role="presentation"><a href="/signOut">Sign Out</a></li>
-        #else
-            <li role="presentation"><a href="/signUp">Sign Up</a></li>
-            <li role="presentation"><a href="/signIn">Sign In</a></li>
-        #end
-    </ul>
+        <ul class="nav nav-pills pull-right">
+            #if($!loginUserId)
+                <li role="presentation"><a href="/users/$loginUserId">My Page</a></li>
+                <li role="presentation"><a href="/signOut">Sign Out</a></li>
+            #else
+                <li role="presentation"><a href="/signUp">Sign Up</a></li>
+                <li role="presentation"><a href="/signIn">Sign In</a></li>
+            #end
+        </ul>
     </nav>
     <a href="/index"><h3 class="text-muted">LIONBOARD</h3></a>
 </div>
@@ -18,35 +18,41 @@
             <img src="$user.profileUrl" alt="user-profile"/>
         </div>
         <div class="user-info">
-        <div class="user-name"><h3>$user.name</h3></div>
-        <div class="user-email"><h4>
+            <div class="user-name"><h3>$user.name</h3></div>
+            <div class="user-email"><h4>
 
-        ##check the email format. if email value isn't email format, the user would be OAuth user as twitter,kakao and daum. but not facebook.
+            ##check the email format. if email value isn't email format, the user would be OAuth user as twitter,kakao and daum. but not facebook.
 
-        #if($user.email.matches("^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$"))
-            $user.email
-        #else
-            등록된 이메일이 없습니다.
-        #end
+                #if($user.email.matches(
+                    "^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$"))
+                    $user.email
+                #else
+                    등록된 이메일이 없습니다.
+                #end
 
 
-        </h4></div>
-        <div class="user-registeredAt"><h5>가입날짜:$dateTool.format("yyyy-M-d",$user.registeredAt)</h5></div>
-        #if($loginUserId eq $user.id)
-            <div><a href="/view/editUser/$user.id"><span class="glyphicon glyphicon-cog"></span>수정</a></div>
-        #end
-    </div>
+            </h4></div>
+            <div class="user-registeredAt"><h5>가입날짜:$dateTool.format("yyyy-M-d",$user.registeredAt)</h5></div>
+            #if($loginUserId eq $user.id)
+                <div><a href="/view/editUser/$user.id"><span class="glyphicon glyphicon-cog"></span>수정</a></div>
+            #end
+        </div>
     </div>
 </div>
 <div class="row marketing">
     <div class="col-md-12">
         <div class="page-header">
-            <h4><small class="pull-right">$posts.size() posts</small> Posts </h4>
+            <h4>
+                <small class="pull-right">$posts.size() posts</small>
+                Posts
+            </h4>
         </div>
         <div class="posts-list">
             #foreach($post in $posts)
                 <div class="media">
-                    <p class="pull-right"><small>$dateTool.format("short",$post.createdAt)</small></p>
+                    <p class="pull-right">
+                        <small>$dateTool.format("short",$post.createdAt)</small>
+                    </p>
                     <div class="media-body">
                         <a href="/posts/$post.postId">$post.title</a>
                     </div>
@@ -59,12 +65,17 @@
 <div class="row marketing">
     <div class="col-md-12">
         <div class="page-header">
-            <h4><small class="pull-right">$comments.size() Comments</small> Comments </h4>
+            <h4>
+                <small class="pull-right">$comments.size() Comments</small>
+                Comments
+            </h4>
         </div>
         <div class="comments-list">
             #foreach($comment in $comments)
                 <div class="media">
-                    <p class="pull-right"><small>$dateTool.format("short",$comment.createdAt)</small></p>
+                    <p class="pull-right">
+                        <small>$dateTool.format("short",$comment.createdAt)</small>
+                    </p>
                     <div class="media-body">
                         <a href="/posts/$comment.postId">$comment.contents</a>
 

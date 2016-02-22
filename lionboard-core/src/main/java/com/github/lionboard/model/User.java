@@ -1,8 +1,5 @@
 package com.github.lionboard.model;
 
-import org.joda.time.DateTime;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.util.Date;
 
 /**

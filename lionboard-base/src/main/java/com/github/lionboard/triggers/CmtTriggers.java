@@ -25,30 +25,32 @@ public class CmtTriggers extends TriggerAdapter {
             // if parentCmtNum is 0, this Row is parent Row.
             if (parentCmtNum < 1) {
                 ps = connection.prepareStatement("SELECT * FROM CMT_TB WHERE depth = 0 AND postId = ? ORDER BY cmtNum DESC LIMIT 1");
-                ps.setInt(1,newRow.getInt("postId"));
+                ps.setInt(1, newRow.getInt("postId"));
                 rs = ps.executeQuery();
                 if (rs.next()) {
                     cmtNum = rs.getInt("cmtNum") + 1000;
-                    newRow.updateInt("cmtNum",cmtNum);
+                    newRow.updateInt("cmtNum", cmtNum);
                 } else {
-                    newRow.updateInt("cmtNum",cmtNum);
+                    newRow.updateInt("cmtNum", cmtNum);
                 }
             } else {
-                newRow.updateInt("cmtNum",parentCmtNum-1);
+                newRow.updateInt("cmtNum", parentCmtNum - 1);
             }
             connection.commit();
-        }catch (Exception e) {
+        } catch (Exception e) {
             System.out.println(e);
-        }finally {
-            if(rs != null){
-                try{
+        } finally {
+            if (rs != null) {
+                try {
                     rs.close();
-                }catch (Exception ex){}
+                } catch (Exception ex) {
+                }
             }
-            if(ps != null) {
+            if (ps != null) {
                 try {
                     ps.close();
-                }catch (Exception ex){}
+                } catch (Exception ex) {
+                }
             }
         }
 

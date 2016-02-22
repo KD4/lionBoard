@@ -43,22 +43,27 @@
                     <td class="admin-tbody-date">$dateTool.format("short",$comment.createdAt)</td>
                     <td>
                         <div class="dropdown">
-                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1"
+                                    data-toggle="dropdown" aria-expanded="true">
                                 $comment.cmtStatus
                                 <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
                                 <li role="presentation">
-                                    <a class="change-comment-status" data-commentId="$comment.cmtId" data-status="S" role="menuitem" tabindex="-1" href="#">Service</a>
+                                    <a class="change-comment-status" data-commentId="$comment.cmtId" data-status="S"
+                                       role="menuitem" tabindex="-1" href="#">Service</a>
                                 </li>
                                 <li role="presentation">
-                                    <a class="change-comment-status" data-commentId="$comment.cmtId" data-status="T" role="menuitem" tabindex="-1" href="#">Temp</a>
+                                    <a class="change-comment-status" data-commentId="$comment.cmtId" data-status="T"
+                                       role="menuitem" tabindex="-1" href="#">Temp</a>
                                 </li>
                                 <li role="presentation">
-                                    <a class="change-comment-status" data-commentId="$comment.cmtId" data-status="D" role="menuitem" tabindex="-1" href="#">Delete</a>
+                                    <a class="change-comment-status" data-commentId="$comment.cmtId" data-status="D"
+                                       role="menuitem" tabindex="-1" href="#">Delete</a>
                                 </li>
                                 <li role="presentation">
-                                    <a class="change-comment-status" data-commentId="$comment.cmtId" data-status="A" role="menuitem" tabindex="-1" href="#">Admin Delete</a>
+                                    <a class="change-comment-status" data-commentId="$comment.cmtId" data-status="A"
+                                       role="menuitem" tabindex="-1" href="#">Admin Delete</a>
                                 </li>
                             </ul>
                         </div>

@@ -20,9 +20,9 @@ public class LocalAttachmentService implements AttachmentService {
     public String uploadFile(InputStream is, String fileName) throws Exception {
 
         //ToDo FileName Encoding
-        String filePath =serverPath+fileUploadPath+fileName;
+        String filePath = serverPath + fileUploadPath + fileName;
 
-        try(BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(filePath))) {
+        try (BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(filePath))) {
 
             byte[] buf = new byte[1024];
             int len = 0;
@@ -36,7 +36,7 @@ public class LocalAttachmentService implements AttachmentService {
             throw new IOException(e);
         }
 
-        return fileUploadPath+fileName;
+        return fileUploadPath + fileName;
 
     }
 }

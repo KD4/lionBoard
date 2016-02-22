@@ -62,13 +62,13 @@ public class PostServiceImpl implements PostService {
      */
     @Override
     public void insertReplyPost(Post post) {
-        if((post.getPostNum()-1) % 1000 < 2){
+        if ((post.getPostNum() - 1) % 1000 < 2) {
             throw new InvalidPostException("because the number of reply exceed limit, you can't write the reply.");
         }
         // 답글의 PostNum(부모글의 -1)와 부모글의 이전글 사이의 글들의 PostNum값을 -1 해서 답글이 들어갈 자리를 만듦.
-        Map<String,Integer> range = new HashMap<>();
-        range.put("upperLimit",post.getPostNum());
-        int lowerLimit = (post.getPostNum()-1) / 1000 * 1000 + 1;
+        Map<String, Integer> range = new HashMap<>();
+        range.put("upperLimit", post.getPostNum());
+        int lowerLimit = (post.getPostNum() - 1) / 1000 * 1000 + 1;
         range.put("lowerLimit", lowerLimit);
         postRepository.updatePostNumForInsertRow(range);
 
@@ -148,6 +148,7 @@ public class PostServiceImpl implements PostService {
     /**
      * 특정 Post의 피신고 횟수를 반환합니다.
      * -for test case-
+     *
      * @param postId
      * @return List<PostFile>
      */
@@ -331,7 +332,7 @@ public class PostServiceImpl implements PostService {
     public Post getParentPost(int postId) {
 
         Post currentPost = postRepository.findPostByPostId(postId);
-        int parentDepth = currentPost.getDepth()-1;
+        int parentDepth = currentPost.getDepth() - 1;
         Post tempParent = new Post();
         tempParent.setDepth(parentDepth);
         tempParent.setPostNum(currentPost.getPostNum());
@@ -352,7 +353,6 @@ public class PostServiceImpl implements PostService {
     }
 
 
-
     /**
      * 모든 게시글 목록을 반환합니다.
      *
@@ -362,9 +362,9 @@ public class PostServiceImpl implements PostService {
      */
     @Override
     public List<Post> getAllPosts(int offset, int limit, String sort) {
-        HashMap<String,Object> params = new HashMap<>();
-        params.put("offset",offset);
-        params.put("limit",limit);
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("offset", offset);
+        params.put("limit", limit);
         params.put("sort", sort);
 
         return postRepository.findAll(params);
@@ -373,7 +373,6 @@ public class PostServiceImpl implements PostService {
 
     /**
      * 모든 게시글 갯수를 반환합니다.
-     *
      */
     @Override
     public int countAllPosts() {
@@ -401,9 +400,9 @@ public class PostServiceImpl implements PostService {
      */
     @Override
     public List<PostReport> getAllReports(int offset, int limit, String sort) {
-        HashMap<String,Object> params = new HashMap<>();
-        params.put("offset",offset);
-        params.put("limit",limit);
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("offset", offset);
+        params.put("limit", limit);
         params.put("sort", sort);
         return postRepository.findAllReports(params);
     }
@@ -411,7 +410,6 @@ public class PostServiceImpl implements PostService {
 
     /**
      * 모든 신고 횟수를 반환합니다.
-     *
      */
     @Override
     public int countReports() {
@@ -420,7 +418,6 @@ public class PostServiceImpl implements PostService {
 
     /**
      * 쿼리값을 이용해서 신고글을 검색합니다.
-     *
      */
     @Override
     public List<PostReport> searchPostReportsWithQuery(String query) {
@@ -432,7 +429,6 @@ public class PostServiceImpl implements PostService {
      * 상태 값의 상관없이 게시글 객체를 가져옵니다.
      *
      * @param postId
-     *
      */
     @Override
     public Post getPostByPostIdForAdmin(int postId) {
@@ -444,7 +440,6 @@ public class PostServiceImpl implements PostService {
      * 특정 게시글이 고정 게시물인지 확인합니다.
      *
      * @param postId
-     *
      */
     @Override
     public Post getStickyPost(int postId) {
@@ -455,7 +450,6 @@ public class PostServiceImpl implements PostService {
      * 특정 게시물을 고정 게시물로 추가합니다.
      *
      * @param postId
-     *
      */
     @Override
     public void setSticky(int postId) {
@@ -466,7 +460,6 @@ public class PostServiceImpl implements PostService {
      * 고정 게시물 목록에서 특정 게시물을 삭제합니다.
      *
      * @param postId
-     *
      */
     @Override
     public void setOffStickyPost(int postId) {

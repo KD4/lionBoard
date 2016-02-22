@@ -5,11 +5,11 @@ package com.github.lionboard.error;
  */
 public class IncorrectAccessException extends RuntimeException {
 
-    public IncorrectAccessException(){
+    public IncorrectAccessException() {
         super("Access Denied. Please check request URL. ");
     }
 
-    public IncorrectAccessException(String msg){
+    public IncorrectAccessException(String msg) {
         super(msg);
     }
 

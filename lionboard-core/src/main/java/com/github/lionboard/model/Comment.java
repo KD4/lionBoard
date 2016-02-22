@@ -1,7 +1,5 @@
 package com.github.lionboard.model;
 
-import org.joda.time.DateTime;
-
 import java.util.Date;
 
 /**

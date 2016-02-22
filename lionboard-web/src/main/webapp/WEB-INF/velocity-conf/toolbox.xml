@@ -13,7 +13,7 @@
 
     <toolbox scope="application">
         <tool class="org.apache.velocity.tools.generic.DateTool"
-              format="yyyy-MM-dd" />
+              format="yyyy-MM-dd"/>
     </toolbox>
 
 </tools>

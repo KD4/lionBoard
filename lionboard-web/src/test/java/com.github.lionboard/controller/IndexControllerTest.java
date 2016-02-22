@@ -23,11 +23,10 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:/config/mvc-dispatcher-servlet.xml")
 public class IndexControllerTest {
-    private MockMvc mockMvc;
-
     @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     protected WebApplicationContext wac;
+    private MockMvc mockMvc;
 
     @Before
     public void setup() {

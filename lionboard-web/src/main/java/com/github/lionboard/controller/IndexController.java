@@ -4,7 +4,6 @@ import com.github.lionboard.error.IncorrectAccessException;
 import com.github.lionboard.error.InvalidUserException;
 import com.github.lionboard.model.Comment;
 import com.github.lionboard.model.Post;
-//import com.github.lionboard.model.User;
 import com.github.lionboard.model.PostFile;
 import com.github.lionboard.model.User;
 import com.github.lionboard.service.LionBoardService;
@@ -27,11 +26,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
+//import com.github.lionboard.model.User;
+
 /**
  * Created by Lion.k on 16. 1. 12..
- *
+ * <p>
  * Index, Login, SignUp, Logout page
- * view pages 
+ * view pages
  */
 
 
@@ -61,8 +62,7 @@ public class IndexController {
         //postsController에서 넘어온 로직인지 확인함.
         if (modelMap.containsAttribute("posts")) {
             return "index";
-        }
-        else {
+        } else {
             return "redirect:/posts";
         }
     }
@@ -94,13 +94,13 @@ public class IndexController {
 
         //첨부파일 목록 반환.
         List<PostFile> postFiles = lionBoardService.getPostFilesByPostId(postId);
-        if(post.getUserId() == loginUser.getId()) {
+        if (post.getUserId() == loginUser.getId()) {
             ModelAndView mav = new ModelAndView("editPost");
             mav.addObject("post", post);
             mav.addObject("loginUserId", loginUser.getId());
-            mav.addObject("postFiles",postFiles);
+            mav.addObject("postFiles", postFiles);
             return mav;
-        }else{
+        } else {
             throw new IncorrectAccessException();
         }
 
@@ -132,14 +132,14 @@ public class IndexController {
         String identity = auth.getName(); //get logged in username
         com.github.lionboard.model.User loginUser = lionBoardService.getUserByIdentity(identity);
 
-        if(loginUser.getId() != userId){
+        if (loginUser.getId() != userId) {
             throw new IncorrectAccessException("해당 유저 정보를 변경할 권한이 없습니다.");
         }
 
 
         ModelAndView mav = new ModelAndView("editUser");
         User selectedUser = lionBoardService.getUserByUserId(userId);
-        if(selectedUser == null){
+        if (selectedUser == null) {
             throw new InvalidUserException();
         }
         List<Post> posts = lionBoardService.getPostsByUserId(userId);
@@ -163,18 +163,18 @@ public class IndexController {
     @RequestMapping(
             value = "signIn",
             method = RequestMethod.GET)
-    public String showSignInPage(Model model,@RequestParam(value = "error", required = false, defaultValue = "")String error) {
-        model.addAttribute("error",error);
+    public String showSignInPage(Model model, @RequestParam(value = "error", required = false, defaultValue = "") String error) {
+        model.addAttribute("error", error);
         return "signIn";
     }
 
 
-    @RequestMapping(value="signOut", method = RequestMethod.GET)
-    public String processSignOut (HttpServletRequest request, HttpServletResponse response) {
+    @RequestMapping(value = "signOut", method = RequestMethod.GET)
+    public String processSignOut(HttpServletRequest request, HttpServletResponse response) {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        logger.debug(auth.getName()+" sign out.");
-        if (auth != null){
+        logger.debug(auth.getName() + " sign out.");
+        if (auth != null) {
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }
         return "redirect:/signIn";

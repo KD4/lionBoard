@@ -27,11 +27,11 @@
         <!-- Table -->
         <table class="table">
             <thead>
-                <th width="9%">ID</th>
-                <th width="50%">제목</th>
-                <th width="20%">게시자</th>
-                <th width="11%">게시날짜</th>
-                <th width="10%">상태</th>
+            <th width="9%">ID</th>
+            <th width="50%">제목</th>
+            <th width="20%">게시자</th>
+            <th width="11%">게시날짜</th>
+            <th width="10%">상태</th>
             </thead>
             <tbody id="admin-table-tbody">
                 #foreach($post in $posts)
@@ -42,22 +42,27 @@
                     <td class="admin-tbody-date">$dateTool.format("short",$post.createdAt)</td>
                     <td>
                         <div class="dropdown">
-                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1"
+                                    data-toggle="dropdown" aria-expanded="true">
                                 $post.postStatus
                                 <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
                                 <li role="presentation">
-                                    <a class="change-post-status" data-postId="$post.postId" data-status="S" role="menuitem" tabindex="-1" href="#">Service</a>
+                                    <a class="change-post-status" data-postId="$post.postId" data-status="S"
+                                       role="menuitem" tabindex="-1" href="#">Service</a>
                                 </li>
                                 <li role="presentation">
-                                    <a class="change-post-status" data-postId="$post.postId" data-status="T" role="menuitem" tabindex="-1" href="#">Temp</a>
+                                    <a class="change-post-status" data-postId="$post.postId" data-status="T"
+                                       role="menuitem" tabindex="-1" href="#">Temp</a>
                                 </li>
                                 <li role="presentation">
-                                    <a class="change-post-status" data-postId="$post.postId" data-status="D" role="menuitem" tabindex="-1" href="#">Delete</a>
+                                    <a class="change-post-status" data-postId="$post.postId" data-status="D"
+                                       role="menuitem" tabindex="-1" href="#">Delete</a>
                                 </li>
                                 <li role="presentation">
-                                    <a class="change-post-status" data-postId="$post.postId" data-status="A" role="menuitem" tabindex="-1" href="#">Admin Delete</a>
+                                    <a class="change-post-status" data-postId="$post.postId" data-status="A"
+                                       role="menuitem" tabindex="-1" href="#">Admin Delete</a>
                                 </li>
                             </ul>
                         </div>
@@ -101,13 +106,15 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="postModalLabel">Post editor for admin</h4>
             </div>
             <form id="modal-post-form">
                 <div class="modal-body">
                     <input type="hidden" name="postId" class="modal-postId"/>
                     <input type="hidden" name="existFiles" class="modal-existFiles"/>
+
                     <div class="form-group">
                         <label>제목</label>
                         <input type="text" class="form-control modal-postTitle" name="title">
@@ -117,6 +124,7 @@
                     </div>
                     <div class="form-group">
                         <label>옵션</label>
+
                         <div class="checkbox">
                             <label>
                                 <input type="checkbox" name="sticky"> 상단에 고정

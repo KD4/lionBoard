@@ -1,11 +1,10 @@
 package com.github.lionboard.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.lionboard.error.InvalidCmtException;
-import com.github.lionboard.error.InvalidPostException;
-import com.github.lionboard.error.InvalidUserException;
-import com.github.lionboard.model.*;
+import com.github.lionboard.model.Comment;
+import com.github.lionboard.model.CommentReport;
+import com.github.lionboard.model.Post;
 import com.github.lionboard.service.LionBoardService;
 import org.junit.Assert;
 import org.junit.Before;
@@ -20,16 +19,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static junit.framework.TestCase.fail;
 import static org.hamcrest.CoreMatchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 /**
@@ -43,20 +39,15 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 @ContextConfiguration("classpath:/config/test-mvc-dispatcher-servlet.xml")
 public class CommentControllerTest {
 
-    private MockMvc mockMvc;
-
     @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     protected WebApplicationContext wac;
-
     @Autowired
     LionBoardService lionBoardService;
-
     Post firstPost;
-
     Comment firstCmt;
     Comment secondCmt;
-
+    private MockMvc mockMvc;
 
     @Before
     public void setup() {
@@ -76,7 +67,7 @@ public class CommentControllerTest {
 
         ObjectMapper mapper = new ObjectMapper();
 
-        MvcResult result = mockMvc.perform(get("/comments/"+firstCmt.getCmtId()))
+        MvcResult result = mockMvc.perform(get("/comments/" + firstCmt.getCmtId()))
                 .andExpect(status().isOk())
                 .andReturn();
         String content2String = result.getResponse().getContentAsString();
@@ -116,8 +107,8 @@ public class CommentControllerTest {
         firstCmt.setPostId(firstPost.getPostId());
         lionBoardService.addComment(firstCmt);
 
-        mockMvc.perform(put("/comments/" + firstCmt.getCmtId()+ "/likes")
-                .param("action","add"))
+        mockMvc.perform(put("/comments/" + firstCmt.getCmtId() + "/likes")
+                .param("action", "add"))
                 .andExpect(status().isOk());
         mockMvc.perform(put("/comments/" + firstCmt.getCmtId() + "/likes")
                 .param("action", "add"))
@@ -139,7 +130,7 @@ public class CommentControllerTest {
 
 
         mockMvc.perform(put("/comments/" + firstCmt.getCmtId() + "/likes")
-                .param("action","sub"))
+                .param("action", "sub"))
                 .andExpect(status().isOk());
 
         mockMvc.perform(put("/comments/" + firstCmt.getCmtId() + "/hates")
@@ -167,12 +158,12 @@ public class CommentControllerTest {
         try {
             Comment changeCmt = lionBoardService.getCommentByCmtId(firstCmt.getCmtId());
             fail("Exception not thrown, that's mean is that statusCode was not changed.");
-        }catch (InvalidCmtException e){
+        } catch (InvalidCmtException e) {
             mockMvc.perform(put("/comments/" + firstCmt.getCmtId() + "/status")
                     .param("statusCode", "S"))
                     .andExpect(status().isOk());
             Comment changeCmt = lionBoardService.getCommentByCmtId(firstCmt.getCmtId());
-            Assert.assertThat(changeCmt.getCmtStatus(),is("S"));
+            Assert.assertThat(changeCmt.getCmtStatus(), is("S"));
 
         }
     }
@@ -215,7 +206,7 @@ public class CommentControllerTest {
         lionBoardService.reportComment(commentReport);
 
 
-        MvcResult mvcResult =  mockMvc.perform(get("/comments/" + firstCmt.getCmtId() + "/reports"))
+        MvcResult mvcResult = mockMvc.perform(get("/comments/" + firstCmt.getCmtId() + "/reports"))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andReturn();
@@ -237,17 +228,15 @@ public class CommentControllerTest {
         commentReport.setReason("just");
         lionBoardService.reportComment(commentReport);
 
-        MvcResult mvcResult =  mockMvc.perform(put("/comments/" + firstCmt.getCmtId() + "/reports")
+        MvcResult mvcResult = mockMvc.perform(put("/comments/" + firstCmt.getCmtId() + "/reports")
                 .param("reportId", String.valueOf(commentReport.getId()))
                 .param("processStatus", "C"))
                 .andExpect(status().isOk())
                 .andReturn();
 
         List<CommentReport> commentReports = lionBoardService.getCommentReports(firstCmt.getCmtId());
-        Assert.assertThat(commentReports.get(0).getProcessStatus(),is("C"));
+        Assert.assertThat(commentReports.get(0).getProcessStatus(), is("C"));
     }
-
-
 
 
     private void setFixturePosts() {

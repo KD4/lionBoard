@@ -10,6 +10,7 @@
     <form id="edit-form">
         <input type="hidden" name="userId" value="$loginUserId"/>
         <input type="hidden" name="postId" value="$post.postId"/>
+
         <div class="form-group">
             <label for="postTitle">제목</label>
             <input type="text" class="form-control" id="postTitle" name="title" value="$post.title">
@@ -19,7 +20,9 @@
             <li>첨부파일</li>
             #if($postFiles.size() > 0)
                 #foreach($postFile in $postFiles)
-                    <li><a href="$postFile.fileUrl" download>$postFile.fileName</a> - <a href="#" class="delete-file" data-fileId="$postFile.fileId">삭제</a></li>
+                    <li><a href="$postFile.fileUrl" download>$postFile.fileName</a> - <a href="#" class="delete-file"
+                                                                                         data-fileId="$postFile.fileId">삭제</a>
+                    </li>
                 #end
                 <input type="file" class="hidden" id="postFile" name="uploadFile">
             #else

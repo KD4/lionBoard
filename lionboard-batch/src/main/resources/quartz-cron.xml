@@ -1,18 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:p="http://www.springframework.org/schema/p"
+<beans xmlns:p="http://www.springframework.org/schema/p"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-                           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
-                           http://www.springframework.org/schema/context
-                           http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+                           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 
     <bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
-        <property name="driverClass" value="com.mysql.jdbc.Driver" />
-        <property name="url" value="jdbc:mysql://localhost/lionboard" />
-        <property name="username" value="root" />
-        <property name="password" value="Starter?5" />
+        <property name="driverClass" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost/lionboard"/>
+        <property name="username" value="root"/>
+        <property name="password" value="Starter?5"/>
     </bean>
 
     <bean id="postStatusDao" class="com.github.kd4.lionboard.dao.PostStatusDaoImpl">
@@ -25,7 +22,8 @@
 
 
     <!-- 1. Cron 대상이 되는 클래스 정의 -->
-    <bean id="statusBatchService" class="org.springframework.scheduling.quartz.JobDetailFactoryBean" p:jobClass="com.github.kd4.lionboard.service.StatusBatchService">
+    <bean id="statusBatchService" class="org.springframework.scheduling.quartz.JobDetailFactoryBean"
+          p:jobClass="com.github.kd4.lionboard.service.StatusBatchService">
         <property name="jobDataAsMap">
             <map>
                 <entry key="postStatusDao" value-ref="postStatusDao"/>
@@ -37,8 +35,8 @@
     <!--둘. 스케줄러의 interval time 설정-->
     <!--cronExpression을 통해서 스캐줄러 주기를 설정한다. -->
     <bean id="statusBatchTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
-        <property name="jobDetail" ref="statusBatchService" />
-        <property name="cronExpression" value="0/5 0 1 * * ?" />
+        <property name="jobDetail" ref="statusBatchService"/>
+        <property name="cronExpression" value="0/5 0 1 * * ?"/>
     </bean>
 
     <!--셋. 실제 동작하게끔 설정 -->

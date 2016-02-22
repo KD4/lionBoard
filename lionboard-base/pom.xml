@@ -1,4 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
@@ -33,10 +33,10 @@
 
         <!-- when using local server to upload and download file.-->
         <!--<dependency>-->
-            <!--<groupId>com.github.kd4.lionboard</groupId>-->
-            <!--<artifactId>lionboard-local-attachment</artifactId>-->
-            <!--<version>${parent.version}</version>-->
-            <!--<scope>runtime</scope>-->
+        <!--<groupId>com.github.kd4.lionboard</groupId>-->
+        <!--<artifactId>lionboard-local-attachment</artifactId>-->
+        <!--<version>${parent.version}</version>-->
+        <!--<scope>runtime</scope>-->
         <!--</dependency>-->
 
         <!-- Spring MVC -->
@@ -92,7 +92,6 @@
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjrt</artifactId>
         </dependency>
-
 
 
     </dependencies>

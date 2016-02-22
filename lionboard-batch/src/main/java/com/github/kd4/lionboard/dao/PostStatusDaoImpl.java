@@ -21,15 +21,6 @@ public class PostStatusDaoImpl implements PostStatusDao {
     private DataSource dataSource;
 
     private JdbcTemplate jdbcTemplate;
-
-
-    public void setDataSource(DataSource dataSource) {
-        this.dataSource = dataSource;
-        this.jdbcTemplate = new JdbcTemplate(dataSource);
-
-    }
-
-
     private RowMapper<PostStatus> rowMapper =
             new RowMapper<PostStatus>() {
                 @Override
@@ -43,12 +34,18 @@ public class PostStatusDaoImpl implements PostStatusDao {
             };
 
 
-    public PostStatusDaoImpl(){
+    public PostStatusDaoImpl() {
+    }
+
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
+
     }
 
     @Override
     public List<PostStatus> getAll() {
-        return this.jdbcTemplate.query("select * from POST_STATUS_TB order by postId",rowMapper);
+        return this.jdbcTemplate.query("select * from POST_STATUS_TB order by postId", rowMapper);
     }
 
 

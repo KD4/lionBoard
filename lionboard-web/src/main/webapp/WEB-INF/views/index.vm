@@ -6,8 +6,8 @@
                 <li role="presentation"><a href="/users/$loginUserId">My Page</a></li>
                 <li role="presentation"><a href="/signOut">Sign Out</a></li>
             #else
-            <li role="presentation"><a href="/signUp">Sign Up</a></li>
-            <li role="presentation"><a href="/signIn">Sign In</a></li>
+                <li role="presentation"><a href="/signUp">Sign Up</a></li>
+                <li role="presentation"><a href="/signIn">Sign In</a></li>
             #end
         </ul>
     </nav>
@@ -42,44 +42,46 @@
             <tr class="column-header">
                 <th class="th-num">번호</th>
                 <th class="th-title">제목</th>
-                <th class="th-figure"> </th>
+                <th class="th-figure"></th>
                 <th class="th-author">작성자</th>
                 <th class="th-date">작성일</th>
                 <th class="th-view">조회수</th>
             </tr>
             #foreach($post in $posts)
                 #if($post.isSticky eq "T")
-                    <tr class="stickyPosts">
+                <tr class="stickyPosts">
                     <td class="postIds">공지</td>
                 #else
-                    <tr>
+                <tr>
                     <td class="postIds">$post.postId</td>
                 #end
-                    <td>
-                        #if($post.depth > 0 && $sort eq 'posts.postNum')
-                            #foreach($depth in [1..$post.depth])
-                                <span class="reply-margin" aria-hidden="true"></span>
-                            #end
-                            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                <td>
+                    #if($post.depth > 0 && $sort eq 'posts.postNum')
+                        #foreach($depth in [1..$post.depth])
+                            <span class="reply-margin" aria-hidden="true"></span>
                         #end
-                        <a href="/posts/$post.postId">$post.title </a>
+                        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                    #end
+                    <a href="/posts/$post.postId">$post.title </a>
 
-                    </td>
-                    <td>
-                        <div class="glyphicon glyphicon-thumbs-up">$post.likeCount</div>
-##                        <div class="glyphicon glyphicon-thumbs-down">$post.hateCount</div>
-                        <div class="glyphicon glyphicon-comment">$post.cmtCount</div>
-                    </td>
-                    <td><a href="/users/$post.userId">
-                        #if($post.userName.length() > 4)
-                            $post.userName.substring(0,4)..
-                        #else
-                            $post.userName
-                        #end
-                    </a></td>
-                    <td><small>$dateTool.format("short",$post.createdAt)</small></td>
-                    <td>$post.viewCount</td>
-                </tr>
+                </td>
+                <td>
+                    <div class="glyphicon glyphicon-thumbs-up">$post.likeCount</div>
+                ##                        <div class="glyphicon glyphicon-thumbs-down">$post.hateCount</div>
+                    <div class="glyphicon glyphicon-comment">$post.cmtCount</div>
+                </td>
+                <td><a href="/users/$post.userId">
+                    #if($post.userName.length() > 4)
+                        $post.userName.substring(0,4)..
+                    #else
+                        $post.userName
+                    #end
+                </a></td>
+                <td>
+                    <small>$dateTool.format("short",$post.createdAt)</small>
+                </td>
+                <td>$post.viewCount</td>
+            </tr>
             #end
         </table>
 

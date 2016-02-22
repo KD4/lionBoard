@@ -2,7 +2,8 @@
     <nav>
         <ul class="nav nav-pills pull-right">
             #if($!loginUserId)
-                <li role="presentation"><a href="/users/$loginUserId" id="loginUser" data-userId="$loginUserId">My Page</a></li>
+                <li role="presentation"><a href="/users/$loginUserId" id="loginUser" data-userId="$loginUserId">My
+                    Page</a></li>
                 <li role="presentation"><a href="/signOut">Sign Out</a></li>
             #else
                 <li role="presentation"><a href="/signUp">Sign Up</a></li>
@@ -21,7 +22,7 @@
     </div>
     <div class="post-header-right">
         <div class="post-header-right-top">
-            <h4 id="currentPost" data-postId="$post.postId" >$post.title</h4>
+            <h4 id="currentPost" data-postId="$post.postId">$post.title</h4>
 
         </div>
         <div class="post-header-right-bottom">
@@ -42,10 +43,12 @@
 </div>
 <div class="post-body-vote">
     <div class="btn-group">
-        <a href="#" class="btn btn-default post-like" data-postId="$post.postId" onclick="return false;" aria-expanded="false">
+        <a href="#" class="btn btn-default post-like" data-postId="$post.postId" onclick="return false;"
+           aria-expanded="false">
             좋아요 $post.likeCount
         </a>
-        <a href="#" class="btn btn-default post-hate" data-postId="$post.postId" onclick="return false;" aria-expanded="false">
+        <a href="#" class="btn btn-default post-hate" data-postId="$post.postId" onclick="return false;"
+           aria-expanded="false">
             싫어요 $post.hateCount
         </a>
     </div>
@@ -54,21 +57,21 @@
     <span class="post-attach-file">
       첨부파일 :
         #foreach($postFile in $postFiles)
-        <a href="$postFile.fileUrl"  download>$postFile.fileName</a>
+            <a href="$postFile.fileUrl" download>$postFile.fileName</a>
         #end
     </span>
     <span class="post-btn-group">
         <!-- Button trigger modal -->
-        ## if login info exist, show the button for report.
+    ## if login info exist, show the button for report.
         #if($!loginUserId)
             <button type="button" class="btn btn-default" data-toggle="modal" data-target="#reportPostModal">
                 신고
             </button>
         #end
         #if($post.userId == $loginUserId)
-        <a href="#" id="edit-post" class="btn btn-default" data-postId="$postId" aria-expanded="false">
-            수정
-        </a>
+            <a href="#" id="edit-post" class="btn btn-default" data-postId="$postId" aria-expanded="false">
+                수정
+            </a>
         <a href="#" id="delete-post" class="btn btn-default" aria-expanded="false">
             삭제
         </a>
@@ -80,18 +83,21 @@
 </div>
 <div class="row">
 ##로그인한 유저일 때만 코멘트 입력 폼 출력
-#if($!loginUserId)
-    <form id="comment-from">
-        <div class="form-group">
-            <label for="comments">Your Comment</label>
-            <textarea id="comment-contents" name="contents" class="form-control" rows="3"></textarea>
-        </div>
-        <button type="submit" class="btn btn-default">Send</button>
-    </form>
-#end
+    #if($!loginUserId)
+        <form id="comment-from">
+            <div class="form-group">
+                <label for="comments">Your Comment</label>
+                <textarea id="comment-contents" name="contents" class="form-control" rows="3"></textarea>
+            </div>
+            <button type="submit" class="btn btn-default">Send</button>
+        </form>
+    #end
     <div class="col-md-12">
         <div class="page-header">
-            <h4><small class="pull-right">$comments.size() comments</small> Comments </h4>
+            <h4>
+                <small class="pull-right">$comments.size() comments</small>
+                Comments
+            </h4>
         </div>
         <div class="comments-list">
             #foreach($comment in $comments)
@@ -108,9 +114,11 @@
                     <div class="media fourth-comment">
                     #end
 
-                    <p class="pull-right"><small>$dateTool.format("short",$comment.createdAt)</small></p>
+                    <p class="pull-right">
+                        <small>$dateTool.format("short",$comment.createdAt)</small>
+                    </p>
                     <a class="media-left comment-user-profile" href="/users/$comment.userId">
-                        <img src="$comment.profileUrl" />
+                        <img src="$comment.profileUrl"/>
                     </a>
                     <div class="media-body">
 
@@ -120,23 +128,28 @@
                         ## if login info exist, show the buttons.
                             #if($!loginUserId)
                             <small>
-                                <a href="#" class="comment-like" data-cmtId="$comment.cmtId" onclick="return false;">Like $comment.likeCount</a> -
-                                <a href="#" class="comment-hate" data-cmtId="$comment.cmtId" onclick="return false;">Hate $comment.hateCount</a> -
+                                <a href="#" class="comment-like" data-cmtId="$comment.cmtId" onclick="return false;">Like $comment.likeCount</a>
+                                -
+                                <a href="#" class="comment-hate" data-cmtId="$comment.cmtId" onclick="return false;">Hate $comment.hateCount</a>
+                                -
                                 <a href="#" class="comment-reply" data-cmtId="$comment.cmtId">Reply</a> -
                                 <a href="#" class="comment-report" data-cmtId="$comment.cmtId">Report</a>
 
-                                ## if current user is a author, show the button for delete.
+                            ## if current user is a author, show the button for delete.
                                 #if($comment.userId == $loginUserId)
-                                - <a href="#" class="comment-delete" data-cmtId="$comment.cmtId">Delete</a>
+                                    - <a href="#" class="comment-delete" data-cmtId="$comment.cmtId">Delete</a>
                                 #end
                             #end
-                        </small></p>
+                        </small>
+                        </p>
                     </div>
 
-                    <form class="reply-comment-form hide replyId-$comment.cmtId" data-cmtId="$comment.cmtId" data-depth="$comment.depth" data-parentNum="$comment.cmtNum" >
+                    <form class="reply-comment-form hide replyId-$comment.cmtId" data-cmtId="$comment.cmtId"
+                          data-depth="$comment.depth" data-parentNum="$comment.cmtNum">
                         <div class="form-group">
                             <label>Reply Comment</label>
-                            <textarea class="reply-contents-$comment.cmtId form-control" name="contents" rows="3"></textarea>
+                            <textarea class="reply-contents-$comment.cmtId form-control" name="contents"
+                                      rows="3"></textarea>
                         </div>
                         <button type="submit" class="btn btn-default">Reply</button>
                     </form>
@@ -154,7 +167,9 @@
                     #else
                     <div class="media deleted-media fourth-comment">
                     #end
-                    <p class="pull-right"><small>$dateTool.format("short",$comment.createdAt)</small></p>
+                    <p class="pull-right">
+                        <small>$dateTool.format("short",$comment.createdAt)</small>
+                    </p>
                     <div class="media-body">
                         <h4 class="media-heading user_name">Comment was not found</h4>
                         삭제된 댓글입니다.
@@ -163,54 +178,58 @@
                 #end
             #end
         </div>
-    </div>
-</div>
-
-
-<!-- the Modal to report post. -->
-<div class="modal fade" id="reportPostModal" tabindex="-1" role="dialog" aria-labelledby="reportPostModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="reportPostModalLabel">게시글 신고하기</h4>
-            </div>
-            <form id="report-post-form">
-                <div class="modal-body">
-                    <input type="hidden" name="postId" readonly value="$post.postId"/>
-                    <input type="hidden" name="reporterId" readonly value="$loginUserId"/>
-                    <label for="postReason">이 게시물의 어떤 점이 불쾌하셨나요?</label>
-                    <textarea name="reason" id="postReason" cols="78" rows="10"></textarea>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
-                    <button type="submit" class="btn btn-primary">신고하기</button>
-                </div>
-            </form>
         </div>
-    </div>
-</div>
-
-<!-- the Modal to report comment. -->
-<div class="modal fade" id="reportCmtModal" tabindex="-1" role="dialog" aria-labelledby="reportCmtModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="reportCmtModalLabel">댓글 신고하기</h4>
-            </div>
-            <form id="report-cmt-form">
-                <div class="modal-body">
-                    <input type="hidden" name="cmtId" id="report-cmtId" readonly value=""/>
-                    <input type="hidden" name="reporterId" readonly value="$loginUserId"/>
-                    <label for="cmtReason">이 댓글의 어떤 점이 불쾌하셨나요?</label>
-                    <textarea name="reason" id="cmtReason" cols="78" rows="10"></textarea>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
-                    <button type="submit" class="btn btn-primary">신고하기</button>
-                </div>
-            </form>
         </div>
-    </div>
-</div>
+
+
+            <!-- the Modal to report post. -->
+            <div class="modal fade" id="reportPostModal" tabindex="-1" role="dialog"
+                 aria-labelledby="reportPostModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="reportPostModalLabel">게시글 신고하기</h4>
+                        </div>
+                        <form id="report-post-form">
+                            <div class="modal-body">
+                                <input type="hidden" name="postId" readonly value="$post.postId"/>
+                                <input type="hidden" name="reporterId" readonly value="$loginUserId"/>
+                                <label for="postReason">이 게시물의 어떤 점이 불쾌하셨나요?</label>
+                                <textarea name="reason" id="postReason" cols="78" rows="10"></textarea>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+                                <button type="submit" class="btn btn-primary">신고하기</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- the Modal to report comment. -->
+            <div class="modal fade" id="reportCmtModal" tabindex="-1" role="dialog"
+                 aria-labelledby="reportCmtModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="reportCmtModalLabel">댓글 신고하기</h4>
+                        </div>
+                        <form id="report-cmt-form">
+                            <div class="modal-body">
+                                <input type="hidden" name="cmtId" id="report-cmtId" readonly value=""/>
+                                <input type="hidden" name="reporterId" readonly value="$loginUserId"/>
+                                <label for="cmtReason">이 댓글의 어떤 점이 불쾌하셨나요?</label>
+                                <textarea name="reason" id="cmtReason" cols="78" rows="10"></textarea>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+                                <button type="submit" class="btn btn-primary">신고하기</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>

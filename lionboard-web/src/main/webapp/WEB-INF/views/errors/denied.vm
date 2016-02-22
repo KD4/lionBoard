@@ -4,7 +4,8 @@
 <div>
     <div class="panel panel-default">
         <div class="panel-body">
-            <p style="text-align: center"><img src="http://t1.daumcdn.net/osa/lionboard/resources/img/denied-image.png" alt="접근 불가."/></p>
+            <p style="text-align: center"><img src="http://t1.daumcdn.net/osa/lionboard/resources/img/denied-image.png"
+                                               alt="접근 불가."/></p>
             <h4>접근할 수 없는 페이지예요. 권한이 없습니다.</h4>
         </div>
 

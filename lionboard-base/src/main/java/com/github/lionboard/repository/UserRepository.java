@@ -4,7 +4,6 @@ import com.github.lionboard.model.User;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Repository;
 
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 

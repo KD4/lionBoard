@@ -1,10 +1,8 @@
 package com.github.lionboard.model;
 
-import org.joda.time.DateTime;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by Lion.k on 16. 1. 20..
@@ -100,7 +98,6 @@ public class Post {
     public void setDepth(int depth) {
         this.depth = depth;
     }
-
 
 
     public String getUserName() {

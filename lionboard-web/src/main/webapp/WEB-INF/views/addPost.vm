@@ -9,6 +9,7 @@
 <div class="panel panel-default">
     <form id="post-form" method="post">
         <input type="hidden" name="userId" value="$loginUserId"/>
+
         <div class="form-group">
             <label for="postTitle">제목</label>
             <input type="text" class="form-control" id="postTitle" name="title" placeholder="제목을 입력하세요.">

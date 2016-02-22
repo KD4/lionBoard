@@ -5,14 +5,15 @@
     <li role="presentation"><a href="../admin/users">Users</a></li>
     <li role="presentation"><a href="../admin/posts">Posts</a></li>
     <li role="presentation"><a href="../admin/comments">Comments</a></li>
-    <li role="presentation" class="dropdown active"">
-        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
-            (post)Report<span class="caret"></span>
-        </a>
-        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-            <li role="presentation"><a href="../admin/postReport">PostReport</a></li>
-            <li role="presentation"><a href="../admin/cmtReport">CmtReport</a></li>
-        </ul>
+    <li role="presentation" class="dropdown active"
+    ">
+    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
+        (post)Report<span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+        <li role="presentation"><a href="../admin/postReport">PostReport</a></li>
+        <li role="presentation"><a href="../admin/cmtReport">CmtReport</a></li>
+    </ul>
     </li>
     <form id="admin-nav-search" data-source='posts/reports' class="navbar-form navbar-right" role="search">
         <div class="form-group">
@@ -43,19 +44,26 @@
                     <td><a href="/users/$postReport.reporterId">$postReport.reporterId</a></td>
                     <td>
                         <div class="dropdown">
-                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1"
+                                    data-toggle="dropdown" aria-expanded="true">
                                 $postReport.processStatus
                                 <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
                                 <li role="presentation">
-                                    <a class="change-post-report-status" data-reportId="$postReport.id" data-postId="$postReport.postId" data-status="N" role="menuitem" tabindex="-1" href="#">New</a>
+                                    <a class="change-post-report-status" data-reportId="$postReport.id"
+                                       data-postId="$postReport.postId" data-status="N" role="menuitem" tabindex="-1"
+                                       href="#">New</a>
                                 </li>
                                 <li role="presentation">
-                                    <a class="change-post-report-status" data-reportId="$postReport.id" data-postId="$postReport.postId" data-status="P" role="menuitem" tabindex="-1" href="#">Pass</a>
+                                    <a class="change-post-report-status" data-reportId="$postReport.id"
+                                       data-postId="$postReport.postId" data-status="P" role="menuitem" tabindex="-1"
+                                       href="#">Pass</a>
                                 </li>
                                 <li role="presentation">
-                                    <a class="change-post-report-status" data-reportId="$postReport.id" data-postId="$postReport.postId" data-status="C" role="menuitem" tabindex="-1" href="#">Complete</a>
+                                    <a class="change-post-report-status" data-reportId="$postReport.id"
+                                       data-postId="$postReport.postId" data-status="C" role="menuitem" tabindex="-1"
+                                       href="#">Complete</a>
                                 </li>
                             </ul>
                         </div>

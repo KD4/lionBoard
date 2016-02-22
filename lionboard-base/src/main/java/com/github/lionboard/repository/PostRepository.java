@@ -1,5 +1,5 @@
 package com.github.lionboard.repository;
-import com.github.lionboard.model.Comment;
+
 import com.github.lionboard.model.Post;
 import com.github.lionboard.model.PostReport;
 import org.springframework.stereotype.Repository;

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
-    <property resource="release.properties" />
+    <property resource="release.properties"/>
 
     <!-- console로 log 남기기 -->
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
@@ -37,7 +37,7 @@
     </appender>
 
     <logger name="com.github.kd4.lionboard" level="debug">
-        <appender-ref ref="console" />
+        <appender-ref ref="console"/>
         <appender-ref ref="fileForLoginInterceptor"/>
     </logger>
 

@@ -43,19 +43,26 @@
                     <td><a href="/users/$cmtReport.reporterId">$cmtReport.reporterId</a></td>
                     <td>
                         <div class="dropdown">
-                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1"
+                                    data-toggle="dropdown" aria-expanded="true">
                                 $cmtReport.processStatus
                                 <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
                                 <li role="presentation">
-                                    <a class="change-cmt-report-status" data-reportId="$cmtReport.id" data-cmtId="$cmtReport.cmtId" data-status="N" role="menuitem" tabindex="-1" href="#">New</a>
+                                    <a class="change-cmt-report-status" data-reportId="$cmtReport.id"
+                                       data-cmtId="$cmtReport.cmtId" data-status="N" role="menuitem" tabindex="-1"
+                                       href="#">New</a>
                                 </li>
                                 <li role="presentation">
-                                    <a class="change-cmt-report-status" data-reportId="$cmtReport.id" data-cmtId="$cmtReport.cmtId" data-status="P" role="menuitem" tabindex="-1" href="#">Pass</a>
+                                    <a class="change-cmt-report-status" data-reportId="$cmtReport.id"
+                                       data-cmtId="$cmtReport.cmtId" data-status="P" role="menuitem" tabindex="-1"
+                                       href="#">Pass</a>
                                 </li>
                                 <li role="presentation">
-                                    <a class="change-cmt-report-status" data-reportId="$cmtReport.id" data-cmtId="$cmtReport.cmtId" data-status="C" role="menuitem" tabindex="-1" href="#">Complete</a>
+                                    <a class="change-cmt-report-status" data-reportId="$cmtReport.id"
+                                       data-cmtId="$cmtReport.cmtId" data-status="C" role="menuitem" tabindex="-1"
+                                       href="#">Complete</a>
                                 </li>
                             </ul>
                         </div>

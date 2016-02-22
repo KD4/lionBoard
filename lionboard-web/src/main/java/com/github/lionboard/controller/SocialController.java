@@ -1,9 +1,9 @@
 package com.github.lionboard.controller;
 
+import com.github.lionboard.common.OAuthHeaderTwitter;
 import com.github.lionboard.error.InvalidUserException;
 import com.github.lionboard.model.User;
 import com.github.lionboard.service.LionBoardService;
-import com.github.lionboard.common.OAuthHeaderTwitter;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -16,7 +16,6 @@ import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -41,22 +40,19 @@ import java.util.ArrayList;
 @PropertySource("classpath:/config/local.properties")
 public class SocialController {
 
+    @Autowired
+    LionBoardService lionBoardService;
     @Resource
     private Environment environment;
 
-    @Autowired
-    LionBoardService lionBoardService;
-
-
-
     @RequestMapping(value = "/facebook")
-    public String accessFacebook()  {
-        return "redirect:http://www.facebook.com/dialog/oauth?client_id=" + environment.getProperty("facebook.app.id")+"&redirect_uri="+environment.getProperty("callback.host")+"/auth/facebook_success&scope=public_profile,email";
+    public String accessFacebook() {
+        return "redirect:http://www.facebook.com/dialog/oauth?client_id=" + environment.getProperty("facebook.app.id") + "&redirect_uri=" + environment.getProperty("callback.host") + "/auth/facebook_success&scope=public_profile,email";
     }
 
     @RequestMapping(value = "/facebook_success")
-    public String progressFacebook(HttpSession session, HttpServletRequest request) throws ClientProtocolException,IOException {
-        String accessToken  = getFBAccessToken(request.getParameter("code"));
+    public String progressFacebook(HttpSession session, HttpServletRequest request) throws ClientProtocolException, IOException {
+        String accessToken = getFBAccessToken(request.getParameter("code"));
 
         User user = getFBUserInfo(accessToken);
 
@@ -66,12 +62,12 @@ public class SocialController {
     }
 
     @RequestMapping(value = "/kakao")
-    public String accessKakao()  {
-        return "redirect:https://kauth.kakao.com/oauth/authorize?client_id="+environment.getProperty("kakao.app.id")+"&redirect_uri="+environment.getProperty("kakao.callback")+"&response_type=code";
+    public String accessKakao() {
+        return "redirect:https://kauth.kakao.com/oauth/authorize?client_id=" + environment.getProperty("kakao.app.id") + "&redirect_uri=" + environment.getProperty("kakao.callback") + "&response_type=code";
     }
 
     @RequestMapping(value = "/kakao_success")
-    public String progressKakao(HttpServletRequest request) throws ClientProtocolException,IOException {
+    public String progressKakao(HttpServletRequest request) throws ClientProtocolException, IOException {
         String code = request.getParameter("code");
 
         String accessToken = getKakaoAccessToken(code);
@@ -85,12 +81,12 @@ public class SocialController {
 
 
     @RequestMapping(value = "/daum")
-    public String accessDaum()  {
-        return "redirect:https://apis.daum.net/oauth2/authorize?client_id="+environment.getProperty("daum.app.id")+"&redirect_uri="+environment.getProperty("daum.callback")+"&response_type=code";
+    public String accessDaum() {
+        return "redirect:https://apis.daum.net/oauth2/authorize?client_id=" + environment.getProperty("daum.app.id") + "&redirect_uri=" + environment.getProperty("daum.callback") + "&response_type=code";
     }
 
     @RequestMapping(value = "/daum_success")
-    public String progressDaum(HttpServletRequest request) throws ClientProtocolException,IOException {
+    public String progressDaum(HttpServletRequest request) throws ClientProtocolException, IOException {
         String code = request.getParameter("code"); //{authorize_code}
 
         String accessToken = getDaumAccessToken(code);
@@ -103,7 +99,7 @@ public class SocialController {
     }
 
     @RequestMapping(value = "/twitter")
-    public String accessTwitter(HttpSession session) throws Exception{
+    public String accessTwitter(HttpSession session) throws Exception {
 
         OAuthHeaderTwitter twitter_api = new OAuthHeaderTwitter();
 
@@ -116,13 +112,13 @@ public class SocialController {
         String requestToken = twitter_api.getRequestToken().getToken();
         String requestTokenSecret = twitter_api.getRequestToken().getTokenSecret();
 
-        session.setAttribute("requestToken",requestToken);
-        session.setAttribute("requestTokenSecret",requestTokenSecret);
+        session.setAttribute("requestToken", requestToken);
+        session.setAttribute("requestTokenSecret", requestTokenSecret);
         String authenticationUrl = twitter_api.getRequestToken().getAuthenticationURL();
 
 
         // 인증url 리다이렉트
-        return "redirect:"+authenticationUrl;
+        return "redirect:" + authenticationUrl;
 
     }
 
@@ -140,22 +136,19 @@ public class SocialController {
             User user = getTwitterUserInfo(twitter_api);
             progressSignIn(user);
             return "redirect:/index";
-        }else{
+        } else {
             throw new InvalidUserException("twitter login fail. the oauth token is broken.");
         }
 
     }
 
 
-
-
-
     private void progressSignIn(User user) {
         User existedUser = lionBoardService.existUserByIdentity(user.getIdentity());
-        if(existedUser == null){
+        if (existedUser == null) {
             lionBoardService.addUser(user);
             lionBoardService.securityLogin(user);
-        }else{
+        } else {
             lionBoardService.securityLogin(user);
         }
     }
@@ -176,7 +169,7 @@ public class SocialController {
         JSONObject jObject = new JSONObject(nextLine);
 
         User user = new User();
-        user.setIdentity("FB"+jObject.getString("id"));
+        user.setIdentity("FB" + jObject.getString("id"));
         user.setEmail(jObject.getString("email"));
         user.setName(jObject.getString("name"));
         user.setProfileUrl(jObject.getJSONObject("picture").getJSONObject("data").getString("url"));
@@ -190,7 +183,7 @@ public class SocialController {
         String accessToken = "";
         if (StringUtils.isNotEmpty(code)) {
             HttpGet get = new HttpGet("https://graph.facebook.com/oauth/access_token" + "?client_id=" + environment.getProperty("facebook.app.id")
-                    + "&client_secret=" + environment.getProperty("facebook.app.secret") + "&redirect_uri="+environment.getProperty("callback.host")+"/auth/facebook_success"
+                    + "&client_secret=" + environment.getProperty("facebook.app.secret") + "&redirect_uri=" + environment.getProperty("callback.host") + "/auth/facebook_success"
                     + "&code=" + code);
 
             HttpClient http = HttpClientBuilder.create().build();
@@ -201,11 +194,9 @@ public class SocialController {
     }
 
 
-
-
     private User getTwitterUserInfo(OAuthHeaderTwitter twitter_api) throws TwitterException {
         User user = new User();
-        user.setIdentity("TW"+Long.toString(twitter_api.getTwitter().verifyCredentials().getId()));
+        user.setIdentity("TW" + Long.toString(twitter_api.getTwitter().verifyCredentials().getId()));
         user.setEmail(Long.toString(twitter_api.getTwitter().verifyCredentials().getId()));
         user.setName(twitter_api.getTwitter().verifyCredentials().getName());
         user.setProfileUrl(twitter_api.getTwitter().verifyCredentials().getOriginalProfileImageURL());
@@ -227,7 +218,6 @@ public class SocialController {
     }
 
 
-
     private User getKakaoUserInfo(String accessToken) throws IOException {
         BufferedReader rd = null;
         InputStreamReader isr = null;
@@ -235,38 +225,38 @@ public class SocialController {
         try {
 
 
-        HttpGet get = new HttpGet("https://kapi.kakao.com/v1/user/me");
-        get.setHeader("Authorization","Bearer "+accessToken);
-        HttpClient http = HttpClientBuilder.create().build();
+            HttpGet get = new HttpGet("https://kapi.kakao.com/v1/user/me");
+            get.setHeader("Authorization", "Bearer " + accessToken);
+            HttpClient http = HttpClientBuilder.create().build();
 
 
-        final HttpResponse responseForUserInfo = http.execute(get);
-        final int responseCodeForUserInfo = responseForUserInfo.getStatusLine().getStatusCode();
+            final HttpResponse responseForUserInfo = http.execute(get);
+            final int responseCodeForUserInfo = responseForUserInfo.getStatusLine().getStatusCode();
 
-        System.out.println("Response Code : " + responseCodeForUserInfo );
+            System.out.println("Response Code : " + responseCodeForUserInfo);
 
 
-        isr = new InputStreamReader(responseForUserInfo.getEntity().getContent());
-        rd = new BufferedReader(isr);
-        final StringBuffer bufferForUserInfo = new StringBuffer();
-        String lineForUserInfo;
-        while ((lineForUserInfo = rd.readLine()) != null) {
-            bufferForUserInfo.append(lineForUserInfo);
-        }
+            isr = new InputStreamReader(responseForUserInfo.getEntity().getContent());
+            rd = new BufferedReader(isr);
+            final StringBuffer bufferForUserInfo = new StringBuffer();
+            String lineForUserInfo;
+            while ((lineForUserInfo = rd.readLine()) != null) {
+                bufferForUserInfo.append(lineForUserInfo);
+            }
 
-        System.out.println(bufferForUserInfo);
-        JSONObject jObjectForUserInfo = new JSONObject(bufferForUserInfo.toString());
-        System.out.println(jObjectForUserInfo);
-        user.setIdentity("KA"+String.valueOf(jObjectForUserInfo.getInt("id")));
-        user.setEmail(String.valueOf(jObjectForUserInfo.getInt("id")));
-        user.setName(jObjectForUserInfo.getJSONObject("properties").getString("nickname"));
-        user.setProfileUrl(jObjectForUserInfo.getJSONObject("properties").getString("profile_image"));
-        user.setRoles("ROLE_USER");
-        user.setIsOAuth("T");
-        user.setPassword("");
-        if(1 > user.getProfileUrl().trim().length()){
-            user.setProfileUrl("http://t1.daumcdn.net/osa/tech/i1.daumcdn.jpg");
-        }
+            System.out.println(bufferForUserInfo);
+            JSONObject jObjectForUserInfo = new JSONObject(bufferForUserInfo.toString());
+            System.out.println(jObjectForUserInfo);
+            user.setIdentity("KA" + String.valueOf(jObjectForUserInfo.getInt("id")));
+            user.setEmail(String.valueOf(jObjectForUserInfo.getInt("id")));
+            user.setName(jObjectForUserInfo.getJSONObject("properties").getString("nickname"));
+            user.setProfileUrl(jObjectForUserInfo.getJSONObject("properties").getString("profile_image"));
+            user.setRoles("ROLE_USER");
+            user.setIsOAuth("T");
+            user.setPassword("");
+            if (1 > user.getProfileUrl().trim().length()) {
+                user.setProfileUrl("http://t1.daumcdn.net/osa/tech/i1.daumcdn.jpg");
+            }
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         } catch (ClientProtocolException e) {
@@ -278,13 +268,13 @@ public class SocialController {
             if (rd != null) {
                 try {
                     rd.close();
-                } catch(Exception ignore) {
+                } catch (Exception ignore) {
                 }
             }
             if (isr != null) {
                 try {
                     isr.close();
-                } catch(Exception ignore) {
+                } catch (Exception ignore) {
                 }
             }
             return user;
@@ -297,37 +287,36 @@ public class SocialController {
         InputStreamReader isr = null;
         String accessToken = "";
         try {
-        final HttpPost post = new HttpPost("https://kauth.kakao.com/oauth/token");
+            final HttpPost post = new HttpPost("https://kauth.kakao.com/oauth/token");
 
-        final ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
-        postParameters.add(new BasicNameValuePair("grant_type", "authorization_code"));
-        postParameters.add(new BasicNameValuePair("client_id", environment.getProperty("kakao.app.id")));
-        postParameters.add(new BasicNameValuePair("redirect_uri", environment.getProperty("kakao.callback")));
-        postParameters.add(new BasicNameValuePair("code", code));
+            final ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
+            postParameters.add(new BasicNameValuePair("grant_type", "authorization_code"));
+            postParameters.add(new BasicNameValuePair("client_id", environment.getProperty("kakao.app.id")));
+            postParameters.add(new BasicNameValuePair("redirect_uri", environment.getProperty("kakao.callback")));
+            postParameters.add(new BasicNameValuePair("code", code));
 
-        post.setEntity(new UrlEncodedFormEntity(postParameters));
+            post.setEntity(new UrlEncodedFormEntity(postParameters));
 
-        HttpClient client = HttpClientBuilder.create().build();
-
-
-        final HttpResponse response = client.execute(post);
+            HttpClient client = HttpClientBuilder.create().build();
 
 
-        final int responseCode = response.getStatusLine().getStatusCode();
+            final HttpResponse response = client.execute(post);
 
 
+            final int responseCode = response.getStatusLine().getStatusCode();
 
-        isr = new InputStreamReader(response.getEntity().getContent());
-        rd = new BufferedReader(isr);
-        final StringBuffer buffer = new StringBuffer();
-        String line;
-        while ((line = rd.readLine()) != null) {
-            buffer.append(line);
-        }
 
-        JSONObject jObject = new JSONObject(buffer.toString());
+            isr = new InputStreamReader(response.getEntity().getContent());
+            rd = new BufferedReader(isr);
+            final StringBuffer buffer = new StringBuffer();
+            String line;
+            while ((line = rd.readLine()) != null) {
+                buffer.append(line);
+            }
 
-        accessToken = jObject.getString("access_token");
+            JSONObject jObject = new JSONObject(buffer.toString());
+
+            accessToken = jObject.getString("access_token");
 
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
@@ -340,13 +329,13 @@ public class SocialController {
             if (rd != null) {
                 try {
                     rd.close();
-                } catch(Exception ignore) {
+                } catch (Exception ignore) {
                 }
             }
             if (isr != null) {
                 try {
                     isr.close();
-                } catch(Exception ignore) {
+                } catch (Exception ignore) {
                 }
             }
             return accessToken;
@@ -354,21 +343,20 @@ public class SocialController {
     }
 
 
-
     private User getDaumUserInfo(String accessToken) throws IOException {
         BufferedReader rd = null;
         InputStreamReader isr = null;
         User user = new User();
 
-        try{
-            HttpGet get = new HttpGet("https://apis.daum.net/user/v1/show.json?access_token="+accessToken);
+        try {
+            HttpGet get = new HttpGet("https://apis.daum.net/user/v1/show.json?access_token=" + accessToken);
             HttpClient http = HttpClientBuilder.create().build();
 
 
             final HttpResponse responseForUserInfo = http.execute(get);
             final int responseCodeForUserInfo = responseForUserInfo.getStatusLine().getStatusCode();
 
-            System.out.println("Response Code : " + responseCodeForUserInfo );
+            System.out.println("Response Code : " + responseCodeForUserInfo);
 
 
             isr = new InputStreamReader(responseForUserInfo.getEntity().getContent());
@@ -392,7 +380,7 @@ public class SocialController {
             user.setPassword("");
 
 
-            if(1 > user.getProfileUrl().trim().length()){
+            if (1 > user.getProfileUrl().trim().length()) {
                 user.setProfileUrl("http://t1.daumcdn.net/osa/tech/i1.daumcdn.jpg");
             }
         } catch (UnsupportedEncodingException e) {
@@ -406,13 +394,13 @@ public class SocialController {
             if (rd != null) {
                 try {
                     rd.close();
-                } catch(Exception ignore) {
+                } catch (Exception ignore) {
                 }
             }
             if (isr != null) {
                 try {
                     isr.close();
-                } catch(Exception ignore) {
+                } catch (Exception ignore) {
                 }
             }
             return user;
@@ -420,42 +408,42 @@ public class SocialController {
     }
 
     private String getDaumAccessToken(String code) throws IOException {
-        String accessToken="";
+        String accessToken = "";
         BufferedReader rd = null;
         InputStreamReader isr = null;
-        try{
-        final HttpPost post = new HttpPost("https://apis.daum.net/oauth2/token");
+        try {
+            final HttpPost post = new HttpPost("https://apis.daum.net/oauth2/token");
 
-        final ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
-        postParameters.add(new BasicNameValuePair("client_id", environment.getProperty("daum.app.id")));
-        postParameters.add(new BasicNameValuePair("client_secret", environment.getProperty("daum.app.secret")));
-        postParameters.add(new BasicNameValuePair("redirect_uri", environment.getProperty("daum.callback")));
-        postParameters.add(new BasicNameValuePair("code", code));
-        postParameters.add(new BasicNameValuePair("grant_type", "authorization_code"));
+            final ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
+            postParameters.add(new BasicNameValuePair("client_id", environment.getProperty("daum.app.id")));
+            postParameters.add(new BasicNameValuePair("client_secret", environment.getProperty("daum.app.secret")));
+            postParameters.add(new BasicNameValuePair("redirect_uri", environment.getProperty("daum.callback")));
+            postParameters.add(new BasicNameValuePair("code", code));
+            postParameters.add(new BasicNameValuePair("grant_type", "authorization_code"));
 
-        post.setEntity(new UrlEncodedFormEntity(postParameters));
+            post.setEntity(new UrlEncodedFormEntity(postParameters));
 
-        HttpClient client = HttpClientBuilder.create().build();
-
-
-        final HttpResponse response = client.execute(post);
+            HttpClient client = HttpClientBuilder.create().build();
 
 
-        final int responseCode = response.getStatusLine().getStatusCode();
-
-        System.out.println("Post parameters : " + postParameters);
-        System.out.println("Response Code : " + responseCode);
+            final HttpResponse response = client.execute(post);
 
 
-        isr = new InputStreamReader(response.getEntity().getContent());
-        rd = new BufferedReader(isr);
-        final StringBuffer buffer = new StringBuffer();
-        String line;
-        while ((line = rd.readLine()) != null) {
-            buffer.append(line);
-        }
-        JSONObject jObject = new JSONObject(buffer.toString());
-        accessToken = jObject.getString("access_token");
+            final int responseCode = response.getStatusLine().getStatusCode();
+
+            System.out.println("Post parameters : " + postParameters);
+            System.out.println("Response Code : " + responseCode);
+
+
+            isr = new InputStreamReader(response.getEntity().getContent());
+            rd = new BufferedReader(isr);
+            final StringBuffer buffer = new StringBuffer();
+            String line;
+            while ((line = rd.readLine()) != null) {
+                buffer.append(line);
+            }
+            JSONObject jObject = new JSONObject(buffer.toString());
+            accessToken = jObject.getString("access_token");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         } catch (ClientProtocolException e) {
@@ -467,13 +455,13 @@ public class SocialController {
             if (rd != null) {
                 try {
                     rd.close();
-                } catch(Exception ignore) {
+                } catch (Exception ignore) {
                 }
             }
             if (isr != null) {
                 try {
                     isr.close();
-                } catch(Exception ignore) {
+                } catch (Exception ignore) {
                 }
             }
             return accessToken;

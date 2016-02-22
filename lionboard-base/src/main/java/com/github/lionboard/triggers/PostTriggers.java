@@ -30,24 +30,26 @@ public class PostTriggers extends TriggerAdapter {
                     postNum = rs.getInt("postNum") + 1000;
                     newRow.updateInt("postNum", postNum);
                 } else {
-                    newRow.updateInt("postNum",postNum);
+                    newRow.updateInt("postNum", postNum);
                 }
             } else {
-                newRow.updateInt("postNum",parentPostNum-1);
+                newRow.updateInt("postNum", parentPostNum - 1);
             }
             connection.commit();
-        }catch (Exception e) {
+        } catch (Exception e) {
             System.out.println(e);
-        }finally {
-            if(rs != null){
-                try{
+        } finally {
+            if (rs != null) {
+                try {
                     rs.close();
-                }catch (Exception ex){}
+                } catch (Exception ex) {
+                }
             }
-            if(ps != null) {
+            if (ps != null) {
                 try {
                     ps.close();
-                }catch (Exception ex){}
+                } catch (Exception ex) {
+                }
             }
         }
 

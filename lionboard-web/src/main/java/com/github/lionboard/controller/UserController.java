@@ -36,11 +36,12 @@ public class UserController {
     @Autowired
     LionBoardService lionBoardService;
 
-    @ResponseBody @RequestMapping(
+    @ResponseBody
+    @RequestMapping(
             headers = "Accept=application/json",
-            produces="application/json;charset=utf8",
-            method= RequestMethod.POST)
-    public List<String> signUp(User user){
+            produces = "application/json;charset=utf8",
+            method = RequestMethod.POST)
+    public List<String> signUp(User user) {
 
         List<String> results = new ArrayList<String>();
         //검색된 결과가 없어서 예외가 발생하는 것이 정상.
@@ -48,15 +49,17 @@ public class UserController {
             if (lionBoardService.getUserByIdentity(user.getIdentity()) != null) {
                 results.add("이미 등록된 이메일입니다. 다른 이메일을 사용해주세요.");
             }
-                return results;
-        }catch (InvalidUserException e){}
+            return results;
+        } catch (InvalidUserException e) {
+        }
 
-        try{
-            if(lionBoardService.getUserByName(user.getName()) != null){
+        try {
+            if (lionBoardService.getUserByName(user.getName()) != null) {
                 results.add("이미 등록된 이름입니다. 다른 이름을 사용해주세요.");
             }
-                return results;
-        }catch (InvalidUserException e){}
+            return results;
+        } catch (InvalidUserException e) {
+        }
 
         lionBoardService.addUser(user);
 
@@ -66,18 +69,18 @@ public class UserController {
         results.add(String.valueOf(user.getId()));
 
 
-        logger.debug(user.getId() + " sign up ! hello "+ user.getName());
+        logger.debug(user.getId() + " sign up ! hello " + user.getName());
 
         return results;
     }
 
     @RequestMapping(
-            method= RequestMethod.GET,
-            value="/{userId}")
-    public ModelAndView findUser(@PathVariable("userId") int userId){
+            method = RequestMethod.GET,
+            value = "/{userId}")
+    public ModelAndView findUser(@PathVariable("userId") int userId) {
         ModelAndView mav = new ModelAndView("users");
         User selectedUser = lionBoardService.getUserByUserId(userId);
-        if(selectedUser == null){
+        if (selectedUser == null) {
             throw new InvalidUserException();
         }
         List<Post> posts = lionBoardService.getPostsByUserId(userId);
@@ -88,7 +91,7 @@ public class UserController {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String identity = auth.getName(); //get logged in username
-        if(!identity.equals("anonymousUser")) {
+        if (!identity.equals("anonymousUser")) {
             com.github.lionboard.model.User loginUser = lionBoardService.getUserByIdentity(identity);
             mav.addObject("loginUserId", loginUser.getId());
         }
@@ -98,9 +101,9 @@ public class UserController {
 
     @ResponseBody
     @RequestMapping(
-            method= RequestMethod.PUT,
-            value="/{userId}")
-    public String updateUser(@PathVariable("userId") int userId,@RequestBody User user){
+            method = RequestMethod.PUT,
+            value = "/{userId}")
+    public String updateUser(@PathVariable("userId") int userId, @RequestBody User user) {
         user.setId(userId);
         lionBoardService.modifyUser(user);
         logger.debug(userId + " update the information..:");
@@ -109,23 +112,23 @@ public class UserController {
 
     @ResponseBody
     @RequestMapping(
-            method= RequestMethod.PUT,
-            value="/{userId}/status")
-    public String updateUserStatus(@PathVariable("userId") int userId, @RequestBody User user){
+            method = RequestMethod.PUT,
+            value = "/{userId}/status")
+    public String updateUserStatus(@PathVariable("userId") int userId, @RequestBody User user) {
         user.setId(userId);
         lionBoardService.modifyUserStatus(user);
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String identity = auth.getName(); //get logged in username
-        logger.debug(userId + " update status to "+user.getUserStatus()+" by "+ identity);
+        logger.debug(userId + " update status to " + user.getUserStatus() + " by " + identity);
         return "success";
     }
 
     @ResponseBody
     @RequestMapping(
-            method= RequestMethod.PUT,
-            value="/{userId}/roles")
-    public String updateUserRole(@PathVariable("userId") int userId, @RequestBody User user){
+            method = RequestMethod.PUT,
+            value = "/{userId}/roles")
+    public String updateUserRole(@PathVariable("userId") int userId, @RequestBody User user) {
         user.setId(userId);
         lionBoardService.modifyUserRole(user);
 
@@ -136,9 +139,9 @@ public class UserController {
     }
 
     @RequestMapping(
-            method= RequestMethod.DELETE,
-            value="/{userId}")
-    public ModelAndView leaveUser(@PathVariable("userId") int userId){
+            method = RequestMethod.DELETE,
+            value = "/{userId}")
+    public ModelAndView leaveUser(@PathVariable("userId") int userId) {
         ModelAndView mav = new ModelAndView("/users");
         lionBoardService.changeUserStatusToLeave(userId);
 
@@ -147,15 +150,14 @@ public class UserController {
     }
 
 
-
-
-    @ResponseBody @RequestMapping(
-            value="/{userId}/profile",
-            produces="application/json;charset=utf8",
-            method= RequestMethod.POST)
+    @ResponseBody
+    @RequestMapping(
+            value = "/{userId}/profile",
+            produces = "application/json;charset=utf8",
+            method = RequestMethod.POST)
     public String uploadProfile(@PathVariable("userId") int userId, MultipartHttpServletRequest request) throws Exception {
         //1. get the files from the request object
-        Iterator<String> itr =  request.getFileNames();
+        Iterator<String> itr = request.getFileNames();
 
         MultipartFile mpf = request.getFile(itr.next());
         System.out.println(mpf.getOriginalFilename() + " uploaded!");
@@ -164,7 +166,7 @@ public class UserController {
         try {
             //tenth2 서버로 이미지 업로드를 요청함.
             String uploadedUrl = lionBoardService.uploadProfile(userId, mpf);
-            lionBoardService.updateProfileInfoOnUser(userId,uploadedUrl);
+            lionBoardService.updateProfileInfoOnUser(userId, uploadedUrl);
 
             logger.debug(userId + " upload the profile..:" + uploadedUrl);
             return "success";
@@ -177,22 +179,20 @@ public class UserController {
 
     @ResponseBody
     @RequestMapping(
-            method= RequestMethod.GET,
-            value="/search")
-    public List<User> searchUserList(@RequestParam(value = "query" , required = false) String query){
-        if(query == null){
+            method = RequestMethod.GET,
+            value = "/search")
+    public List<User> searchUserList(@RequestParam(value = "query", required = false) String query) {
+        if (query == null) {
             throw new IncorrectAccessException();
         }
         return lionBoardService.searchUserWithQuery(query);
     }
 
     @RequestMapping(
-            method= RequestMethod.GET)
-    public User getUserList(){
+            method = RequestMethod.GET)
+    public User getUserList() {
         throw new IncorrectAccessException();
     }
-
-
 
 
 }

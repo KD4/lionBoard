@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
-    <property resource="log.properties" />
-    <property resource="release.properties" />
+    <property resource="log.properties"/>
+    <property resource="release.properties"/>
 
     <!-- console로 log 남기기 -->
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
@@ -38,13 +38,13 @@
     </appender>
 
     <logger name="com.github.lionboard" level="debug">
-        <appender-ref ref="console" />
+        <appender-ref ref="console"/>
         <appender-ref ref="fileForLoginInterceptor"/>
     </logger>
 
-    <logger name="org.springframework" level="info" />
+    <logger name="org.springframework" level="info"/>
     <root level="info">
-        <appender-ref ref="console" />
+        <appender-ref ref="console"/>
         <appender-ref ref="fileForLoginInterceptor"/>
     </root>
 

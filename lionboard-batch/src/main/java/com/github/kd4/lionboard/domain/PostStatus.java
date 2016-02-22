@@ -1,7 +1,5 @@
 package com.github.kd4.lionboard.domain;
 
-import java.util.Date;
-
 /**
  * Created by daum on 16. 2. 22..
  */

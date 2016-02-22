@@ -42,7 +42,7 @@ public class LionBoardServiceMock implements LionBoardService {
         Map<String, Object> pageArgs = new HashMap<>();
         pageArgs.put("offset", offset);
         pageArgs.put("limit", limit);
-        pageArgs.put("sort",sort);
+        pageArgs.put("sort", sort);
         List<Post> posts = postRepository.findByPage(pageArgs);
 
         //ToDo: Post 객체에 이름을 어떻게 넣을 것인가 ? 일단은 SQL 문으로 !
@@ -53,18 +53,18 @@ public class LionBoardServiceMock implements LionBoardService {
     //    Todo : apply the transaction below method.
     @Override
     public void addPost(Post post) {
-        try{
-            if(post.getDepth() < 1){
+        try {
+            if (post.getDepth() < 1) {
                 postRepository.insertPost(post);
                 postRepository.insertPostStatus(post);
                 //To rollback, throw the exception.
                 throw new InvalidPostException("because the number of reply exceed limit, you can't write reply. Sorry ~ ");
-            }else{
-                Map<String,Integer> range = new HashMap<>();
-                range.put("upperNum",post.getPostNum()-1);
-                int lowerNum = (post.getPostNum()-1) / 1000 * 1000 + 1;
+            } else {
+                Map<String, Integer> range = new HashMap<>();
+                range.put("upperNum", post.getPostNum() - 1);
+                int lowerNum = (post.getPostNum() - 1) / 1000 * 1000 + 1;
                 range.put("lowerNum", lowerNum);
-                if(postRepository.findPostByPostNum(lowerNum) != null){
+                if (postRepository.findPostByPostNum(lowerNum) != null) {
                     throw new InvalidPostException("because the number of reply exceed limit, you can't write reply. Sorry ~ ");
                 }
                 postRepository.updatePostNumForInsertRow(range);
@@ -73,7 +73,7 @@ public class LionBoardServiceMock implements LionBoardService {
                 //To rollback, throw the exception.
                 throw new InvalidPostException("because the number of reply exceed limit, you can't write reply. Sorry ~ ");
             }
-        }catch (RuntimeException re){
+        } catch (RuntimeException re) {
             throw new InvalidPostException(re.getMessage());
         }
     }
@@ -86,7 +86,7 @@ public class LionBoardServiceMock implements LionBoardService {
     @Override
     public Post getPostByPostId(int postId) {
         Post selectedPost = postRepository.findPostByPostId(postId);
-        if(selectedPost == null){
+        if (selectedPost == null) {
             throw new InvalidPostException();
         }
         return selectedPost;
@@ -205,7 +205,7 @@ public class LionBoardServiceMock implements LionBoardService {
     @Override
     public List<PostFile> getPostFilesByPostId(int postId) {
         List<PostFile> postFiles = postFileRepository.findFilesByPostId(postId);
-        if(postFiles == null){
+        if (postFiles == null) {
             throw new InvalidPostException();
         }
         return postFiles;
@@ -225,17 +225,17 @@ public class LionBoardServiceMock implements LionBoardService {
     //    Todo : apply the transaction below method.
     @Override
     public void addComment(Comment comment) {
-        if(postRepository.findPostByPostId(comment.getPostId()) == null){
+        if (postRepository.findPostByPostId(comment.getPostId()) == null) {
             throw new InvalidPostException("post is nonexistent. check post information.");
         }
-        if(comment.getDepth() < 1){
+        if (comment.getDepth() < 1) {
             commentRepository.insertComment(comment);
             //ToDo: Thinking - Status table 작업은 트리거로 넣는게 좋을까 ?
             commentRepository.insertCommentStatus(comment);
-        }else{
-            Map<String,Integer> range = new HashMap<>();
-            range.put("upperNum",comment.getCmtNum()-1);
-            int lowerNum = (comment.getCmtNum()-1) / 1000 * 1000 +1;
+        } else {
+            Map<String, Integer> range = new HashMap<>();
+            range.put("upperNum", comment.getCmtNum() - 1);
+            int lowerNum = (comment.getCmtNum() - 1) / 1000 * 1000 + 1;
             range.put("lowerNum", lowerNum);
             commentRepository.updateCmtNumForInsertRow(range);
             commentRepository.insertComment(comment);
@@ -262,7 +262,7 @@ public class LionBoardServiceMock implements LionBoardService {
                 throw new InvalidCmtException();
             }
             return selectedCmt;
-        }catch (RuntimeException re){
+        } catch (RuntimeException re) {
             throw new InvalidCmtException(re.getMessage());
         }
     }
@@ -273,22 +273,22 @@ public class LionBoardServiceMock implements LionBoardService {
     }
 
     @Override
-    public void addUser(User user){
+    public void addUser(User user) {
         try {
             if (user.getIsOAuth().equals("F")) {
                 userRepository.insertUser(user);
             } else {
                 //Todo: OAuth logic
             }
-        }catch(DuplicateKeyException sq){
-            throw new InvalidUserException("User email or Identity is already existed. (detail : "+sq.getMessage()+")");
+        } catch (DuplicateKeyException sq) {
+            throw new InvalidUserException("User email or Identity is already existed. (detail : " + sq.getMessage() + ")");
         }
     }
 
     @Override
     public User getUserByUserId(int userId) {
         User selectedUser = userRepository.findUserByUserId(userId);
-        if(selectedUser == null){
+        if (selectedUser == null) {
             throw new InvalidUserException();
         }
         return selectedUser;
@@ -298,7 +298,7 @@ public class LionBoardServiceMock implements LionBoardService {
     @Override
     public User getUserByIdentity(String identity) {
         User selectedUser = userRepository.findUserByIdentity(identity);
-        if(selectedUser == null){
+        if (selectedUser == null) {
             throw new InvalidUserException();
         }
         return selectedUser;
@@ -307,7 +307,7 @@ public class LionBoardServiceMock implements LionBoardService {
     @Override
     public int getPostLike(int postId) {
         Integer likeCount = postRepository.getLikeCount(postId);
-        if(likeCount == null){
+        if (likeCount == null) {
             throw new InvalidPostException();
         }
         return likeCount;
@@ -316,7 +316,7 @@ public class LionBoardServiceMock implements LionBoardService {
     @Override
     public void addPostLike(int postId) {
         int rows = postRepository.addLikeCount(postId);
-        if(rows == 0){
+        if (rows == 0) {
             throw new InvalidPostException();
         }
     }
@@ -324,7 +324,7 @@ public class LionBoardServiceMock implements LionBoardService {
     @Override
     public void subtractPostLike(int postId) {
         int rows = postRepository.subtractLikeCount(postId);
-        if(rows == 0){
+        if (rows == 0) {
             throw new InvalidPostException();
         }
     }
@@ -332,7 +332,7 @@ public class LionBoardServiceMock implements LionBoardService {
     @Override
     public int getPostHate(int postId) {
         Integer hateCount = postRepository.getHateCount(postId);
-        if(hateCount == null){
+        if (hateCount == null) {
             throw new InvalidPostException();
         }
         return hateCount;
@@ -341,7 +341,7 @@ public class LionBoardServiceMock implements LionBoardService {
     @Override
     public void addPostHate(int postId) {
         int rows = postRepository.addHateCount(postId);
-        if(rows == 0){
+        if (rows == 0) {
             throw new InvalidPostException();
         }
     }
@@ -349,7 +349,7 @@ public class LionBoardServiceMock implements LionBoardService {
     @Override
     public void subtractPostHate(int postId) {
         int rows = postRepository.subtractHateCount(postId);
-        if(rows == 0){
+        if (rows == 0) {
             throw new InvalidPostException();
         }
     }
@@ -357,7 +357,7 @@ public class LionBoardServiceMock implements LionBoardService {
     @Override
     public int getPostView(int postId) {
         Integer hateCount = postRepository.getViewCount(postId);
-        if(hateCount == null){
+        if (hateCount == null) {
             throw new InvalidPostException();
         }
         return hateCount;
@@ -366,7 +366,7 @@ public class LionBoardServiceMock implements LionBoardService {
     @Override
     public void addPostView(int postId) {
         int rows = postRepository.addViewCount(postId);
-        if(rows == 0){
+        if (rows == 0) {
             throw new InvalidPostException();
         }
     }
@@ -374,7 +374,7 @@ public class LionBoardServiceMock implements LionBoardService {
     @Override
     public void subtractPostView(int postId) {
         int rows = postRepository.subtractViewCount(postId);
-        if(rows == 0){
+        if (rows == 0) {
             throw new InvalidPostException();
         }
     }
@@ -382,7 +382,7 @@ public class LionBoardServiceMock implements LionBoardService {
     @Override
     public int getCmtLike(int cmtId) {
         Integer likeCount = commentRepository.getLikeCount(cmtId);
-        if(likeCount == null){
+        if (likeCount == null) {
             throw new InvalidCmtException();
         }
         return likeCount;
@@ -391,7 +391,7 @@ public class LionBoardServiceMock implements LionBoardService {
     @Override
     public void addCmtLike(int cmtId) {
         int rows = commentRepository.addLikeCount(cmtId);
-        if(rows == 0){
+        if (rows == 0) {
             throw new InvalidCmtException();
         }
     }
@@ -399,7 +399,7 @@ public class LionBoardServiceMock implements LionBoardService {
     @Override
     public void subtractCmtLike(int cmtId) {
         int rows = commentRepository.subtractLikeCount(cmtId);
-        if(rows == 0){
+        if (rows == 0) {
             throw new InvalidCmtException();
         }
     }
@@ -407,7 +407,7 @@ public class LionBoardServiceMock implements LionBoardService {
     @Override
     public int getCmtHate(int cmtId) {
         Integer likeCount = commentRepository.getHateCount(cmtId);
-        if(likeCount == null){
+        if (likeCount == null) {
             throw new InvalidCmtException();
         }
         return likeCount;
@@ -416,7 +416,7 @@ public class LionBoardServiceMock implements LionBoardService {
     @Override
     public void addCmtHate(int cmtId) {
         int rows = commentRepository.addHateCount(cmtId);
-        if(rows == 0){
+        if (rows == 0) {
             throw new InvalidCmtException();
         }
     }
@@ -424,7 +424,7 @@ public class LionBoardServiceMock implements LionBoardService {
     @Override
     public void subtractCmtHate(int cmtId) {
         int rows = commentRepository.subtractHateCount(cmtId);
-        if(rows == 0){
+        if (rows == 0) {
             throw new InvalidCmtException();
         }
     }
@@ -505,7 +505,6 @@ public class LionBoardServiceMock implements LionBoardService {
     public List<Pagination> getPagination(int offset, String sort, String source) {
         return null;
     }
-
 
 
     @Override

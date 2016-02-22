@@ -20,13 +20,14 @@ import java.util.Collection;
 public class SecurityUtil {
     private static final Logger logger =
             LoggerFactory.getLogger(SecurityUtil.class);
+
     public static void logInUser(com.github.lionboard.model.User user) {
-        String password="";
+        String password = "";
         Collection<SimpleGrantedAuthority> roles = new ArrayList<SimpleGrantedAuthority>();
         roles.add(new SimpleGrantedAuthority(user.getRoles()));
         UserDetails userDetail = new org.springframework.security.core.userdetails.User(user.getIdentity(), password, roles);
 
-        logger.debug(user.getIdentity()+" sign in..");
+        logger.debug(user.getIdentity() + " sign in..");
         Authentication authentication = new UsernamePasswordAuthenticationToken(userDetail, null, userDetail.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }

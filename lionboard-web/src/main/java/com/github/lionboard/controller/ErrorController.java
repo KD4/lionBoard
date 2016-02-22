@@ -15,21 +15,21 @@ public class ErrorController {
     @RequestMapping(
             value = "/failure",
             method = RequestMethod.GET)
-    public String showErrorPage(){
+    public String showErrorPage() {
         return "/errors/failure";
     }
 
     @RequestMapping(
             method = RequestMethod.GET,
-    value = "/denied")
-    public String showDenied(){
+            value = "/denied")
+    public String showDenied() {
         return "/errors/denied";
     }
 
     @RequestMapping(
             method = RequestMethod.GET,
             value = "/404")
-    public String show404(){
+    public String show404() {
         return "/errors/404";
     }
 

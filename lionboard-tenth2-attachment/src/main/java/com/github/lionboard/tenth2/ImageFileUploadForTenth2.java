@@ -27,20 +27,20 @@ public class ImageFileUploadForTenth2 {
         }
     }
 
-    public static void remove(String imageFilePath) throws IOException{
+    public static void remove(String imageFilePath) throws IOException {
         Tenth2File file = new Tenth2File(getTenth2Path(imageFilePath));
         System.out.println(file.getPath());
         file.delete();
         System.out.println(imageFilePath + " is removed on server.");
     }
 
-    public static String create(InputStream is,String imageFileName) throws Exception {
+    public static String create(InputStream is, String imageFileName) throws Exception {
 
-            String uploadPath = makeTenth2FileUploadPath(imageFileName);
-            byte[] bytes = IOUtils.toByteArray(is);
-            put(uploadPath, bytes);
+        String uploadPath = makeTenth2FileUploadPath(imageFileName);
+        byte[] bytes = IOUtils.toByteArray(is);
+        put(uploadPath, bytes);
 
-            return Tenth2ServiceConfig.getServiceHost() + uploadPath;
+        return Tenth2ServiceConfig.getServiceHost() + uploadPath;
     }
 
     private static void put(String tenthPath, byte[] imageFileBytes) throws IOException {
@@ -51,17 +51,17 @@ public class ImageFileUploadForTenth2 {
     private static void putMultipleStream(String uploadPath, String imageFilePath) throws Exception {
         File f = new File(imageFilePath);
         InputStream[] is = new InputStream[TENTH2_MUTI_PART];
-        for(int oss = 0; oss < TENTH2_MUTI_PART; ++oss) {
+        for (int oss = 0; oss < TENTH2_MUTI_PART; ++oss) {
             is[oss] = new FileInputStream(f);
         }
         Tenth2Util.putMultipleStream(uploadPath, f.length(), is);
     }
 
-    private static String makeTenth2FileUploadPath(String fileName){
+    private static String makeTenth2FileUploadPath(String fileName) {
         return "/" + Tenth2ServiceConfig.getServiceName() + "/tech/" + fileName;
     }
 
-    private static String getTenth2Path(String imgurl){
+    private static String getTenth2Path(String imgurl) {
         return imgurl.replaceAll(Tenth2ServiceConfig.getServiceHost(), "");
     }
 

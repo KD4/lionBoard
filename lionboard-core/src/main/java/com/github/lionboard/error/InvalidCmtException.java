@@ -5,11 +5,11 @@ package com.github.lionboard.error;
  */
 public class InvalidCmtException extends RuntimeException {
 
-    public InvalidCmtException(){
+    public InvalidCmtException() {
         super("invalid Cmt Id or Cmt Status. You can't see this Cmt.");
     }
 
-    public InvalidCmtException(String msg){
+    public InvalidCmtException(String msg) {
         super(msg);
     }
 

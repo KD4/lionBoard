@@ -13,42 +13,39 @@ import twitter4j.auth.RequestToken;
 public class OAuthHeaderTwitter {
 
     private String consumer_key;
+    private String consumer_secret;
+    private RequestToken requestToken = null;
+    private AccessToken accessToken = null;
+    private Twitter twitter = null;
+    public OAuthHeaderTwitter() {
+        twitter = new TwitterFactory().getInstance();
+    }
 
     public void setConsumer_key(String consumer_key) {
         this.consumer_key = consumer_key;
     }
 
-    private String consumer_secret;
-
     public void setConsumer_secret(String consumer_secret) {
         this.consumer_secret = consumer_secret;
     }
 
-    private RequestToken requestToken = null;
-    private AccessToken accessToken = null;
-    private Twitter twitter = null;
-
-
-    public OAuthHeaderTwitter() {
-        twitter = new TwitterFactory().getInstance();
-    }
-    public Twitter getTwitter(){
+    public Twitter getTwitter() {
         return twitter;
     }
 
-    // 인증 요청 토큰 생성
-    public void setRequestToken(String callbackHost)  throws TwitterException{
-        twitter.setOAuthConsumer(this.consumer_key, this.consumer_secret);
-        requestToken = twitter.getOAuthRequestToken(callbackHost+"/auth/twitter_success");
-
-    }
-    public RequestToken getRequestToken(){
+    public RequestToken getRequestToken() {
         return requestToken;
     }
 
+    // 인증 요청 토큰 생성
+    public void setRequestToken(String callbackHost) throws TwitterException {
+        twitter.setOAuthConsumer(this.consumer_key, this.consumer_secret);
+        requestToken = twitter.getOAuthRequestToken(callbackHost + "/auth/twitter_success");
+
+    }
 
     // 인증된 토큰 생성
-    public void setAccessToken(String request_token, String request_tokensecret, String oauth_verifier)	 {
+    public void setAccessToken(String request_token, String request_tokensecret, String oauth_verifier) {
         try {
             twitter.setOAuthConsumer(this.consumer_key, this.consumer_secret);
             accessToken = twitter.getOAuthAccessToken(new RequestToken(request_token, request_tokensecret),
@@ -59,7 +56,8 @@ public class OAuthHeaderTwitter {
 
         twitter.setOAuthAccessToken(accessToken);
     }
-    public AccessToken getAccessToken(){
+
+    public AccessToken getAccessToken() {
         return accessToken;
     }
 

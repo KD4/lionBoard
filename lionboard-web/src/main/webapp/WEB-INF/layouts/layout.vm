@@ -20,7 +20,8 @@
 
     <!-- java script Lib -->
     <script type="text/javascript" src="/js/jquery.min.js"></script>
-    <script type="text/javascript" src="http://cdn.jsdelivr.net/jquery.validation/1.14.0/jquery.validate.min.js"></script>
+    <script type="text/javascript"
+            src="http://cdn.jsdelivr.net/jquery.validation/1.14.0/jquery.validate.min.js"></script>
     <script type="text/javascript" src="/js/bootstrap.min.js"></script>
 
     <!-- include summernote css/js-->
@@ -31,26 +32,25 @@
 <body>
 
 
-    <div class="container">
+<div class="container">
 
-        <!-- View abc.vm is inserted here -->
-        <!-- Noi dung View abc.vm se duoc tren tai day -->
-        $screen_content
+    <!-- View abc.vm is inserted here -->
+    <!-- Noi dung View abc.vm se duoc tren tai day -->
+    $screen_content
 
-        <footer class="footer">
-            <p>&copy; Lion KD4 2016</p>
-        </footer>
-    </div>
+    <footer class="footer">
+        <p>&copy; Lion KD4 2016</p>
+    </footer>
+</div>
 
 
-
-    <script type="text/javascript" src="/js/posts.js"></script>
-    <script type="text/javascript" src="/js/loginAndRegist.js"></script>
-    <script type="text/javascript" src="/js/addPost.js"></script>
-    <script type="text/javascript" src="/js/editPost.js"></script>
-    <script type="text/javascript" src="/js/replyPost.js"></script>
-    <script type="text/javascript" src="/js/user.js"></script>
-    <script type="text/javascript" src="/js/admin.js"></script>
+<script type="text/javascript" src="/js/posts.js"></script>
+<script type="text/javascript" src="/js/loginAndRegist.js"></script>
+<script type="text/javascript" src="/js/addPost.js"></script>
+<script type="text/javascript" src="/js/editPost.js"></script>
+<script type="text/javascript" src="/js/replyPost.js"></script>
+<script type="text/javascript" src="/js/user.js"></script>
+<script type="text/javascript" src="/js/admin.js"></script>
 
 
 </body>

@@ -21,24 +21,26 @@
         <div class="user-info">
             <form id="edit-user">
                 <input type="hidden" name="userId" value="$user.id">
-            <div>
-                <label for="updateProfile">프로필 이미지 수정</label>
-                <input id="updateProfile" type="file" name="profileImage">
-            </div>
-            <div>
-                #if($user.email.matches("^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$"))
-                    <input type="text" name="email" value="$user.email">
-                #else
-                    <input type="text" name="email" value="이메일을 입력하세요.">
-                #end
 
-            </div>
-            <div>
-                <input type="text" name="name" value="$user.name">
-            </div>
-            <div class="user-registeredAt"><h5>가입날짜:$dateTool.format("yyyy-M-d",$user.registeredAt)</h5></div>
-            <button type="submit" class="btn btn-default">수정</button>
-            <a href="/users/$user.id" class="btn btn-default">취소</a>
+                <div>
+                    <label for="updateProfile">프로필 이미지 수정</label>
+                    <input id="updateProfile" type="file" name="profileImage">
+                </div>
+                <div>
+                    #if($user.email.matches(
+                        "^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$"))
+                        <input type="text" name="email" value="$user.email">
+                    #else
+                        <input type="text" name="email" value="이메일을 입력하세요.">
+                    #end
+
+                </div>
+                <div>
+                    <input type="text" name="name" value="$user.name">
+                </div>
+                <div class="user-registeredAt"><h5>가입날짜:$dateTool.format("yyyy-M-d",$user.registeredAt)</h5></div>
+                <button type="submit" class="btn btn-default">수정</button>
+                <a href="/users/$user.id" class="btn btn-default">취소</a>
         </div>
     </div>
 </div>
@@ -46,12 +48,17 @@
 <div class="row marketing">
     <div class="col-md-12">
         <div class="page-header">
-            <h4><small class="pull-right">$posts.size() posts</small> Posts </h4>
+            <h4>
+                <small class="pull-right">$posts.size() posts</small>
+                Posts
+            </h4>
         </div>
         <div class="posts-list">
             #foreach($post in $posts)
                 <div class="media">
-                    <p class="pull-right"><small>$dateTool.format("short",$post.createdAt)</small></p>
+                    <p class="pull-right">
+                        <small>$dateTool.format("short",$post.createdAt)</small>
+                    </p>
                     <div class="media-body">
                         <a href="/posts/$post.postId">$post.title</a>
                     </div>
@@ -64,12 +71,17 @@
 <div class="row marketing">
     <div class="col-md-12">
         <div class="page-header">
-            <h4><small class="pull-right">$comments.size() Comments</small> Comments </h4>
+            <h4>
+                <small class="pull-right">$comments.size() Comments</small>
+                Comments
+            </h4>
         </div>
         <div class="comments-list">
             #foreach($comment in $comments)
                 <div class="media">
-                    <p class="pull-right"><small>$dateTool.format("short",$comment.createdAt)</small></p>
+                    <p class="pull-right">
+                        <small>$dateTool.format("short",$comment.createdAt)</small>
+                    </p>
                     <div class="media-body">
                         <a href="/posts/$comment.postId">$comment.contents</a>
 

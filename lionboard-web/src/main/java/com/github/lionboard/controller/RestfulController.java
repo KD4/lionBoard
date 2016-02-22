@@ -6,13 +6,11 @@ import com.github.lionboard.service.LionBoardService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * Created by daum on 16. 2. 15..
@@ -28,32 +26,31 @@ public class RestfulController {
     LionBoardService lionBoardService;
 
     @ResponseBody
-    @RequestMapping(method= RequestMethod.GET,value = "/posts/{postId}")
-    public Post getPost(@PathVariable("postId") int postId){
+    @RequestMapping(method = RequestMethod.GET, value = "/posts/{postId}")
+    public Post getPost(@PathVariable("postId") int postId) {
         try {
             return lionBoardService.getPostByPostIdForAdmin(postId);
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.debug("returning Post Object fail.  : " + e.getMessage());
             throw new InvalidPostException(e.getMessage());
         }
     }
 
     @ResponseBody
-    @RequestMapping(method= RequestMethod.GET,value = "/stickyPosts/{postId}")
-    public String isStickyPost(@PathVariable("postId") int postId){
+    @RequestMapping(method = RequestMethod.GET, value = "/stickyPosts/{postId}")
+    public String isStickyPost(@PathVariable("postId") int postId) {
         try {
             Post post = lionBoardService.getStickyPost(postId);
-            if(post != null){
+            if (post != null) {
                 return "true";
-            }else{
+            } else {
                 return "false";
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.debug("returning Post Object fail.  : " + e.getMessage());
             throw new InvalidPostException(e.getMessage());
         }
     }
-
 
 
 }

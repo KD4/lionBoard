@@ -37,13 +37,14 @@
     </select>
 
     <insert id="insertUser" parameterType="com.github.lionboard.model.User">
-        INSERT INTO USER_TB(identity,isOAuth,roles,name,email,profileUrl,password) VALUES (#{identity},#{isOAuth},#{roles},#{name},#{email},#{profileUrl},#{password});
+        INSERT INTO USER_TB(identity,isOAuth,roles,name,email,profileUrl,password) VALUES
+        (#{identity},#{isOAuth},#{roles},#{name},#{email},#{profileUrl},#{password});
         <selectKey keyProperty="id" resultType="Integer" order="AFTER">
             SELECT LAST_INSERT_ID()
         </selectKey>
     </insert>
 
-    <delete id="deleteAll" >
+    <delete id="deleteAll">
         DELETE FROM USER_TB;
     </delete>
 
@@ -51,11 +52,11 @@
         UPDATE User_TB SET name=#{name},email=#{email} WHERE id=#{id}
     </update>
 
-    <delete id = "deleteUserByid" >
+    <delete id="deleteUserByid">
         DELETE FROM USER_TB WHERE id=#{id}
     </delete>
 
-    <update id="updateUserStatus" >
+    <update id="updateUserStatus">
         UPDATE USER_TB SET userStatus=#{userStatus} WHERE id=#{id}
     </update>
 
@@ -63,7 +64,7 @@
         UPDATE USER_TB SET profileUrl = #{profileUrl} WHERE id=#{id}
     </update>
     <!--<update id="addCmtCount">-->
-        <!--UPDATE POST_TB SET cmtCount = cmtCount+1 WHERE postId=#{postId}-->
+    <!--UPDATE POST_TB SET cmtCount = cmtCount+1 WHERE postId=#{postId}-->
     <!--</update>-->
 
     <update id="updateUserRole">

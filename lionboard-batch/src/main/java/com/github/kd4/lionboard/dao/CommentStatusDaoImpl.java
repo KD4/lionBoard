@@ -18,15 +18,6 @@ public class CommentStatusDaoImpl implements CommentStatusDao {
     private DataSource dataSource;
 
     private JdbcTemplate jdbcTemplate;
-
-
-    public void setDataSource(DataSource dataSource) {
-        this.dataSource = dataSource;
-        this.jdbcTemplate = new JdbcTemplate(dataSource);
-
-    }
-
-
     private RowMapper<CommentStatus> rowMapper =
             new RowMapper<CommentStatus>() {
                 @Override
@@ -40,12 +31,18 @@ public class CommentStatusDaoImpl implements CommentStatusDao {
             };
 
 
-    public CommentStatusDaoImpl(){
+    public CommentStatusDaoImpl() {
+    }
+
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
+
     }
 
     @Override
     public List<CommentStatus> getAll() {
-        return this.jdbcTemplate.query("select * from CMT_STATUS_TB order by cmtId",rowMapper);
+        return this.jdbcTemplate.query("select * from CMT_STATUS_TB order by cmtId", rowMapper);
     }
 
     @Override

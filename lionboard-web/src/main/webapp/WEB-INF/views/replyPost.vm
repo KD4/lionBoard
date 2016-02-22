@@ -11,6 +11,7 @@
         <input type="hidden" name="userId" value="$loginUserId"/>
         <input type="hidden" name="depth" value="$basePost.depth"/>
         <input type="hidden" name="postNum" value="$basePost.postNum"/>
+
         <div class="form-group">
             <label for="postTitle">제목</label>
             <input type="text" class="form-control" id="postTitle" name="title" value="$basePost.title 의 답글">

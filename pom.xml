@@ -8,6 +8,7 @@
     <name>lionboard-parent</name>
 
     <modules>
+        <module>lionboard-batch</module>
         <module>lionboard-core</module>
         <module>lionboard-attachment</module>
         <module>lionboard-local-attachment</module>

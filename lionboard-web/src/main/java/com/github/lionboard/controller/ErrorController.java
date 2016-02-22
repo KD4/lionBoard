@@ -13,9 +13,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class ErrorController {
 
     @RequestMapping(
+            value = "/failure",
             method = RequestMethod.GET)
     public String showErrorPage(){
-        return "/errors/errors";
+        return "/errors/failure";
     }
 
     @RequestMapping(

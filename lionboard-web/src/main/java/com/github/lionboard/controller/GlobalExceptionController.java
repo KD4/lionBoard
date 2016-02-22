@@ -25,7 +25,7 @@ public class GlobalExceptionController {
     @ExceptionHandler(InvalidPostException.class)
     public ModelAndView catchInvalidException(InvalidPostException e) {
         logger.debug(e.getMessage());
-        return new ModelAndView("errors").addObject("errorlog", e.getMessage());
+        return new ModelAndView("/errors/failure").addObject("errorlog", e.getMessage());
     }
 
     @ExceptionHandler(IncorrectAccessException.class)
@@ -38,20 +38,20 @@ public class GlobalExceptionController {
     @ExceptionHandler(InvalidCmtException.class)
     public ModelAndView catchInvalidException(InvalidCmtException e) {
         logger.debug(e.getMessage());
-        return new ModelAndView("errors").addObject("errorlog", e.getMessage());
+        return new ModelAndView("/errors/failure").addObject("errorlog", e.getMessage());
     }
 
 
     @ExceptionHandler(RuntimeException.class)
     public ModelAndView catchRuntimeException(RuntimeException e) {
         logger.debug(e.getMessage());
-        return new ModelAndView("errors").addObject("errorlog", "파라미터 값이 올바르지 않습니다.");
+        return new ModelAndView("/errors/failure").addObject("errorlog", "파라미터 값이 올바르지 않습니다.");
     }
 
     @ExceptionHandler(InvalidUserException.class)
     public ModelAndView catchInvalidException(InvalidUserException e) {
         logger.debug(e.getMessage());
-        return new ModelAndView("errors").addObject("errorlog", e.getMessage());
+        return new ModelAndView("/errors/failure").addObject("errorlog", e.getMessage());
     }
 
 }

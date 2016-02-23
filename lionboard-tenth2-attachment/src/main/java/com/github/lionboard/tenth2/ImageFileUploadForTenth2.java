@@ -34,7 +34,8 @@ public class ImageFileUploadForTenth2 {
         System.out.println(imageFilePath + " is removed on server.");
     }
 
-    public static String create(InputStream is, String imageFileName) throws Exception {
+
+    public static String create(InputStream is,String imageFileName) throws IOException {
 
         String uploadPath = makeTenth2FileUploadPath(imageFileName);
         byte[] bytes = IOUtils.toByteArray(is);

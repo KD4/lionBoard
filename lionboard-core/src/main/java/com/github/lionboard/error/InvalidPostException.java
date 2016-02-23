@@ -1,5 +1,7 @@
 package com.github.lionboard.error;
 
+import java.io.IOException;
+
 /**
  * Created by Lion.k on 16. 1. 21..
  */
@@ -13,4 +15,7 @@ public class InvalidPostException extends RuntimeException {
         super(msg);
     }
 
+    public InvalidPostException(String s, IOException e) {
+        super(s,e);
+    }
 }

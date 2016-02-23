@@ -6,10 +6,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+
+
+import java.util.Iterator;
 
 /**
  * Created by Lion.k on 16. 2. 2..
@@ -26,9 +28,12 @@ public class FileController {
     @ResponseBody
     @RequestMapping(
             headers = "Accept=application/json",
-            method = RequestMethod.POST)
-    public String addFile(Post post) throws Exception {
-        lionBoardService.addFileOnPost(post);
+            method= RequestMethod.POST)
+    public String addFile(Post post,MultipartHttpServletRequest request) throws Exception {
+        Iterator<String> itr =  request.getFileNames();
+        MultipartFile mpf = request.getFile(itr.next());
+        post.setFileName(mpf.getOriginalFilename());
+        lionBoardService.addFileOnPost(post,mpf.getInputStream());
         return "success";
     }
 

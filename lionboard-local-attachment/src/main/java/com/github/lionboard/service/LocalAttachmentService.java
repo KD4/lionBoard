@@ -17,7 +17,7 @@ public class LocalAttachmentService implements AttachmentService {
     public static final String fileUploadPath = "/uploadFile/";
 
     @Override
-    public String uploadFile(InputStream is, String fileName) throws Exception {
+    public String uploadFile(InputStream is, String fileName) throws IOException {
 
         //ToDo FileName Encoding
         String filePath = serverPath + fileUploadPath + fileName;

@@ -1,5 +1,6 @@
 package com.github.lionboard.model;
 
+
 import java.util.Date;
 
 /**

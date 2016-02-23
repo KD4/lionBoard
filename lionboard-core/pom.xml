@@ -11,11 +11,4 @@
     <packaging>jar</packaging>
     <name>lionboard-core</name>
 
-    <dependencies>
-        <!-- XXX: MultipartFile 의존성 제거 -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-webmvc</artifactId>
-        </dependency>
-    </dependencies>
 </project>

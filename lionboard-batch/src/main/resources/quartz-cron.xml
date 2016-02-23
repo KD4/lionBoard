@@ -36,7 +36,7 @@
     <!--cronExpression을 통해서 스캐줄러 주기를 설정한다. -->
     <bean id="statusBatchTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
         <property name="jobDetail" ref="statusBatchService"/>
-        <property name="cronExpression" value="0/5 0 1 * * ?"/>
+        <property name="cronExpression" value="0 0 1 * * ?"/>
     </bean>
 
     <!--셋. 실제 동작하게끔 설정 -->

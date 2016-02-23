@@ -372,42 +372,6 @@
         </dependencies>
     </dependencyManagement>
 
-    <!-- kakao nexus config   -->
-    <!--<repositories>-->
-        <!--<repository>-->
-            <!--<id>daum-public</id>-->
-            <!--<url>-->
-                <!--http://maven.daumcorp.com/content/groups/daum-public-->
-            <!--</url>-->
-            <!--<releases>-->
-                <!--<enabled>true</enabled>-->
-                <!--<updatePolicy>daily</updatePolicy>-->
-            <!--</releases>-->
-            <!--<snapshots>-->
-                <!--<enabled>true</enabled>-->
-                <!--<updatePolicy>daily</updatePolicy>-->
-            <!--</snapshots>-->
-        <!--</repository>-->
-    <!--</repositories>-->
-    <!--<pluginRepositories>-->
-        <!--<pluginRepository>-->
-            <!--<id>daum-public</id>-->
-            <!--<url>-->
-                <!--http://maven.daumcorp.com/content/groups/daum-public-->
-            <!--</url>-->
-            <!--<releases>-->
-                <!--<enabled>true</enabled>-->
-                <!--<updatePolicy>daily</updatePolicy>-->
-            <!--</releases>-->
-            <!--<snapshots>-->
-                <!--<enabled>true</enabled>-->
-                <!--<updatePolicy>daily</updatePolicy>-->
-            <!--</snapshots>-->
-
-        <!--</pluginRepository>-->
-
-    <!--</pluginRepositories>-->
-
     <build>
         <plugins>
             <plugin>
@@ -423,20 +387,4 @@
         </plugins>
     </build>
 
-    <!--<distributionManagement>-->
-        <!--<repository>-->
-            <!--<id>daum</id>-->
-            <!--<name>Daum Repository</name>-->
-            <!--<url>-->
-                <!--http://maven.daumcorp.com/content/repositories/daum-->
-            <!--</url>-->
-        <!--</repository>-->
-        <!--<snapshotRepository>-->
-            <!--<id>daum-snapshots</id>-->
-            <!--<name>Daum Snapshot Repository</name>-->
-            <!--<url>-->
-                <!--http://maven.daumcorp.com/content/repositories/daum-snapshots-->
-            <!--</url>-->
-        <!--</snapshotRepository>-->
-    <!--</distributionManagement>-->
 </project>

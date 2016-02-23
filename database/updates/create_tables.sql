@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.6.25)
 # Database: lionboard
-# Generation Time: 2016-01-29 06:51:25 +0000
+# Generation Time: 2016-02-23 06:14:03 +0000
 # ************************************************************
 
 
@@ -99,6 +99,7 @@ CREATE TABLE `POST_FILE_TB` (
   `fileId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `fileName` varchar(128) NOT NULL,
   `fileUrl` varchar(255) NOT NULL,
+  `fileStatus` varchar(2) NOT NULL DEFAULT 'S',
   PRIMARY KEY (`fileId`),
   KEY `postId` (`postId`),
   CONSTRAINT `post_file_tb_ibfk_2` FOREIGN KEY (`postId`) REFERENCES `POST_TB` (`postId`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -138,19 +139,6 @@ CREATE TABLE `POST_STATUS_TB` (
   CONSTRAINT `post_status_tb_ibfk_2` FOREIGN KEY (`postId`) REFERENCES `POST_TB` (`postId`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-LOCK TABLES `POST_STATUS_TB` WRITE;
-/*!40000 ALTER TABLE `POST_STATUS_TB` DISABLE KEYS */;
-
-INSERT INTO `POST_STATUS_TB` (`postId`, `postStatus`, `pastDays`)
-VALUES
-	(449,'S',0),
-	(450,'S',0),
-	(451,'S',0),
-	(452,'S',0),
-	(453,'S',0);
-
-/*!40000 ALTER TABLE `POST_STATUS_TB` ENABLE KEYS */;
-UNLOCK TABLES;
 
 
 # Dump of table POST_TB
@@ -165,7 +153,7 @@ CREATE TABLE `POST_TB` (
   `postNum` int(10) unsigned NOT NULL DEFAULT '0',
   `depth` int(10) NOT NULL DEFAULT '0',
   `title` varchar(128) NOT NULL,
-  `contents` text NOT NULL,
+  `contents` mediumtext NOT NULL,
   `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `cmtCount` int(10) unsigned NOT NULL DEFAULT '0',
   `likeCount` int(10) unsigned NOT NULL DEFAULT '0',
@@ -174,19 +162,6 @@ CREATE TABLE `POST_TB` (
   PRIMARY KEY (`postId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-LOCK TABLES `POST_TB` WRITE;
-/*!40000 ALTER TABLE `POST_TB` DISABLE KEYS */;
-
-INSERT INTO `POST_TB` (`postId`, `userId`, `existFiles`, `postNum`, `depth`, `title`, `contents`, `createdAt`, `cmtCount`, `likeCount`, `hateCount`, `viewCount`)
-VALUES
-	(449,230,'F',1000,0,'강관우 테스트','<p>테테테스트</p>\n','2016-01-28 14:32:42',0,0,0,0),
-	(450,230,'F',2000,0,'두번째 테스트','<p>다시 테스트닷</p>\n','2016-01-28 14:35:07',0,0,0,0),
-	(451,231,'F',3000,0,'새 유저 글쓰기','<p>강딴<strong>ㄱ딴</strong></p>\n\n<p><strong>딴딴딴</strong></p>\n','2016-01-28 17:04:11',0,0,0,0),
-	(452,230,'F',4000,0,'글쓰기 테스트','<p>이게 될랑가 몰라~</p>\n','2016-01-29 14:45:38',0,0,0,0),
-	(453,240,'F',5000,0,'Ryan? Lion!','<p>This is <em>Lion ~&nbsp;</em></p>\n\n<h2>not Ryan!</h2>\n\n<ol>\n	<li><strong>유남쌩~</strong></li>\n</ol>\n','2016-01-29 15:48:26',0,0,0,0);
-
-/*!40000 ALTER TABLE `POST_TB` ENABLE KEYS */;
-UNLOCK TABLES;
 
 DELIMITER ;;
 /*!50003 SET SESSION SQL_MODE="STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION" */;;
@@ -212,8 +187,8 @@ CREATE TABLE `STICKY_CMT_TB` (
   `postId` int(10) unsigned NOT NULL,
   KEY `cmtId` (`cmtId`),
   KEY `postId` (`postId`),
-  CONSTRAINT `sticky_cmt_tb_ibfk_1` FOREIGN KEY (`cmtId`) REFERENCES `cmt_tb` (`cmtId`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `sticky_cmt_tb_ibfk_2` FOREIGN KEY (`postId`) REFERENCES `post_tb` (`postId`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `sticky_cmt_tb_ibfk_1` FOREIGN KEY (`cmtId`) REFERENCES `ACT_CMT_TB` (`cmtId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `sticky_cmt_tb_ibfk_2` FOREIGN KEY (`postId`) REFERENCES `ACT_POST_TB` (`postId`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -225,8 +200,7 @@ DROP TABLE IF EXISTS `STICKY_POST_TB`;
 
 CREATE TABLE `STICKY_POST_TB` (
   `postId` int(10) unsigned NOT NULL,
-  KEY `postId` (`postId`),
-  CONSTRAINT `sticky_post_tb_ibfk_1` FOREIGN KEY (`postId`) REFERENCES `post_tb` (`postId`) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY (`postId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -244,26 +218,13 @@ CREATE TABLE `USER_TB` (
   `name` varchar(50) NOT NULL DEFAULT ' ',
   `email` varchar(255) NOT NULL DEFAULT '',
   `profileUrl` varchar(255) NOT NULL DEFAULT ' ',
-  `userStatus` varchar(2) NOT NULL DEFAULT 'S',
+  `userStatus` varchar(2) NOT NULL DEFAULT 'A',
   `registeredAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `password` varchar(100) NOT NULL DEFAULT ' ',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `identity` (`identity`),
-  UNIQUE KEY `email` (`email`)
+  UNIQUE KEY `identity` (`identity`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-LOCK TABLES `USER_TB` WRITE;
-/*!40000 ALTER TABLE `USER_TB` DISABLE KEYS */;
-
-INSERT INTO `USER_TB` (`id`, `identity`, `isOAuth`, `roles`, `name`, `email`, `profileUrl`, `userStatus`, `registeredAt`, `password`)
-VALUES
-	(230,'rkdrhksdn2@gmail.com','F','ROLE_USER','강관우','rkdrhksdn2@gmail.com','temp.url','S','2016-01-28 14:12:09','Starter?5'),
-	(231,'goodmorning0726@gmail.com','F','ROLE_USER','강딴딴','goodmorning0726@gmail.com','temp.url','S','2016-01-28 16:39:59','tkdlek18'),
-	(232,'new@kakaocorp.com','F','ROLE_USER','카카오','new@kakaocorp.com','temp.url','S','2016-01-29 14:10:41','tkdlek18'),
-	(240,'lion@gmail.com','F','ROLE_USER','사자임','lion@gmail.com','temp.url','S','2016-01-29 15:45:15','lionboard');
-
-/*!40000 ALTER TABLE `USER_TB` ENABLE KEYS */;
-UNLOCK TABLES;
 
 
 

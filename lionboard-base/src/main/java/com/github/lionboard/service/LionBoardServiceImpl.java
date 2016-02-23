@@ -3,17 +3,16 @@ package com.github.lionboard.service;
 import com.github.lionboard.error.InvalidCmtException;
 import com.github.lionboard.error.InvalidPostException;
 import com.github.lionboard.error.InvalidUserException;
-import com.github.lionboard.error.UploadFileToTenthException;
 import com.github.lionboard.model.*;
 import com.github.lionboard.security.SecurityUtil;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by lion.k on 16. 1. 20..
@@ -45,12 +44,12 @@ public class LionBoardServiceImpl implements LionBoardService {
 
     @Override
     public List<Post> getPostsByUserId(int userId) {
-        try{
+        try {
             List<Post> posts = postService.getPostsByUserId(userId);
             return posts;
-        }catch (RuntimeException re){
+        } catch (RuntimeException re) {
 //            userId 정보가 도메인에 어긋나면 예외가 발생함.
-            throw new InvalidUserException("사용자가 작성한 게시글이 없거나 반환할 수 없습니다. "+re.getMessage());
+            throw new InvalidUserException("사용자가 작성한 게시글이 없거나 반환할 수 없습니다. " + re.getMessage());
         }
 
     }
@@ -59,9 +58,9 @@ public class LionBoardServiceImpl implements LionBoardService {
     public void addPost(Post post) {
 
         //파라미터로 받은 post의 depth를 판단해서 루트글인지, 답글인지 확인함.
-        if(post.getDepth() < 1){
+        if (post.getDepth() < 1) {
             postService.insertRootPost(post);
-        }else{
+        } else {
             postService.insertReplyPost(post);
         }
     }
@@ -74,7 +73,7 @@ public class LionBoardServiceImpl implements LionBoardService {
     @Override
     public Post getPostByPostId(int postId) {
         Post selectedPost = postService.getPostByPostId(postId);
-        if(selectedPost == null){
+        if (selectedPost == null) {
             throw new InvalidPostException();
         }
         return selectedPost;
@@ -89,7 +88,7 @@ public class LionBoardServiceImpl implements LionBoardService {
     @Override
     public List<PostFile> getPostFilesByPostId(int postId) {
         List<PostFile> postFiles = postService.getPostFilesByPostId(postId);
-        if(postFiles == null){
+        if (postFiles == null) {
             throw new InvalidPostException();
         }
         return postFiles;
@@ -105,9 +104,9 @@ public class LionBoardServiceImpl implements LionBoardService {
     @Override
     public void changePostStatusToDelete(int postId) {
 
-            postService.updatePostStatusByPostId(postId,"D");
-            //ToDo commentService로 바꾸기
-            changeCmtStatusByPostId(postId, "D");
+        postService.updatePostStatusByPostId(postId, "D");
+        //ToDo commentService로 바꾸기
+        changeCmtStatusByPostId(postId, "D");
     }
 
     @Override
@@ -176,17 +175,17 @@ public class LionBoardServiceImpl implements LionBoardService {
     }
 
     @Override
-    public List<Pagination> getPagination(int offset,String sort, String source) {
+    public List<Pagination> getPagination(int offset, String sort, String source) {
 //        offset param을 이용해서 현재 페이지 넘버를 계산합니다.
-        int currentPage = offset/15 + 1;
+        int currentPage = offset / 15 + 1;
 
 //        페이징은 5 페이지씩 그룹핑을 합니다.이전 그룹 페이지 번호를 담는 변수를 선언.
         int previousPage;
 
         // 현재 페이지가 5보다 크면 이전 페이지를 계산해야하고, 그렇지 않다면 이전 페이지는 첫번째 페이지가 됩니다.
-        if(currentPage > 5) {
+        if (currentPage > 5) {
             previousPage = currentPage / 5 * 5;
-        }else {
+        } else {
             previousPage = 1;
         }
 
@@ -195,33 +194,33 @@ public class LionBoardServiceImpl implements LionBoardService {
 
         // 현재 게시물을 표시하는 페이지가 총 5개가 안된다면, maxPage가 최종페이지가 됩니다.
         int maxPage = 0;
-        if(source.equals("posts")){
+        if (source.equals("posts")) {
             maxPage = postService.countPosts() / 15 + 1;
-        }else if(source.equals("adminUsers")){
+        } else if (source.equals("adminUsers")) {
             maxPage = userService.countUsers() / 15 + 1;
-        }else if(source.equals("adminPosts")){
+        } else if (source.equals("adminPosts")) {
             maxPage = postService.countAllPosts() / 15 + 1;
-        }else if(source.equals("adminComments")){
+        } else if (source.equals("adminComments")) {
             maxPage = commentService.countAllComments() / 15 + 1;
-        }else if(source.equals("adminPostReports")){
+        } else if (source.equals("adminPostReports")) {
             maxPage = postService.countReports() / 15 + 1;
         }
 
 
-        if(maxPage<olderPage){
+        if (maxPage < olderPage) {
             olderPage = maxPage;
         }
 
         //페이징 범위(prev - older)까지를 정하고 각 페이징 넘버와 offset을 pagination 모델에 담습니다.
         List<Pagination> paginations = new ArrayList<Pagination>();
-        for(int i = previousPage;i<=olderPage;i++){
+        for (int i = previousPage; i <= olderPage; i++) {
             Pagination pagination = new Pagination();
             pagination.setPage(i);
             pagination.setOffset((i - 1) * 15);
             pagination.setSort(sort);
-            if(i==currentPage){
+            if (i == currentPage) {
                 pagination.setIsCurrent(true);
-            }else{
+            } else {
                 pagination.setIsCurrent(false);
             }
             paginations.add(pagination);
@@ -230,14 +229,12 @@ public class LionBoardServiceImpl implements LionBoardService {
     }
 
 
-
     @Override
     public List<Comment> getCommentsByUserId(int userId) {
 
         return commentService.getCommentsByUserId(userId);
 
     }
-
 
 
     @Override
@@ -256,7 +253,7 @@ public class LionBoardServiceImpl implements LionBoardService {
     @Override
     public void addComment(Comment comment) {
         //없는 게시글에 코멘트를 달려고 할 때, 예외처리.
-        if(postService.getPostByPostId(comment.getPostId()) == null){
+        if (postService.getPostByPostId(comment.getPostId()) == null) {
             throw new InvalidPostException("등록하고자 하는 Comment의 Post 정보가 올바르지 않습니다. 서버로그를 확인해주세요.");
         }
 
@@ -288,7 +285,7 @@ public class LionBoardServiceImpl implements LionBoardService {
 
         Comment selectedCmt = commentService.getCommentByCmtId(cmtId);
         if (selectedCmt == null) {
-            throw new InvalidCmtException(cmtId+"에 해당하는 덧글이 존재하지 않습니다.");
+            throw new InvalidCmtException(cmtId + "에 해당하는 덧글이 존재하지 않습니다.");
         }
         return selectedCmt;
 
@@ -301,7 +298,7 @@ public class LionBoardServiceImpl implements LionBoardService {
     }
 
     @Override
-    public void addUser(User user){
+    public void addUser(User user) {
 
         if (user.getIsOAuth().equals("F")) {
             userService.insertNormalUser(user);
@@ -313,7 +310,7 @@ public class LionBoardServiceImpl implements LionBoardService {
     @Override
     public User getUserByUserId(int userId) {
         User selectedUser = userService.getUserByUserId(userId);
-        if(selectedUser == null){
+        if (selectedUser == null) {
             throw new InvalidUserException("등록된 유저 정보가 없거나 탈퇴한 회원입니다.");
         }
         return selectedUser;
@@ -323,7 +320,7 @@ public class LionBoardServiceImpl implements LionBoardService {
     @Override
     public User getUserByIdentity(String identity) {
         User selectedUser = userService.getUserByIdentity(identity);
-        if(selectedUser == null){
+        if (selectedUser == null) {
             throw new InvalidUserException("등록된 유저 정보가 없거나 탈퇴한 회원입니다.");
         }
         return selectedUser;
@@ -332,24 +329,24 @@ public class LionBoardServiceImpl implements LionBoardService {
     @Override
     public User getUserByName(String name) {
         User selectedUser = userService.getUserByName(name);
-        if(selectedUser == null){
+        if (selectedUser == null) {
             throw new InvalidUserException();
         }
         return selectedUser;
     }
 
     @Override
-    public String uploadProfile(int userId, InputStream is) throws Exception {
+    public String uploadProfile(int userId, InputStream is) throws InvalidUserException {
         try {
             //프로필 작명 규칙 : lionboard_profile_{userId}.jpg
             DateTime dateTime = DateTime.now();
             ;
-            String fileName = "lionboard_profile_"+dateTime.getMillis()+"_"+String.valueOf(userId)+".jpg";
+            String fileName = "lionboard_profile_" + dateTime.getMillis() + "_" + String.valueOf(userId) + ".jpg";
 
             return attachmentService.uploadFile(is, fileName);
 
-        }catch (Exception e){
-            throw new InvalidUserException("이미지 업로드에 실패하였습니다.");
+        } catch (IOException e) {
+            throw new InvalidUserException("이미지 업로드에 실패하였습니다.", e);
         }
 
     }
@@ -364,13 +361,13 @@ public class LionBoardServiceImpl implements LionBoardService {
 
     //첨부파일을 등록하는 로직. insertFileOnTenthServer메소드를 이용함.
     @Override
-    public String addFileToServer(int postId, String filename, InputStream is) throws Exception {
-        try{
+    public String addFileToServer(int postId, String filename, InputStream is) throws IOException {
+        try {
             //첨부파일 작명 규칙 : lionboard_post_File_{postId}_{originalFileName}
             String fileName = "lionboard_post_File_" + postId + "_" + filename;
             return attachmentService.uploadFile(is, fileName);
-        }catch (IOException e){
-            throw new InvalidPostException("파일 업로드에 실패하였습니다.");
+        } catch (IOException e) {
+            throw new InvalidPostException("파일 업로드에 실패하였습니다.", e);
         }
 
 
@@ -386,7 +383,7 @@ public class LionBoardServiceImpl implements LionBoardService {
 
         PostFile postFile = new PostFile();
         //Id와 파일 정보를 이용해서 서버에 파일 업로드 후, 파일 정보를 디비에 저장.
-        String uploadUrl = addFileToServer(post.getPostId(), post.getFileName(),is);
+        String uploadUrl = addFileToServer(post.getPostId(), post.getFileName(), is);
         postFile.setPostId(postId);
         postFile.setFileUrl(uploadUrl);
         postFile.setFileName(post.getFileName());
@@ -400,7 +397,7 @@ public class LionBoardServiceImpl implements LionBoardService {
         //게시글 수정 화면에서 파일만 업로드할 때, 수행되는 로직.
         PostFile postFile = new PostFile();
         //Id와 파일 정보를 이용해서 서버에 파일 업로드 후, 파일 정보를 디비에 저장.
-        String uploadUrl = addFileToServer(post.getPostId(), post.getFileName(),is);
+        String uploadUrl = addFileToServer(post.getPostId(), post.getFileName(), is);
         postFile.setPostId(post.getPostId());
         postFile.setFileUrl(uploadUrl);
         postFile.setFileName(post.getFileName());
@@ -416,7 +413,7 @@ public class LionBoardServiceImpl implements LionBoardService {
     @Override
     public Post createBasePostForReply(int postId) {
         Post selectedPost = postService.getPostByPostId(postId);
-        if(selectedPost == null){
+        if (selectedPost == null) {
             throw new InvalidPostException();
         }
         //답글은 부모글의 depth + 1에 해당하는 depth를 가짐.
@@ -452,7 +449,7 @@ public class LionBoardServiceImpl implements LionBoardService {
     @Override
     public Post getParentPost(int postId) {
         Post parentPost = postService.getParentPost(postId);
-        if(!parentPost.getPostStatus().equals("S")){
+        if (!parentPost.getPostStatus().equals("S")) {
             throw new InvalidPostException("부모글은 삭제되었거나 숨김 처리되었습니다.");
         }
         return postService.getParentPost(postId);
@@ -470,7 +467,7 @@ public class LionBoardServiceImpl implements LionBoardService {
 
     @Override
     public void modifyUserStatus(User user) {
-        userService.updateUserStatusByUserId(user.getId(),user.getUserStatus());
+        userService.updateUserStatusByUserId(user.getId(), user.getUserStatus());
     }
 
     @Override
@@ -493,7 +490,7 @@ public class LionBoardServiceImpl implements LionBoardService {
     @Override
     public List<Post> searchPostWithQuery(String query) {
 
-            return postService.searchPostWithQuery(query);
+        return postService.searchPostWithQuery(query);
 
     }
 
@@ -506,7 +503,7 @@ public class LionBoardServiceImpl implements LionBoardService {
     @Override
     public List<Comment> searchCmtWithQuery(String query) {
 
-            return commentService.searchCmtWithQuery(query);
+        return commentService.searchCmtWithQuery(query);
 
     }
 
@@ -518,20 +515,20 @@ public class LionBoardServiceImpl implements LionBoardService {
     @Override
     public List<PostReport> searchPostReportsWithQuery(String query) {
 
-            return postService.searchPostReportsWithQuery(query);
+        return postService.searchPostReportsWithQuery(query);
 
     }
 
     @Override
     public List<CommentReport> getAllCmtReports(int offset, int limit, String sort) {
-        return commentService.getAllReports(offset,limit,sort);
+        return commentService.getAllReports(offset, limit, sort);
     }
 
     @Override
     public List<CommentReport> searchCmtReportsWithQuery(String query) {
 
 
-            return commentService.searchReportWithQuery(query);
+        return commentService.searchReportWithQuery(query);
 
     }
 
@@ -577,12 +574,10 @@ public class LionBoardServiceImpl implements LionBoardService {
     }
 
 
-
-
     @Override
     public int getPostLike(int postId) {
         Integer likeCount = postService.getLikeCount(postId);
-        if(likeCount == null){
+        if (likeCount == null) {
             throw new InvalidPostException();
         }
         return likeCount;
@@ -592,7 +587,7 @@ public class LionBoardServiceImpl implements LionBoardService {
     public void addPostLike(int postId) {
         int rows = postService.addLikeCount(postId);
 
-        if(rows == 0){
+        if (rows == 0) {
             throw new InvalidPostException();
         }
     }
@@ -600,7 +595,7 @@ public class LionBoardServiceImpl implements LionBoardService {
     @Override
     public void subtractPostLike(int postId) {
         int rows = postService.subtractLikeCount(postId);
-        if(rows == 0){
+        if (rows == 0) {
             throw new InvalidPostException();
         }
     }
@@ -608,7 +603,7 @@ public class LionBoardServiceImpl implements LionBoardService {
     @Override
     public int getPostHate(int postId) {
         Integer hateCount = postService.getHateCount(postId);
-        if(hateCount == null){
+        if (hateCount == null) {
             throw new InvalidPostException();
         }
         return hateCount;
@@ -617,7 +612,7 @@ public class LionBoardServiceImpl implements LionBoardService {
     @Override
     public void addPostHate(int postId) {
         int rows = postService.addHateCount(postId);
-        if(rows == 0){
+        if (rows == 0) {
             throw new InvalidPostException();
         }
     }
@@ -625,7 +620,7 @@ public class LionBoardServiceImpl implements LionBoardService {
     @Override
     public void subtractPostHate(int postId) {
         int rows = postService.subtractHateCount(postId);
-        if(rows == 0){
+        if (rows == 0) {
             throw new InvalidPostException();
         }
     }
@@ -633,7 +628,7 @@ public class LionBoardServiceImpl implements LionBoardService {
     @Override
     public int getPostView(int postId) {
         Integer hateCount = postService.getViewCount(postId);
-        if(hateCount == null){
+        if (hateCount == null) {
             throw new InvalidPostException();
         }
         return hateCount;
@@ -642,7 +637,7 @@ public class LionBoardServiceImpl implements LionBoardService {
     @Override
     public void addPostView(int postId) {
         int rows = postService.addViewCount(postId);
-        if(rows == 0){
+        if (rows == 0) {
             throw new InvalidPostException();
         }
     }
@@ -650,7 +645,7 @@ public class LionBoardServiceImpl implements LionBoardService {
     @Override
     public void subtractPostView(int postId) {
         int rows = postService.subtractViewCount(postId);
-        if(rows == 0){
+        if (rows == 0) {
             throw new InvalidPostException();
         }
     }
@@ -658,7 +653,7 @@ public class LionBoardServiceImpl implements LionBoardService {
     @Override
     public int getCmtLike(int cmtId) {
         Integer likeCount = commentService.getLikeCount(cmtId);
-        if(likeCount == null){
+        if (likeCount == null) {
             throw new InvalidCmtException();
         }
         return likeCount;
@@ -667,7 +662,7 @@ public class LionBoardServiceImpl implements LionBoardService {
     @Override
     public void addCmtLike(int cmtId) {
         int rows = commentService.addLikeCount(cmtId);
-        if(rows == 0){
+        if (rows == 0) {
             throw new InvalidCmtException();
         }
     }
@@ -675,7 +670,7 @@ public class LionBoardServiceImpl implements LionBoardService {
     @Override
     public void subtractCmtLike(int cmtId) {
         int rows = commentService.subtractLikeCount(cmtId);
-        if(rows == 0){
+        if (rows == 0) {
             throw new InvalidCmtException();
         }
     }
@@ -683,7 +678,7 @@ public class LionBoardServiceImpl implements LionBoardService {
     @Override
     public int getCmtHate(int cmtId) {
         Integer likeCount = commentService.getHateCount(cmtId);
-        if(likeCount == null){
+        if (likeCount == null) {
             throw new InvalidCmtException();
         }
         return likeCount;
@@ -692,7 +687,7 @@ public class LionBoardServiceImpl implements LionBoardService {
     @Override
     public void addCmtHate(int cmtId) {
         int rows = commentService.addHateCount(cmtId);
-        if(rows == 0){
+        if (rows == 0) {
             throw new InvalidCmtException();
         }
     }
@@ -700,7 +695,7 @@ public class LionBoardServiceImpl implements LionBoardService {
     @Override
     public void subtractCmtHate(int cmtId) {
         int rows = commentService.subtractHateCount(cmtId);
-        if(rows == 0){
+        if (rows == 0) {
             throw new InvalidCmtException();
         }
     }

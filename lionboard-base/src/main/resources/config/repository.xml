@@ -1,25 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:mvc="http://www.springframework.org/schema/mvc"
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:p="http://www.springframework.org/schema/p"
        xmlns:mybatis="http://mybatis.org/schema/mybatis-spring"
        xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns="http://www.springframework.org/schema/beans"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
         http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd
         http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
         http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
-		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
     <context:property-placeholder
             location="classpath:/config/*.properties"
             ignore-resource-not-found="true"
             ignore-unresolvable="true"
-            order ="0" />
+            order="0"/>
 
     <context:property-placeholder
             location="classpath:/config/local.properties"
@@ -27,32 +25,32 @@
             ignore-unresolvable="true"
             order="1"/>
 
-    <bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource" >
-        <property name="driverClass" value="${datasource.driverClassName}" />
-        <property name="url" value="${datasource.url}" />
-        <property name="username" value="${datasource.username}" />
-        <property name="password" value="${datasource.password}" />
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
+        <property name="driverClass" value="${datasource.driverClassName}"/>
+        <property name="url" value="${datasource.url}"/>
+        <property name="username" value="${datasource.username}"/>
+        <property name="password" value="${datasource.password}"/>
     </bean>
 
-    <mybatis:scan base-package="config.mybatis" />
+    <mybatis:scan base-package="config.mybatis"/>
 
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="dataSource" ref="dataSource" />
-        <property name="mapperLocations" value="classpath:config/mappers/**/*.xml" />
+        <property name="dataSource" ref="dataSource"/>
+        <property name="mapperLocations" value="classpath:config/mappers/**/*.xml"/>
         <property name="typeAliasesPackage" value="com.github.lionboard.model"/>
     </bean>
 
     <bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.github.lionboard.repository" />
-        <property name="annotationClass" value="org.springframework.stereotype.Repository" />
+        <property name="basePackage" value="com.github.lionboard.repository"/>
+        <property name="annotationClass" value="org.springframework.stereotype.Repository"/>
     </bean>
 
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="dataSource" />
+        <property name="dataSource" ref="dataSource"/>
     </bean>
     <!-- sqlSessionTemplate -->
     <bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
-        <constructor-arg ref="sqlSessionFactory" />
+        <constructor-arg ref="sqlSessionFactory"/>
     </bean>
 
     <aop:config proxy-target-class="true">
@@ -63,8 +61,8 @@
 
     <tx:advice id="txAdvice" transaction-manager="transactionManager">
         <tx:attributes>
-            <tx:method name="get*" read-only="true" />
-            <tx:method name="find*" read-only="true" />
+            <tx:method name="get*" read-only="true"/>
+            <tx:method name="find*" read-only="true"/>
             <tx:method name="add*" propagation="REQUIRED" rollback-for="Exception"/>
             <tx:method name="update*" propagation="REQUIRED" rollback-for="Exception"/>
             <tx:method name="change*" propagation="REQUIRED" rollback-for="Exception"/>
@@ -73,7 +71,7 @@
     </tx:advice>
 
     <bean id="securityService" class="com.github.lionboard.security.DefaultJdbcDaoImpl">
-        <property name="sqlSession" ref="sqlSessionTemplate" />
+        <property name="sqlSession" ref="sqlSessionTemplate"/>
     </bean>
 
 </beans>

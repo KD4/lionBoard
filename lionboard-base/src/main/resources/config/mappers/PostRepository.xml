@@ -42,7 +42,8 @@
 
 
     <insert id="insertPost" parameterType="com.github.lionboard.model.Post">
-        INSERT INTO POST_TB(userId,title,contents,existFiles,depth,postNum) VALUES (#{userId},#{title},#{contents},#{existFiles},#{depth},#{postNum});
+        INSERT INTO POST_TB(userId,title,contents,existFiles,depth,postNum) VALUES
+        (#{userId},#{title},#{contents},#{existFiles},#{depth},#{postNum});
         <selectKey keyProperty="postId" resultType="Integer" order="AFTER">
             SELECT LAST_INSERT_ID()
         </selectKey>
@@ -52,7 +53,7 @@
         INSERT INTO POST_STATUS_TB(postId) VALUES (#{postId});
     </insert>
 
-    <delete id="deleteAll" >
+    <delete id="deleteAll">
         DELETE FROM POST_TB;
     </delete>
 
@@ -61,7 +62,7 @@
     </update>
 
     <update id="updatePostStatus" parameterType="com.github.lionboard.model.Post">
-      UPDATE POST_STATUS_TB SET postStatus=#{postStatus} WHERE postId=#{postId}
+        UPDATE POST_STATUS_TB SET postStatus=#{postStatus} WHERE postId=#{postId}
     </update>
 
     <update id="addCmtCount">

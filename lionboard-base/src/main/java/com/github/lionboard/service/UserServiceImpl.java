@@ -13,7 +13,7 @@ import java.util.List;
  */
 
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     @Autowired
     UserRepository userRepository;
@@ -88,6 +88,7 @@ public class UserServiceImpl implements UserService{
     /**
      * 이미 등록된 User의 정보를 업데이트합니다.
      * -for test case-
+     *
      * @param user
      */
     @Override
@@ -98,6 +99,7 @@ public class UserServiceImpl implements UserService{
     /**
      * 이미 등록된 User의 정보를 Delete합니다.
      * -for test case-
+     *
      * @param userId
      */
     @Override
@@ -108,11 +110,12 @@ public class UserServiceImpl implements UserService{
     /**
      * 이미 등록된 User의 상태를 변경합니다.
      * -for test case-
+     *
      * @param userId
      */
     @Override
-    public void updateUserStatusByUserId(int userId,String userStatus) {
-        User user =new User();
+    public void updateUserStatusByUserId(int userId, String userStatus) {
+        User user = new User();
         user.setId(userId);
         user.setUserStatus(userStatus);
         userRepository.updateUserStatus(user);
@@ -151,10 +154,10 @@ public class UserServiceImpl implements UserService{
      */
     @Override
     public List<User> getAllUsers(int offset, int limit, String sort) {
-        HashMap<String,Object> params = new HashMap<>();
-        params.put("offset",offset);
-        params.put("limit",limit);
-        params.put("sort",sort);
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("offset", offset);
+        params.put("limit", limit);
+        params.put("sort", sort);
 
         return userRepository.findAll(params);
     }
@@ -162,7 +165,6 @@ public class UserServiceImpl implements UserService{
 
     /**
      * 사용자 수를 반환합니다.
-     *
      */
     @Override
     public int countUsers() {

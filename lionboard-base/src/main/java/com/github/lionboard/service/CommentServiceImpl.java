@@ -24,6 +24,7 @@ public class CommentServiceImpl implements CommentService {
     /**
      * 특정 Comment를 수정합니다.
      * -for test case-
+     *
      * @param comment
      */
     @Override
@@ -34,6 +35,7 @@ public class CommentServiceImpl implements CommentService {
     /**
      * 특정 Comment가 신고당한 횟수를 반환합니다.
      * -for test case-
+     *
      * @param cmtId
      */
     @Override
@@ -75,7 +77,7 @@ public class CommentServiceImpl implements CommentService {
      * 특정 사용자가 작성한 comment 목록을 반환합니다.
      *
      * @param userId
-     * @return  List<Comment>
+     * @return List<Comment>
      */
     @Override
     public List<Comment> getCommentsByUserId(int userId) {
@@ -86,7 +88,8 @@ public class CommentServiceImpl implements CommentService {
     /**
      * comment 목록을 전부 반환합니다.
      * - for test case -
-     * @return  List<Comment>
+     *
+     * @return List<Comment>
      */
     @Override
     public List<Comment> getComments() {
@@ -102,7 +105,7 @@ public class CommentServiceImpl implements CommentService {
      */
     @Override
     public List<Comment> getCommentsByPostId(int postId, String sort) {
-        Map<String,Object> cmtParam = new HashMap<>();
+        Map<String, Object> cmtParam = new HashMap<>();
         cmtParam.put("postId", postId);
         cmtParam.put("sort", sort);
         return commentRepository.findCommentsByPostId(cmtParam);
@@ -112,7 +115,7 @@ public class CommentServiceImpl implements CommentService {
      * Root Comment를 추가합니다.
      *
      * @param comment
-     * @return  List<Comment>
+     * @return List<Comment>
      */
     @Override
     public void insertRootComment(Comment comment) {
@@ -124,13 +127,13 @@ public class CommentServiceImpl implements CommentService {
      * Reply Post를 추가합니다.
      *
      * @param comment
-     * @return  List<Comment>
+     * @return List<Comment>
      */
     @Override
     public void insertReplyComment(Comment comment) {
-        Map<String,Integer> range = new HashMap<>();
-        range.put("upperLimit",comment.getCmtNum());
-        int lowerLimit = (comment.getCmtNum()) / 1000 * 1000 +1;
+        Map<String, Integer> range = new HashMap<>();
+        range.put("upperLimit", comment.getCmtNum());
+        int lowerLimit = (comment.getCmtNum()) / 1000 * 1000 + 1;
         range.put("lowerLimit", lowerLimit);
         commentRepository.updateCmtNumForInsertRow(range);
         commentRepository.insertComment(comment);
@@ -163,6 +166,7 @@ public class CommentServiceImpl implements CommentService {
     /**
      * Cmt Id에 해당하는 Comment를 반환합니다.
      * -for test case-
+     *
      * @param cmtId
      * @return Comment
      */
@@ -257,9 +261,9 @@ public class CommentServiceImpl implements CommentService {
      */
     @Override
     public List<Comment> getAllComments(int offset, int limit, String sort) {
-        HashMap<String,Object> params = new HashMap<>();
-        params.put("offset",offset);
-        params.put("limit",limit);
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("offset", offset);
+        params.put("limit", limit);
         params.put("sort", sort);
 
         return commentRepository.findAll(params);
@@ -269,7 +273,6 @@ public class CommentServiceImpl implements CommentService {
 
     /**
      * 모든 댓글 개수를 반환합니다.
-     *
      */
     @Override
     public int countAllComments() {
@@ -298,9 +301,9 @@ public class CommentServiceImpl implements CommentService {
      */
     @Override
     public List<CommentReport> getAllReports(int offset, int limit, String sort) {
-        HashMap<String,Object> params = new HashMap<>();
-        params.put("offset",offset);
-        params.put("limit",limit);
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("offset", offset);
+        params.put("limit", limit);
         params.put("sort", sort);
 
         return commentRepository.findAllReports(params);

@@ -1,10 +1,8 @@
 package com.github.lionboard.model;
 
-import org.joda.time.DateTime;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
-import java.util.List;
+
 
 /**
  * Created by Lion.k on 16. 1. 20..
@@ -25,7 +23,7 @@ public class Post {
     private String existFiles;
     private Date createdAt;
     private String postStatus;
-    private MultipartFile uploadFile;
+    private String fileName;
     private String isSticky;
 
 
@@ -151,13 +149,6 @@ public class Post {
         this.profileUrl = profileUrl;
     }
 
-    public MultipartFile getUploadFile() {
-        return uploadFile;
-    }
-
-    public void setUploadFile(MultipartFile uploadFile) {
-        this.uploadFile = uploadFile;
-    }
 
     public String getIsSticky() {
         return isSticky;
@@ -165,5 +156,13 @@ public class Post {
 
     public void setIsSticky(String isSticky) {
         this.isSticky = isSticky;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 }

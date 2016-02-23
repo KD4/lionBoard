@@ -11,9 +11,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.sql.SQLException;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -36,13 +39,14 @@ public class PostController {
     @ResponseBody @RequestMapping(
             headers = "Accept=application/json",
             method= RequestMethod.POST)
-    public String writePost(Post post) throws Exception {
+    public String writePost(Post post, MultipartHttpServletRequest request) throws Exception {
         try {
-
-            if (post.getUploadFile() != null) {
+            Iterator<String> itr =  request.getFileNames();
+            MultipartFile mpf = request.getFile(itr.next());
+            post.setFileName(mpf.getOriginalFilename());
+            if (post.getFileName() != null) {
                 post.setExistFiles("T");
-               //ToDo 여러 개의 파일 업로드
-                lionBoardService.addPostWithFile(post);
+                lionBoardService.addPostWithFile(post,request.getInputStream());
             } else {
                 post.setExistFiles("F");
                 lionBoardService.addPost(post);

@@ -154,16 +154,11 @@ public class UserController {
             produces="application/json;charset=utf8",
             method= RequestMethod.POST)
     public String uploadProfile(@PathVariable("userId") int userId, MultipartHttpServletRequest request) throws Exception {
-        //1. get the files from the request object
         Iterator<String> itr =  request.getFileNames();
-
         MultipartFile mpf = request.getFile(itr.next());
-        System.out.println(mpf.getOriginalFilename() + " uploaded!");
-
-        //2. send it back to the client as <result>
         try {
             //tenth2 서버로 이미지 업로드를 요청함.
-            String uploadedUrl = lionBoardService.uploadProfile(userId, mpf);
+            String uploadedUrl = lionBoardService.uploadProfile(userId, mpf.getInputStream());
             lionBoardService.updateProfileInfoOnUser(userId,uploadedUrl);
 
             logger.debug(userId + " upload the profile..:" + uploadedUrl);

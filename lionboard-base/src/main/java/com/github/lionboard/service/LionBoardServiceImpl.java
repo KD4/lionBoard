@@ -339,8 +339,8 @@ public class LionBoardServiceImpl implements LionBoardService {
     }
 
     @Override
-    public String uploadProfile(int userId, MultipartFile uploadFile) throws Exception {
-        try(InputStream is = uploadFile.getInputStream()) {
+    public String uploadProfile(int userId, InputStream is) throws Exception {
+        try {
             //프로필 작명 규칙 : lionboard_profile_{userId}.jpg
             DateTime dateTime = DateTime.now();
             ;
@@ -364,10 +364,10 @@ public class LionBoardServiceImpl implements LionBoardService {
 
     //첨부파일을 등록하는 로직. insertFileOnTenthServer메소드를 이용함.
     @Override
-    public String addFileToServer(int postId, MultipartFile uploadFile) throws Exception {
-        try(InputStream is = uploadFile.getInputStream()) {
+    public String addFileToServer(int postId, String filename, InputStream is) throws Exception {
+        try{
             //첨부파일 작명 규칙 : lionboard_post_File_{postId}_{originalFileName}
-            String fileName = "lionboard_post_File_" + postId + "_" + uploadFile.getOriginalFilename();
+            String fileName = "lionboard_post_File_" + postId + "_" + filename;
             return attachmentService.uploadFile(is, fileName);
         }catch (IOException e){
             throw new InvalidPostException("파일 업로드에 실패하였습니다.");
@@ -378,7 +378,7 @@ public class LionBoardServiceImpl implements LionBoardService {
 
 
     @Override
-    public void addPostWithFile(Post post) throws Exception {
+    public void addPostWithFile(Post post, InputStream is) throws Exception {
         //Post 기본 정보 등록
         addPost(post);
         // 등록된 Post Id 반환.
@@ -386,24 +386,24 @@ public class LionBoardServiceImpl implements LionBoardService {
 
         PostFile postFile = new PostFile();
         //Id와 파일 정보를 이용해서 서버에 파일 업로드 후, 파일 정보를 디비에 저장.
-        String uploadUrl = addFileToServer(post.getPostId(), post.getUploadFile());
+        String uploadUrl = addFileToServer(post.getPostId(), post.getFileName(),is);
         postFile.setPostId(postId);
         postFile.setFileUrl(uploadUrl);
-        postFile.setFileName(post.getUploadFile().getOriginalFilename());
+        postFile.setFileName(post.getFileName());
 
         postService.addPostFile(postFile);
     }
 
 
     @Override
-    public void addFileOnPost(Post post) throws Exception {
+    public void addFileOnPost(Post post, InputStream is) throws Exception {
         //게시글 수정 화면에서 파일만 업로드할 때, 수행되는 로직.
         PostFile postFile = new PostFile();
         //Id와 파일 정보를 이용해서 서버에 파일 업로드 후, 파일 정보를 디비에 저장.
-        String uploadUrl = addFileToServer(post.getPostId(), post.getUploadFile());
+        String uploadUrl = addFileToServer(post.getPostId(), post.getFileName(),is);
         postFile.setPostId(post.getPostId());
         postFile.setFileUrl(uploadUrl);
-        postFile.setFileName(post.getUploadFile().getOriginalFilename());
+        postFile.setFileName(post.getFileName());
         postService.addPostFile(postFile);
     }
 

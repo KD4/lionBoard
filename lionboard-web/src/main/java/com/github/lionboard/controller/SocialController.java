@@ -37,11 +37,12 @@ import java.util.ArrayList;
 
 @Controller
 @RequestMapping("/auth")
-@PropertySource("classpath:/config/local.properties")
+@PropertySource({"classpath:/config/custom.properties", "classpath:/config/release.properties", "classpath:/config/local.properties"})
 public class SocialController {
 
     @Autowired
     LionBoardService lionBoardService;
+
     @Resource
     private Environment environment;
 

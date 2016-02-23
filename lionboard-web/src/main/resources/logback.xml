@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
-    <property resource="log.properties"/>
-    <property resource="release.properties"/>
+    <property resource="/config/custom.properties"/>
+    <property resource="/config/release.properties"/>
+    <property resource="/config/local.properties"/>
 
     <!-- console로 log 남기기 -->
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
